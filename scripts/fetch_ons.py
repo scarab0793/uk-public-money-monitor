@@ -37,6 +37,19 @@ def get_series(code):
         observations.append({"period": date, "value": number})
     if len(observations) < 12:
         raise ValueError("Not enough valid observations")
+    # The ONS API may return newest-first. Sort by calendar month before
+    # publishing so the dashboard's final observation is truly the latest.
+    month_numbers = {name: i for i, name in enumerate(
+        ("JAN", "FEB", "MAR", "APR", "MAY", "JUN",
+         "JUL", "AUG", "SEP", "OCT", "NOV", "DEC"), start=1)}
+    def period_key(row):
+        year, month = row["period"].split()
+        if month not in month_numbers:
+            raise ValueError(f"Invalid month: {month}")
+        return int(year), month_numbers[month]
+    observations.sort(key=period_key)
+    if len({row["period"] for row in observations}) != len(observations):
+        raise ValueError("Duplicate monthly observations")
     return {"label": SERIES[code]["label"], "unit": SERIES[code]["unit"], "source": url, "observations": observations}
 
 def main():
