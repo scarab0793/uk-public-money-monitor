@@ -24,6 +24,16 @@ class IngestionTests(unittest.TestCase):
             result = ons.get_series("hf6x")
         self.assertEqual(len(result["observations"]), 12)
         self.assertEqual(result["observations"][-1]["period"], "2025 DEC")
+    def test_reverse_chronological_feed_is_sorted(self):
+        months = [{"date": f"2025 {m}", "value": "90"} for m in
+                  ("DEC","NOV","OCT","SEP","AUG","JUL","JUN","MAY","APR","MAR","FEB","JAN")]
+        class Response(FakeResponse):
+            def read(self): return json.dumps({"months": months}).encode()
+        with patch.object(ons.urllib.request, "urlopen", return_value=Response()):
+            result = ons.get_series("hf6x")
+        self.assertEqual(result["observations"][0]["period"], "2025 JAN")
+        self.assertEqual(result["observations"][-1]["period"], "2025 DEC")
+
     def test_failure_does_not_replace_existing_file(self):
         with tempfile.TemporaryDirectory() as folder:
             old = Path(folder) / "ons-public-finances.json"
