@@ -8,7 +8,9 @@ from pathlib import Path
 
 BASE = "https://www.ons.gov.uk/economy/governmentpublicsectorandtaxes/publicsectorfinance/timeseries"
 SERIES = {
-    "hf6x": {"label": "Public sector net debt excluding public sector banks, % GDP", "unit": "% of GDP"},
+    "hf6x": {"label": "Public sector net debt excluding public sector banks", "unit": "% of GDP", "min": 0, "max": 300},
+    "anbv": {"label": "Central government current receipts", "unit": "GBP million", "min": -100000, "max": 1000000},
+    "anlp": {"label": "Central government current expenditure", "unit": "GBP million", "min": -100000, "max": 1000000},
 }
 ROOT = Path(__file__).resolve().parents[1]
 OUT = ROOT / "data" / "ons-public-finances.json"
@@ -32,7 +34,7 @@ def get_series(code):
             number = float(str(value).replace(",", ""))
         except (ValueError, TypeError):
             continue
-        if not 0 <= number <= 300:
+        if not SERIES[code]["min"] <= number <= SERIES[code]["max"] :
             raise ValueError(f"Unexpected percentage value {number} at {date}")
         observations.append({"period": date, "value": number})
     if len(observations) < 12:
@@ -50,7 +52,7 @@ def get_series(code):
     observations.sort(key=period_key)
     if len({row["period"] for row in observations}) != len(observations):
         raise ValueError("Duplicate monthly observations")
-    return {"label": SERIES[code]["label"], "unit": SERIES[code]["unit"], "source": url, "observations": observations}
+    return {"label": SERIES[code]["label"], "unit": SERIES[code]["unit"], "source": url, "series_code": code.upper(), "observations": observations}
 
 def main():
     result = {"publisher": "Office for National Statistics", "dataset": "PUSF", "retrieved_at": datetime.now(timezone.utc).isoformat(), "series": {}}
