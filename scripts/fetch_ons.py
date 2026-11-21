@@ -1,0 +1,53 @@
+#!/usr/bin/env python3
+"""Fetch and validate ONS public-finance time series. Never replace good data on failure."""
+import json
+import re
+import urllib.request
+from datetime import datetime, timezone
+from pathlib import Path
+
+BASE = "https://www.ons.gov.uk/economy/governmentpublicsectorandtaxes/publicsectorfinance/timeseries"
+SERIES = {
+    "hf6x": {"label": "Public sector net debt excluding public sector banks, % GDP", "unit": "% of GDP"},
+}
+ROOT = Path(__file__).resolve().parents[1]
+OUT = ROOT / "data" / "ons-public-finances.json"
+
+def get_series(code):
+    url = f"{BASE}/{code}/dataset/pusf/data"
+    req = urllib.request.Request(url, headers={"User-Agent": "UKPublicMoneyMonitor/0.2 (+https://github.com/scarab0793/uk-public-money-monitor)", "Accept": "application/json"})
+    with urllib.request.urlopen(req, timeout=30) as resp:
+        payload = json.load(resp)
+    # ONS time series response provides months with year, month, value.
+    months = payload.get("months")
+    if not isinstance(months, list) or len(months) < 12:
+        raise ValueError(f"Unexpected or incomplete ONS monthly data for {code}")
+    observations = []
+    for row in months:
+        date = row.get("date")
+        value = row.get("value")
+        if not isinstance(date, str) or not re.fullmatch(r"\\d{4} [A-Z]{3}", date):
+            continue
+        try:
+            number = float(str(value).replace(",", ""))
+        except (ValueError, TypeError):
+            continue
+        if not 0 <= number <= 300:
+            raise ValueError(f"Unexpected percentage value {number} at {date}")
+        observations.append({"period": date, "value": number})
+    if len(observations) < 12:
+        raise ValueError("Not enough valid observations")
+    return {"label": SERIES[code]["label"], "unit": SERIES[code]["unit"], "source": url, "observations": observations}
+
+def main():
+    result = {"publisher": "Office for National Statistics", "dataset": "PUSF", "retrieved_at": datetime.now(timezone.utc).isoformat(), "series": {}}
+    for code in SERIES:
+        result["series"][code] = get_series(code)
+    OUT.parent.mkdir(parents=True, exist_ok=True)
+    temporary = OUT.with_suffix(".tmp")
+    temporary.write_text(json.dumps(result, indent=2) + "\n", encoding="utf-8")
+    temporary.replace(OUT)
+    print("Updated", OUT)
+
+if __name__ == "__main__":
+    main()
