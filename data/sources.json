@@ -1,0 +1,69 @@
+{
+  "version": 1,
+  "description": "Official public finance source registry. Links are discovery pages, not normalized live datasets.",
+  "sources": [
+    {
+      "id": "ons",
+      "name": "Office for National Statistics",
+      "scope": "UK",
+      "topic": "public_finances",
+      "url": "https://www.ons.gov.uk/economy/governmentpublicsectorandtaxes"
+    },
+    {
+      "id": "hmrc",
+      "name": "HM Revenue & Customs",
+      "scope": "UK",
+      "topic": "tax",
+      "url": "https://www.gov.uk/government/organisations/hm-revenue-customs/about/statistics"
+    },
+    {
+      "id": "pesa",
+      "name": "HM Treasury PESA",
+      "scope": "UK",
+      "topic": "expenditure",
+      "url": "https://www.gov.uk/government/collections/public-expenditure-statistical-analyses-pesa"
+    },
+    {
+      "id": "obr",
+      "name": "Office for Budget Responsibility",
+      "scope": "UK",
+      "topic": "forecast",
+      "url": "https://obr.uk/"
+    },
+    {
+      "id": "scotland",
+      "name": "Scottish Government",
+      "scope": "Scotland",
+      "topic": "finance",
+      "url": "https://www.gov.scot/collections/government-finance-statistics/"
+    },
+    {
+      "id": "wales",
+      "name": "Welsh Government",
+      "scope": "Wales",
+      "topic": "finance",
+      "url": "https://www.gov.wales/statistics-and-research"
+    },
+    {
+      "id": "northern-ireland",
+      "name": "Northern Ireland Department of Finance",
+      "scope": "Northern Ireland",
+      "topic": "finance",
+      "url": "https://www.finance-ni.gov.uk/"
+    },
+    {
+      "id": "find-tender",
+      "name": "Find a Tender",
+      "scope": "UK",
+      "topic": "procurement",
+      "url": "https://www.find-tender.service.gov.uk/Search"
+    },
+    {
+      "id": "nao",
+      "name": "National Audit Office",
+      "scope": "UK",
+      "topic": "audit",
+      "url": "https://www.nao.org.uk/reports/"
+    }
+  ]
+}
