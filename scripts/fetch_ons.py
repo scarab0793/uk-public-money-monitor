@@ -26,7 +26,7 @@ def get_series(code):
     for row in months:
         date = row.get("date")
         value = row.get("value")
-        if not isinstance(date, str) or not re.fullmatch(r"\\d{4} [A-Z]{3}", date):
+        if not isinstance(date, str) or not re.fullmatch(r"\d{4} [A-Z]{3}", date):
             continue
         try:
             number = float(str(value).replace(",", ""))
