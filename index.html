@@ -11,6 +11,14 @@
   if(Number.isNaN(stamp.getTime()))throw new Error('Invalid retrieval date');
   const statuses=data.refresh_status||{};
   let count=0;
+  function freshness(item,code){
+   const raw=item.retrieved_at||data.retrieved_at;
+   const date=new Date(raw);
+   const age=Number.isNaN(date.getTime())?null:Math.max(0,Math.floor((Date.now()-date.getTime())/86400000));
+   return ' · retrieved '+(age===null?'unknown':date.toLocaleDateString('en-GB'))+
+     (age!==null&&age>35?' · STALE ('+age+' days)':'')+
+     (statuses[code]==='retained'?' · previous snapshot':'');
+  }
   function valid(code){
    const item=data.series[code];
    if(!item||!Array.isArray(item.observations)||item.observations.length<12||!item.source||!item.label)return null;
@@ -24,7 +32,7 @@
    const title=document.createElement('p');title.textContent=debt.label+' ('+debt.unit+')';
    const value=document.createElement('p');value.className='result';value.textContent=latest.value.toLocaleString('en-GB')+'% · '+latest.period;
    const link=document.createElement('a');link.href=debt.source;link.textContent='Original ONS debt series';link.target='_blank';link.rel='noopener noreferrer';
-   panel.append(title,value,link);
+   const detail=document.createElement('p');detail.className='small';detail.textContent=freshness(debt,'hf6x');panel.append(title,value,detail,link);
    const recent=rows.slice(-60), w=720,h=210,pad=30,values=recent.map(x=>x.value);
    const min=Math.floor(Math.min(...values)/10)*10,max=Math.ceil(Math.max(...values)/10)*10,span=Math.max(1,max-min);
    const ns='http://www.w3.org/2000/svg',svg=document.createElementNS(ns,'svg');
@@ -39,13 +47,12 @@
    count++;const last=item.observations[item.observations.length-1],card=document.createElement('div');card.className='card';
    const title=document.createElement('h3');title.textContent=item.label;
    const amount=document.createElement('p');amount.className='result';amount.textContent='£'+(last.value/1000).toLocaleString('en-GB',{maximumFractionDigits:2})+'bn';
-   const period=document.createElement('p');period.textContent=last.period+' · monthly, nominal'+(statuses[code]==='retained'?' · previous verified data':'');
+   const period=document.createElement('p');period.textContent=last.period+' · monthly, nominal'+freshness(item,code);
    const link=document.createElement('a');link.href=item.source;link.textContent='Original ONS series';link.target='_blank';link.rel='noopener noreferrer';
    card.append(title,amount,period,link);cards.appendChild(card);
   }
   if(!count)throw new Error('No validated series');
-  const age=Math.floor((Date.now()-stamp.getTime())/86400000);
-  status.textContent='ONS data · retrieved '+stamp.toLocaleDateString('en-GB')+(age>35?' · retrieval is over 35 days old':'')+(Object.values(statuses).includes('retained')?' · some series retained from earlier refresh':'');
+  status.textContent='ONS public finances · '+count+' verified series available · last refresh attempted '+stamp.toLocaleDateString('en-GB')+'. Individual retrieval dates shown below.';
  }catch(e){
   status.textContent='No validated ONS dataset is published yet. Check the GitHub Actions data refresh.';
   panel.replaceChildren();cards.replaceChildren();chart.replaceChildren();
