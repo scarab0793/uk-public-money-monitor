@@ -76,6 +76,7 @@ def main():
         "refresh_status": {},
     }
     updated = 0
+    errors = {}
     for code in SERIES:
         try:
             series = get_series(code)
@@ -84,6 +85,7 @@ def main():
             updated += 1
             print(f"Updated {code}: {len(series['observations'])} observations")
         except (OSError, ValueError, KeyError, TypeError) as exc:
+            errors[code] = {"type": type(exc).__name__, "message": str(exc)[:500]}
             print(f"WARNING: {code} unavailable: {type(exc).__name__}: {exc}")
             prior = previous.get(code)
             if isinstance(prior, dict) and isinstance(prior.get("observations"), list) and len(prior["observations"]) >= 12 and prior.get("source"):
@@ -96,6 +98,15 @@ def main():
             else:
                 result["refresh_status"][code] = "unavailable"
 
+    report = {
+        "attempted_at": result["retrieved_at"],
+        "updated_count": updated,
+        "status": result["refresh_status"],
+        "errors": errors,
+    }
+    report_path = ROOT / "data" / "ons-refresh-report.json"
+    report_path.parent.mkdir(parents=True, exist_ok=True)
+    report_path.write_text(json.dumps(report, indent=2) + "\n", encoding="utf-8")
     if updated == 0:
         raise RuntimeError("No fresh ONS series retrieved; existing file left unchanged")
     OUT.parent.mkdir(parents=True, exist_ok=True)
