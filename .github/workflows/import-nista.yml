@@ -1,0 +1,34 @@
+name: Import official NISTA major projects
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '20 10 * * 1'
+  push:
+    paths:
+      - 'scripts/fetch_nista.py'
+      - '.github/workflows/import-nista.yml'
+permissions:
+  contents: write
+concurrency:
+  group: nista-import
+  cancel-in-progress: false
+jobs:
+  import:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Download and validate official project data
+        run: python -u scripts/fetch_nista.py
+      - name: Commit source-backed dataset
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add data/nista-raw-projects.json
+          if ! git diff --cached --quiet; then
+            git commit -m "data: refresh official NISTA major projects"
+            git push
+          fi
