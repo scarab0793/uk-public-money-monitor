@@ -9,7 +9,6 @@ import hashlib
 import io
 import json
 import os
-import re
 import urllib.request
 from datetime import datetime, timezone
 from pathlib import Path
@@ -27,6 +26,7 @@ def build(raw):
     fields = reader.fieldnames or []
     if len(fields) < 3 or len(set(fields)) != len(fields):
         raise ValueError("Invalid or duplicate CSV headings")
+    # Keep original source headings and values unchanged.
     records = []
     for row in reader:
         if not any(str(v or "").strip() for v in row.values()):
