@@ -40,6 +40,14 @@ jobs:
               assert series.get('source', '').startswith('https://'), code
           print('Validated:', ', '.join(payload['series']))
           PY
+      - name: Upload diagnostic report if ingestion failed
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: ons-ingestion-diagnostics
+          path: data/ons-refresh-report.json
+          if-no-files-found: warn
+          retention-days: 14
       - name: Commit updated observations
         run: |
           git config user.name "github-actions[bot]"
