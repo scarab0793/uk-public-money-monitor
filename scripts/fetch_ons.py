@@ -55,14 +55,48 @@ def get_series(code):
     return {"label": SERIES[code]["label"], "unit": SERIES[code]["unit"], "source": url, "series_code": code.upper(), "observations": observations}
 
 def main():
-    result = {"publisher": "Office for National Statistics", "dataset": "PUSF", "retrieved_at": datetime.now(timezone.utc).isoformat(), "series": {}}
+    # Preserve previously validated series if a single upstream endpoint fails.
+    previous = {}
+    if OUT.exists():
+        try:
+            saved = json.loads(OUT.read_text(encoding="utf-8"))
+            previous = saved.get("series", {})
+            if not isinstance(previous, dict):
+                previous = {}
+        except (ValueError, OSError):
+            previous = {}
+
+    result = {
+        "publisher": "Office for National Statistics",
+        "dataset": "PUSF",
+        "retrieved_at": datetime.now(timezone.utc).isoformat(),
+        "series": {},
+        "refresh_status": {},
+    }
+    updated = 0
     for code in SERIES:
-        result["series"][code] = get_series(code)
+        try:
+            series = get_series(code)
+            result["series"][code] = series
+            result["refresh_status"][code] = "updated"
+            updated += 1
+            print(f"Updated {code}: {len(series['observations'])} observations")
+        except (OSError, ValueError, KeyError, TypeError) as exc:
+            print(f"WARNING: {code} unavailable: {type(exc).__name__}: {exc}")
+            prior = previous.get(code)
+            if isinstance(prior, dict) and isinstance(prior.get("observations"), list) and len(prior["observations"]) >= 12 and prior.get("source"):
+                result["series"][code] = prior
+                result["refresh_status"][code] = "retained"
+            else:
+                result["refresh_status"][code] = "unavailable"
+
+    if updated == 0:
+        raise RuntimeError("No fresh ONS series retrieved; existing file left unchanged")
     OUT.parent.mkdir(parents=True, exist_ok=True)
     temporary = OUT.with_suffix(".tmp")
     temporary.write_text(json.dumps(result, indent=2) + "\n", encoding="utf-8")
     temporary.replace(OUT)
-    print("Updated", OUT)
+    print(f"Published {updated} refreshed series; {len(result['series'])} total available")
 
 if __name__ == "__main__":
     main()
