@@ -17,9 +17,20 @@ OUT = ROOT / "data" / "ons-public-finances.json"
 
 def get_series(code):
     url = f"{BASE}/{code}/dataset/pusf/data"
-    req = urllib.request.Request(url, headers={"User-Agent": "UKPublicMoneyMonitor/0.2 (+https://github.com/scarab0793/uk-public-money-monitor)", "Accept": "application/json"})
-    with urllib.request.urlopen(req, timeout=30) as resp:
-        payload = json.load(resp)
+    urls = [url, f"https://api.ons.gov.uk/v1/timeseries/{code}/dataset/PUSF/data"]
+    failures = []
+    payload = None
+    for candidate_url in urls:
+        try:
+            req = urllib.request.Request(candidate_url, headers={"User-Agent": "Mozilla/5.0 (compatible; UKPublicMoneyMonitor/0.3)", "Accept": "application/json"})
+            with urllib.request.urlopen(req, timeout=30) as resp:
+                payload = json.load(resp)
+            url = candidate_url
+            break
+        except (OSError, ValueError) as exc:
+            failures.append(f"{candidate_url}: {type(exc).__name__}: {exc}")
+    if payload is None:
+        raise RuntimeError("ONS endpoints unavailable: " + " | ".join(failures))
     # ONS time series response provides months with year, month, value.
     months = payload.get("months")
     if not isinstance(months, list) or len(months) < 12:
@@ -84,7 +95,7 @@ def main():
             result["refresh_status"][code] = "updated"
             updated += 1
             print(f"Updated {code}: {len(series['observations'])} observations")
-        except (OSError, ValueError, KeyError, TypeError) as exc:
+        except (OSError, ValueError, KeyError, TypeError, RuntimeError) as exc:
             errors[code] = {"type": type(exc).__name__, "message": str(exc)[:500]}
             print(f"WARNING: {code} unavailable: {type(exc).__name__}: {exc}")
             prior = previous.get(code)
