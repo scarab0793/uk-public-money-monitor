@@ -63,14 +63,14 @@ def make_catalogue(data):
     """Publish all identifiable project rows, without guessing financial units."""
     projects = []
     seen = set()
-    for index, row in enumerate(data["records"]):
-        name = find_field(row, [r"^project\\s*(name|title)$", r"^name\\s*of\\s*project$", r"project.*name"])
+    for row in data["records"]:
+        name = find_field(row, [r"^project\s*(name|title)$", r"^name\s*of\s*project$", r"project.*name"])
         if not name:
             continue
-        department = find_field(row, [r"^department$", r"department\\s*name", r"organisation", r"organization"])
-        description = find_field(row, [r"^project\\s*description$", r"^description$", r"project\\s*summary", r"project\\s*purpose", r"project\\s*objective"])
-        sector = find_field(row, [r"^sector$", r"^category$", r"project\\s*type"])
-        identifier = hashlib.sha256((name + "\\0" + department).encode("utf-8")).hexdigest()[:20]
+        department = find_field(row, [r"^department$", r"department\s*name", r"organisation", r"organization"])
+        description = find_field(row, [r"^project\s*description$", r"^description$", r"project\s*summary", r"project\s*purpose", r"project\s*objective"])
+        sector = find_field(row, [r"^annual report category$", r"^sector$", r"^category$", r"project\s*type"])
+        identifier = hashlib.sha256((name + "\0" + department).encode("utf-8")).hexdigest()[:20]
         if identifier in seen:
             continue
         seen.add(identifier)
