@@ -1,20 +1,45 @@
 name: Refresh ONS public finances
 on:
+  push:
+    paths:
+      - 'scripts/fetch_ons.py'
+      - '.github/workflows/refresh-ons.yml'
   schedule:
     - cron: '35 9 * * *'
   workflow_dispatch:
 permissions:
   contents: write
+concurrency:
+  group: ons-data-refresh
+  cancel-in-progress: false
 jobs:
   refresh:
     runs-on: ubuntu-latest
+    timeout-minutes: 10
     steps:
       - uses: actions/checkout@v4
+        with:
+          persist-credentials: true
       - uses: actions/setup-python@v5
         with:
           python-version: '3.12'
+      - name: Run offline ingestion tests
+        run: python -m unittest discover -s tests -v
       - name: Download and validate official ONS series
-        run: python scripts/fetch_ons.py
+        run: python -u scripts/fetch_ons.py
+      - name: Check generated dataset
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          path = Path('data/ons-public-finances.json')
+          payload = json.loads(path.read_text())
+          assert payload.get('series'), 'No validated series published'
+          for code, series in payload['series'].items():
+              assert len(series['observations']) >= 12, code
+              assert series.get('source', '').startswith('https://'), code
+          print('Validated:', ', '.join(payload['series']))
+          PY
       - name: Commit updated observations
         run: |
           git config user.name "github-actions[bot]"
@@ -23,4 +48,6 @@ jobs:
           if ! git diff --cached --quiet; then
             git commit -m "data: refresh ONS public finances"
             git push
+          else
+            echo "No dataset changes to commit"
           fi
