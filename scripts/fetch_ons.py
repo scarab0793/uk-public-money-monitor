@@ -52,15 +52,17 @@ def get_series(code):
     observations.sort(key=period_key)
     if len({row["period"] for row in observations}) != len(observations):
         raise ValueError("Duplicate monthly observations")
-    return {"label": SERIES[code]["label"], "unit": SERIES[code]["unit"], "source": url, "series_code": code.upper(), "observations": observations}
+    return {"label": SERIES[code]["label"], "unit": SERIES[code]["unit"], "source": url, "series_code": code.upper(), "retrieved_at": datetime.now(timezone.utc).isoformat(), "observations": observations}
 
 def main():
     # Preserve previously validated series if a single upstream endpoint fails.
     previous = {}
+    previous_retrieved_at = None
     if OUT.exists():
         try:
             saved = json.loads(OUT.read_text(encoding="utf-8"))
             previous = saved.get("series", {})
+            previous_retrieved_at = saved.get("retrieved_at")
             if not isinstance(previous, dict):
                 previous = {}
         except (ValueError, OSError):
@@ -85,6 +87,10 @@ def main():
             print(f"WARNING: {code} unavailable: {type(exc).__name__}: {exc}")
             prior = previous.get(code)
             if isinstance(prior, dict) and isinstance(prior.get("observations"), list) and len(prior["observations"]) >= 12 and prior.get("source"):
+                # Old snapshots used only a top-level timestamp; preserve its age.
+                prior = dict(prior)
+                if "retrieved_at" not in prior and previous_retrieved_at:
+                    prior["retrieved_at"] = previous_retrieved_at
                 result["series"][code] = prior
                 result["refresh_status"][code] = "retained"
             else:
