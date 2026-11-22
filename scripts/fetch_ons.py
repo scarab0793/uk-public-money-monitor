@@ -35,7 +35,7 @@ def get_series(code):
         except (ValueError, TypeError):
             continue
         if not SERIES[code]["min"] <= number <= SERIES[code]["max"] :
-            raise ValueError(f"Unexpected percentage value {number} at {date}")
+            raise ValueError(f"Unexpected {SERIES[code]['unit']} value {number} at {date}")
         observations.append({"period": date, "value": number})
     if len(observations) < 12:
         raise ValueError("Not enough valid observations")
