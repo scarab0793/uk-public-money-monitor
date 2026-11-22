@@ -59,6 +59,19 @@ def find_field(row, patterns):
                 return str(value).strip()
     return ""
 
+def millions_to_gbp(raw):
+    """Convert explicitly labelled GBP millions only; missing/suppressed is null."""
+    value = str(raw or "").strip().replace(",", "")
+    if not value or value.lower() in ("not set", "n/a", "redacted", "exempt", "-"):
+        return None
+    try:
+        amount = float(value)
+    except ValueError:
+        return None
+    if not (-1e9 < amount < 1e9):
+        return None
+    return round(amount * 1_000_000, 2)
+
 def make_catalogue(data):
     """Publish all identifiable project rows, without guessing financial units."""
     projects = []
@@ -74,6 +87,12 @@ def make_catalogue(data):
         if identifier in seen:
             continue
         seen.add(identifier)
+        financial_baseline = millions_to_gbp(row.get("Financial Year Baseline (£m)"))
+        financial_forecast = millions_to_gbp(row.get("Financial Year Forecast (£m)"))
+        whole_life_cost = millions_to_gbp(row.get("Whole Life Cost (£m)"))
+        confidence = row.get("IPA Delivery Confidence Assessment", "").strip()
+        if not confidence or confidence.lower() == "not set":
+            confidence = row.get("SRO Delivery Confidence Assessment", "").strip()
         projects.append({
             "id": "nista-" + identifier,
             "name": name,
@@ -81,7 +100,12 @@ def make_catalogue(data):
             "department": department,
             "sector": sector,
             "nation": "United Kingdom",
-            "status": "",
+            "status": confidence,
+            "financial_year_baseline_gbp": financial_baseline,
+            "financial_year_forecast_gbp": financial_forecast,
+            "whole_life_cost_gbp": whole_life_cost,
+            "financial_year_variance_pct_reported": row.get("Financial Year Variance (%)", "").strip(),
+            "gmpp_id": row.get("GMPP ID", "").strip(),
             "source_url": SOURCE_PAGE,
             "source_title": "NISTA Annual Report 2024-25",
             "source_as_of": "2025-03-31",
@@ -91,7 +115,7 @@ def make_catalogue(data):
             "original_completion": None,
             "forecast_completion": None,
             "actual_completion": None,
-            "notes": "Original source columns retained in NISTA source-records view. Financial values are omitted until column units and definitions are verified."
+            "notes": "Financial-year baseline/forecast and whole-life cost are separate measures. Whole-life cost is not actual spending, and annual variance is not a whole-project overrun. Source record retains all original fields."
         })
     if len(projects) < 20:
         raise ValueError(f"Only {len(projects)} named projects found; source columns: {list(data['records'][0])}")
