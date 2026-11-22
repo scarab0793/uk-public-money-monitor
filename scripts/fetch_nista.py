@@ -64,7 +64,7 @@ def make_catalogue(data):
     projects = []
     seen = set()
     for row in data["records"]:
-        name = find_field(row, [r"^project\s*(name|title)$", r"^name\s*of\s*project$", r"project.*name"])
+        name = find_field(row, [r"^project\s*(name|title)$", r"^name\s*of\s*project$", r"project.*name", r"^project$", r"^name$"])
         if not name:
             continue
         department = find_field(row, [r"^department$", r"department\s*name", r"organisation", r"organization"])
@@ -94,7 +94,7 @@ def make_catalogue(data):
             "notes": "Original source columns retained in NISTA source-records view. Financial values are omitted until column units and definitions are verified."
         })
     if len(projects) < 20:
-        raise ValueError(f"Only {len(projects)} named projects found; check NISTA CSV headings")
+        raise ValueError(f"Only {len(projects)} named projects found; source columns: {list(data['records'][0])}")
     projects.sort(key=lambda item: item["name"].casefold())
     return {"schema_version": 1, "generated_at": data["retrieved_at"],
             "project_count": len(projects), "projects": projects}
