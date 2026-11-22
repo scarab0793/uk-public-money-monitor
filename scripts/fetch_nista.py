@@ -110,7 +110,7 @@ def main():
     tmp.write_text(json.dumps(data, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
     os.replace(tmp, OUT)
     project_tmp = PROJECTS_OUT.with_suffix(".tmp")
-    project_tmp.write_text(json.dumps(catalogue, ensure_ascii=False, indent=2) + "\\n", encoding="utf-8")
+    project_tmp.write_text(json.dumps(catalogue, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
     os.replace(project_tmp, PROJECTS_OUT)
     print(f"Published {catalogue['project_count']} searchable project names")
     print(f"Published {data['record_count']} official CSV rows; sha256={data['sha256']}")
