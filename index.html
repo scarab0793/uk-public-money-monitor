@@ -69,7 +69,7 @@
  input.addEventListener('keydown',e=>{if(e.key==='Escape'){close();return}if(e.key==='ArrowDown'||e.key==='ArrowUp'){e.preventDefault();if(!container.classList.contains('open'))open();const options=[...container.querySelectorAll('button')];if(!options.length)return;selected=(selected+(e.key==='ArrowDown'?1:-1)+options.length)%options.length;options[selected].focus()}});
  document.addEventListener('pointerdown',e=>{if(!input.parentElement.contains(e.target))close()});
 }
-function shortText(value){return String(value||'').replace(/\\s+/g,' ').trim().slice(0,145)}
+function shortText(value){return String(value||'').replace(/\s+/g,' ').trim().slice(0,145)}
 function nistaField(record,pattern){const key=Object.keys(record).find(k=>pattern.test(k));return key?String(record[key]||'').trim():''}
 async function loadProjects(){
  const results=document.getElementById('project-results'),status=document.getElementById('project-status');
@@ -111,15 +111,16 @@ async function loadProjects(){
   const response=await fetch('./data/nista-raw-projects.json',{cache:'no-store'});if(!response.ok)throw Error('not yet published');
   const data=await response.json();if(!Array.isArray(data.records)||!Array.isArray(data.columns)||!data.source_url||!data.sha256)throw Error('invalid data');
   const rows=data.records;
+  let selectedRecord=null;
   const options=rows.map((record,i)=>{
    const name=nistaField(record,/^(project name|project title|name of project|name)$/i)||nistaField(record,/project.*name|name.*project/i)||Object.values(record).find(Boolean)||'Project '+(i+1);
    const description=shortText(nistaField(record,/^(project description|description|project summary|summary|project purpose)$/i)||nistaField(record,/description|summary|objective|purpose/i))||[nistaField(record,/department|organisation|organization|owner/i),nistaField(record,/sector|category|type/i)].filter(Boolean).join(' · ')||'No short description published';
    return {name,description,search:Object.values(record).join(' ').toLocaleLowerCase('en-GB'),record,index:i};
   }).sort((a,b)=>a.name.localeCompare(b.name));
-  setupProjectDropdown(search,document.getElementById('nista-suggestions'),()=>options,()=>{render();document.getElementById('nista-results').scrollIntoView({behavior:'smooth',block:'nearest'})});
+  setupProjectDropdown(search,document.getElementById('nista-suggestions'),()=>options,item=>{selectedRecord=item.record;render();document.getElementById('nista-results').scrollIntoView({behavior:'smooth',block:'nearest'})});
   const render=()=>{
    const term=search.value.trim().toLowerCase();
-   const matches=rows.filter(r=>!term||Object.values(r).some(v=>String(v).toLowerCase().includes(term)));
+   const matches=rows.filter(r=>selectedRecord?r===selectedRecord:(!term||Object.values(r).some(v=>String(v).toLowerCase().includes(term))));
    status.textContent=matches.length+' matching source rows / '+rows.length+' total · NISTA 2024–25 · raw official fields, original units';
    results.replaceChildren();
    for(const record of matches.slice(0,50)){
@@ -132,6 +133,6 @@ async function loadProjects(){
    if(matches.length>50){const note=document.createElement('p');note.textContent='Showing 50 results. Refine the search to see more.';results.appendChild(note)}
    const link=document.createElement('a');link.href=data.source_url;link.textContent='Official NISTA publication';link.target='_blank';link.rel='noopener noreferrer';results.appendChild(link);
   };
-  search.addEventListener('input',render);render();
+  search.addEventListener('input',()=>{selectedRecord=null;render()});render();
  }catch(e){status.textContent='Official NISTA dataset not imported yet. No source rows are displayed.';results.replaceChildren()}
 }loadNista();</script></body></html>
