@@ -16,9 +16,10 @@ from pathlib import Path
 
 URL = "https://assets.publishing.service.gov.uk/media/6895fbb63080e72710b2e2ef/nista_annual_report_data_2425.csv"
 SOURCE_PAGE = "https://www.gov.uk/government/publications/nista-annual-report-2024-2025"
+MIRROR_URL = "https://raw.githubusercontent.com/MatthewPaver/ProjectLens/main/Data/public/raw/gmpp_2024_25.csv"
 ROOT = Path(__file__).resolve().parents[1]
 OUT = ROOT / "data" / "nista-raw-projects.json"
-PROJECTS_OUT = ROOT / "data" / "projects.json"
+PROJECTS_OUT = ROOT / "data" / "nista-2024-25-projects.json"
 
 def build(raw):
     if len(raw) < 1000 or len(raw) > 15_000_000:
@@ -61,7 +62,7 @@ def find_field(row, patterns):
 
 def millions_to_gbp(raw):
     """Convert explicitly labelled GBP millions only; missing/suppressed is null."""
-    value = str(raw or "").strip().replace(",", "")
+    value = str(raw or "").strip().replace(",", "").replace("£", "")
     if not value or value.lower() in ("not set", "n/a", "redacted", "exempt", "-"):
         return None
     try:
@@ -124,11 +125,23 @@ def make_catalogue(data):
             "project_count": len(projects), "projects": projects}
 
 def main():
-    request = urllib.request.Request(URL, headers={"User-Agent": "UKPublicMoneyMonitor/0.4", "Accept": "text/csv,*/*"})
-    with urllib.request.urlopen(request, timeout=45) as response:
-        raw = response.read(15_000_001)
-    data = build(raw)
-    catalogue = make_catalogue(data)
+    failures = []
+    data = None
+    for url in (URL, MIRROR_URL):
+        try:
+            request = urllib.request.Request(url, headers={"User-Agent": "UKPublicMoneyMonitor/0.4", "Accept": "text/csv,*/*"})
+            with urllib.request.urlopen(request, timeout=30) as response:
+                raw = response.read(15_000_001)
+            candidate = build(raw)
+            catalogue = make_catalogue(candidate)
+            data = candidate
+            data["download_url"] = url
+            data["mirror_used"] = url == MIRROR_URL
+            break
+        except (OSError, ValueError, UnicodeError) as exc:
+            failures.append(f"{url}: {type(exc).__name__}: {exc}")
+    if data is None:
+        raise RuntimeError("NISTA source unavailable: " + " | ".join(failures))
     OUT.parent.mkdir(parents=True, exist_ok=True)
     tmp = OUT.with_suffix(".tmp")
     tmp.write_text(json.dumps(data, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
