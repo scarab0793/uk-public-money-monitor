@@ -27,7 +27,7 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add data/nista-raw-projects.json
+          git add data/nista-raw-projects.json data/projects.json
           if ! git diff --cached --quiet; then
             git commit -m "data: refresh official NISTA major projects"
             git push
