@@ -48,11 +48,13 @@ jobs:
           path: data/ons-refresh-report.json
           if-no-files-found: warn
           retention-days: 14
-      - name: Commit updated observations
+      - name: Commit updated observations and diagnostic report
+        if: always()
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add data/ons-public-finances.json
+          git add -f data/ons-refresh-report.json
+          if [ -f data/ons-public-finances.json ]; then git add data/ons-public-finances.json; fi
           if ! git diff --cached --quiet; then
             git commit -m "data: refresh ONS public finances"
             git push
