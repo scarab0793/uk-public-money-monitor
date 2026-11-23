@@ -1,8 +1,9 @@
 {
   "schema_version": 1,
   "publisher": "Office for National Statistics",
-  "generated_from": "2026-11-23T20:49:31.949904+00:00",
-  "methodology": "Monthly receipts and expenditure are summed by calendar year (GBP million to GBP). Debt-to-GDP ratio is shown as the final monthly observation of each calendar year, never summed. Incomplete years explicitly flagged. Calendar-year totals are not fiscal-year totals.",
+  "generated_from": "2026-11-23T21:00:51.974989+00:00",
+  "year_definition": "Calendar year: 1 January to 31 December",
+  "note": "ANBV/ANLP measure central government CURRENT receipts/expenditure, not total public sector income/spending. Do not subtract them to infer fiscal deficit. HF6X is a debt ratio, not a sum. Incomplete years are flagged.",
   "series": {
     "hf6x": {
       "label": "Public sector net debt excluding public sector banks",
@@ -165,7 +166,7 @@
           "year": "2010",
           "months": 12,
           "complete": true,
-          "value": 70,
+          "value": 70.0,
           "unit": "% GDP",
           "method": "last available monthly observation",
           "last_period": "2010 DEC"
@@ -192,7 +193,7 @@
           "year": "2013",
           "months": 12,
           "complete": true,
-          "value": 79,
+          "value": 79.0,
           "unit": "% GDP",
           "method": "last available monthly observation",
           "last_period": "2013 DEC"
