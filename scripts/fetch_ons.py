@@ -3,6 +3,7 @@
 import json
 import re
 import urllib.request
+import urllib.parse
 from datetime import datetime, timezone
 from pathlib import Path
 
@@ -15,20 +16,51 @@ SERIES = {
 ROOT = Path(__file__).resolve().parents[1]
 OUT = ROOT / "data" / "ons-public-finances.json"
 
+def get_json(url):
+    request = urllib.request.Request(url, headers={"User-Agent": "UKPublicMoneyMonitor/0.5", "Accept": "application/json"})
+    with urllib.request.urlopen(request, timeout=40) as response:
+        return json.load(response)
+
+
+def get_modern_series(code):
+    """Use the supported ONS Search API after retirement of the v0 time-series API."""
+    search_url = "https://api.beta.ons.gov.uk/v1/search?" + urllib.parse.urlencode({
+        "content_type": "timeseries", "cdids": code.upper(), "limit": 20
+    })
+    search = get_json(search_url)
+    items = search.get("items", [])
+    if not isinstance(items, list):
+        raise ValueError("ONS search returned no items array")
+    match = next((item for item in items if isinstance(item, dict) and
+                  str(item.get("cdid", item.get("cdids", ""))).lower() == code.lower()), None)
+    if match is None:
+        match = next((item for item in items if isinstance(item, dict) and
+                      code.lower() in str(item.get("uri", "")).lower()), None)
+    if match is None or not isinstance(match.get("uri"), str):
+        raise ValueError(f"ONS search did not identify time series {code}")
+    uri = match["uri"]
+    if not uri.startswith("/") or not uri.startswith("/economy/"):
+        raise ValueError("Unexpected ONS time-series URI")
+    data_url = "https://api.beta.ons.gov.uk/v1/data?" + urllib.parse.urlencode({"uri": uri})
+    return get_json(data_url), data_url
+
+
 def get_series(code):
     url = f"{BASE}/{code}/dataset/pusf/data"
-    urls = [url, f"https://api.ons.gov.uk/v1/timeseries/{code}/dataset/PUSF/data"]
     failures = []
     payload = None
-    for candidate_url in urls:
-        try:
-            req = urllib.request.Request(candidate_url, headers={"User-Agent": "Mozilla/5.0 (compatible; UKPublicMoneyMonitor/0.3)", "Accept": "application/json"})
-            with urllib.request.urlopen(req, timeout=30) as resp:
-                payload = json.load(resp)
-            url = candidate_url
-            break
-        except (OSError, ValueError) as exc:
-            failures.append(f"{candidate_url}: {type(exc).__name__}: {exc}")
+    try:
+        payload, url = get_modern_series(code)
+    except (OSError, ValueError, KeyError, TypeError) as exc:
+        failures.append(f"ONS v1 search/data: {type(exc).__name__}: {exc}")
+    if payload is None:
+        for candidate_url in (url, f"https://api.ons.gov.uk/v1/timeseries/{code}/dataset/PUSF/data"):
+            try:
+                payload = get_json(candidate_url)
+                url = candidate_url
+                break
+            except (OSError, ValueError) as exc:
+                failures.append(f"{candidate_url}: {type(exc).__name__}: {exc}")
     if payload is None:
         raise RuntimeError("ONS endpoints unavailable: " + " | ".join(failures))
     # ONS time series response provides months with year, month, value.
