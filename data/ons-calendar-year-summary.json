@@ -1,0 +1,872 @@
+{
+  "schema_version": 1,
+  "publisher": "Office for National Statistics",
+  "generated_from": "2026-11-23T20:49:31.949904+00:00",
+  "methodology": "Monthly receipts and expenditure are summed by calendar year (GBP million to GBP). Debt-to-GDP ratio is shown as the final monthly observation of each calendar year, never summed. Incomplete years explicitly flagged. Calendar-year totals are not fiscal-year totals.",
+  "series": {
+    "hf6x": {
+      "label": "Public sector net debt excluding public sector banks",
+      "source": "https://api.beta.ons.gov.uk/v1/data?uri=%2Feconomy%2Fgovernmentpublicsectorandtaxes%2Fpublicsectorfinance%2Ftimeseries%2Fhf6x%2Fpusf",
+      "annual": [
+        {
+          "year": "1993",
+          "months": 10,
+          "complete": false,
+          "value": 29.7,
+          "unit": "% GDP",
+          "method": "last available monthly observation",
+          "last_period": "1993 DEC"
+        },
+        {
+          "year": "1994",
+          "months": 12,
+          "complete": true,
+          "value": 33.6,
+          "unit": "% GDP",
+          "method": "last available monthly observation",
+          "last_period": "1994 DEC"
+        },
+        {
+          "year": "1995",
+          "months": 12,
+          "complete": true,
+          "value": 35.7,
+          "unit": "% GDP",
+          "method": "last available monthly observation",
+          "last_period": "1995 DEC"
+        },
+        {
+          "year": "1996",
+          "months": 12,
+          "complete": true,
+          "value": 36.7,
+          "unit": "% GDP",
+          "method": "last available monthly observation",
+          "last_period": "1996 DEC"
+        },
+        {
+          "year": "1997",
+          "months": 12,
+          "complete": true,
+          "value": 37.4,
+          "unit": "% GDP",
+          "method": "last available monthly observation",
+          "last_period": "1997 DEC"
+        },
+        {
+          "year": "1998",
+          "months": 12,
+          "complete": true,
+          "value": 35.7,
+          "unit": "% GDP",
+          "method": "last available monthly observation",
+          "last_period": "1998 DEC"
+        },
+        {
+          "year": "1999",
+          "months": 12,
+          "complete": true,
+          "value": 34.3,
+          "unit": "% GDP",
+          "method": "last available monthly observation",
+          "last_period": "1999 DEC"
+        },
+        {
+          "year": "2000",
+          "months": 12,
+          "complete": true,
+          "value": 29.7,
+          "unit": "% GDP",
+          "method": "last available monthly observation",
+          "last_period": "2000 DEC"
+        },
+        {
+          "year": "2001",
+          "months": 12,
+          "complete": true,
+          "value": 28.8,
+          "unit": "% GDP",
+          "method": "last available monthly observation",
+          "last_period": "2001 DEC"
+        },
+        {
+          "year": "2002",
+          "months": 12,
+          "complete": true,
+          "value": 30.2,
+          "unit": "% GDP",
+          "method": "last available monthly observation",
+          "last_period": "2002 DEC"
+        },
+        {
+          "year": "2003",
+          "months": 12,
+          "complete": true,
+          "value": 31.4,
+          "unit": "% GDP",
+          "method": "last available monthly observation",
+          "last_period": "2003 DEC"
+        },
+        {
+          "year": "2004",
+          "months": 12,
+          "complete": true,
+          "value": 34.1,
+          "unit": "% GDP",
+          "method": "last available monthly observation",
+          "last_period": "2004 DEC"
+        },
+        {
+          "year": "2005",
+          "months": 12,
+          "complete": true,
+          "value": 35.1,
+          "unit": "% GDP",
+          "method": "last available monthly observation",
+          "last_period": "2005 DEC"
+        },
+        {
+          "year": "2006",
+          "months": 12,
+          "complete": true,
+          "value": 35.8,
+          "unit": "% GDP",
+          "method": "last available monthly observation",
+          "last_period": "2006 DEC"
+        },
+        {
+          "year": "2007",
+          "months": 12,
+          "complete": true,
+          "value": 36.2,
+          "unit": "% GDP",
+          "method": "last available monthly observation",
+          "last_period": "2007 DEC"
+        },
+        {
+          "year": "2008",
+          "months": 12,
+          "complete": true,
+          "value": 47.7,
+          "unit": "% GDP",
+          "method": "last available monthly observation",
+          "last_period": "2008 DEC"
+        },
+        {
+          "year": "2009",
+          "months": 12,
+          "complete": true,
+          "value": 60.7,
+          "unit": "% GDP",
+          "method": "last available monthly observation",
+          "last_period": "2009 DEC"
+        },
+        {
+          "year": "2010",
+          "months": 12,
+          "complete": true,
+          "value": 70,
+          "unit": "% GDP",
+          "method": "last available monthly observation",
+          "last_period": "2010 DEC"
+        },
+        {
+          "year": "2011",
+          "months": 12,
+          "complete": true,
+          "value": 73.8,
+          "unit": "% GDP",
+          "method": "last available monthly observation",
+          "last_period": "2011 DEC"
+        },
+        {
+          "year": "2012",
+          "months": 12,
+          "complete": true,
+          "value": 77.2,
+          "unit": "% GDP",
+          "method": "last available monthly observation",
+          "last_period": "2012 DEC"
+        },
+        {
+          "year": "2013",
+          "months": 12,
+          "complete": true,
+          "value": 79,
+          "unit": "% GDP",
+          "method": "last available monthly observation",
+          "last_period": "2013 DEC"
+        },
+        {
+          "year": "2014",
+          "months": 12,
+          "complete": true,
+          "value": 81.5,
+          "unit": "% GDP",
+          "method": "last available monthly observation",
+          "last_period": "2014 DEC"
+        },
+        {
+          "year": "2015",
+          "months": 12,
+          "complete": true,
+          "value": 81.7,
+          "unit": "% GDP",
+          "method": "last available monthly observation",
+          "last_period": "2015 DEC"
+        },
+        {
+          "year": "2016",
+          "months": 12,
+          "complete": true,
+          "value": 82.4,
+          "unit": "% GDP",
+          "method": "last available monthly observation",
+          "last_period": "2016 DEC"
+        },
+        {
+          "year": "2017",
+          "months": 12,
+          "complete": true,
+          "value": 81.6,
+          "unit": "% GDP",
+          "method": "last available monthly observation",
+          "last_period": "2017 DEC"
+        },
+        {
+          "year": "2018",
+          "months": 12,
+          "complete": true,
+          "value": 81.1,
+          "unit": "% GDP",
+          "method": "last available monthly observation",
+          "last_period": "2018 DEC"
+        },
+        {
+          "year": "2019",
+          "months": 12,
+          "complete": true,
+          "value": 83.9,
+          "unit": "% GDP",
+          "method": "last available monthly observation",
+          "last_period": "2019 DEC"
+        },
+        {
+          "year": "2020",
+          "months": 12,
+          "complete": true,
+          "value": 97.4,
+          "unit": "% GDP",
+          "method": "last available monthly observation",
+          "last_period": "2020 DEC"
+        },
+        {
+          "year": "2021",
+          "months": 12,
+          "complete": true,
+          "value": 95.8,
+          "unit": "% GDP",
+          "method": "last available monthly observation",
+          "last_period": "2021 DEC"
+        },
+        {
+          "year": "2022",
+          "months": 12,
+          "complete": true,
+          "value": 92.6,
+          "unit": "% GDP",
+          "method": "last available monthly observation",
+          "last_period": "2022 DEC"
+        },
+        {
+          "year": "2023",
+          "months": 12,
+          "complete": true,
+          "value": 95.2,
+          "unit": "% GDP",
+          "method": "last available monthly observation",
+          "last_period": "2023 DEC"
+        },
+        {
+          "year": "2024",
+          "months": 12,
+          "complete": true,
+          "value": 94.1,
+          "unit": "% GDP",
+          "method": "last available monthly observation",
+          "last_period": "2024 DEC"
+        },
+        {
+          "year": "2025",
+          "months": 12,
+          "complete": true,
+          "value": 94.2,
+          "unit": "% GDP",
+          "method": "last available monthly observation",
+          "last_period": "2025 DEC"
+        },
+        {
+          "year": "2026",
+          "months": 10,
+          "complete": false,
+          "value": 95.8,
+          "unit": "% GDP",
+          "method": "last available monthly observation",
+          "last_period": "2026 OCT"
+        }
+      ]
+    },
+    "anbv": {
+      "label": "Central government current receipts",
+      "source": "https://api.beta.ons.gov.uk/v1/data?uri=%2Feconomy%2Fgovernmentpublicsectorandtaxes%2Fpublicsectorfinance%2Ftimeseries%2Fanbv%2Fpusf",
+      "annual": [
+        {
+          "year": "1997",
+          "months": 9,
+          "complete": false,
+          "value": 220139000000,
+          "unit": "GBP",
+          "method": "sum of available monthly observations",
+          "last_period": "1997 DEC"
+        },
+        {
+          "year": "1998",
+          "months": 12,
+          "complete": true,
+          "value": 323175000000,
+          "unit": "GBP",
+          "method": "sum of available monthly observations",
+          "last_period": "1998 DEC"
+        },
+        {
+          "year": "1999",
+          "months": 12,
+          "complete": true,
+          "value": 342779000000,
+          "unit": "GBP",
+          "method": "sum of available monthly observations",
+          "last_period": "1999 DEC"
+        },
+        {
+          "year": "2000",
+          "months": 12,
+          "complete": true,
+          "value": 369185000000,
+          "unit": "GBP",
+          "method": "sum of available monthly observations",
+          "last_period": "2000 DEC"
+        },
+        {
+          "year": "2001",
+          "months": 12,
+          "complete": true,
+          "value": 380939000000,
+          "unit": "GBP",
+          "method": "sum of available monthly observations",
+          "last_period": "2001 DEC"
+        },
+        {
+          "year": "2002",
+          "months": 12,
+          "complete": true,
+          "value": 383409000000,
+          "unit": "GBP",
+          "method": "sum of available monthly observations",
+          "last_period": "2002 DEC"
+        },
+        {
+          "year": "2003",
+          "months": 12,
+          "complete": true,
+          "value": 404190000000,
+          "unit": "GBP",
+          "method": "sum of available monthly observations",
+          "last_period": "2003 DEC"
+        },
+        {
+          "year": "2004",
+          "months": 12,
+          "complete": true,
+          "value": 435808000000,
+          "unit": "GBP",
+          "method": "sum of available monthly observations",
+          "last_period": "2004 DEC"
+        },
+        {
+          "year": "2005",
+          "months": 12,
+          "complete": true,
+          "value": 465616000000,
+          "unit": "GBP",
+          "method": "sum of available monthly observations",
+          "last_period": "2005 DEC"
+        },
+        {
+          "year": "2006",
+          "months": 12,
+          "complete": true,
+          "value": 494658000000,
+          "unit": "GBP",
+          "method": "sum of available monthly observations",
+          "last_period": "2006 DEC"
+        },
+        {
+          "year": "2007",
+          "months": 12,
+          "complete": true,
+          "value": 522810000000,
+          "unit": "GBP",
+          "method": "sum of available monthly observations",
+          "last_period": "2007 DEC"
+        },
+        {
+          "year": "2008",
+          "months": 12,
+          "complete": true,
+          "value": 529671000000,
+          "unit": "GBP",
+          "method": "sum of available monthly observations",
+          "last_period": "2008 DEC"
+        },
+        {
+          "year": "2009",
+          "months": 12,
+          "complete": true,
+          "value": 498206000000,
+          "unit": "GBP",
+          "method": "sum of available monthly observations",
+          "last_period": "2009 DEC"
+        },
+        {
+          "year": "2010",
+          "months": 12,
+          "complete": true,
+          "value": 535708000000,
+          "unit": "GBP",
+          "method": "sum of available monthly observations",
+          "last_period": "2010 DEC"
+        },
+        {
+          "year": "2011",
+          "months": 12,
+          "complete": true,
+          "value": 564621000000,
+          "unit": "GBP",
+          "method": "sum of available monthly observations",
+          "last_period": "2011 DEC"
+        },
+        {
+          "year": "2012",
+          "months": 12,
+          "complete": true,
+          "value": 574581000000,
+          "unit": "GBP",
+          "method": "sum of available monthly observations",
+          "last_period": "2012 DEC"
+        },
+        {
+          "year": "2013",
+          "months": 12,
+          "complete": true,
+          "value": 610247000000,
+          "unit": "GBP",
+          "method": "sum of available monthly observations",
+          "last_period": "2013 DEC"
+        },
+        {
+          "year": "2014",
+          "months": 12,
+          "complete": true,
+          "value": 621794000000,
+          "unit": "GBP",
+          "method": "sum of available monthly observations",
+          "last_period": "2014 DEC"
+        },
+        {
+          "year": "2015",
+          "months": 12,
+          "complete": true,
+          "value": 644153000000,
+          "unit": "GBP",
+          "method": "sum of available monthly observations",
+          "last_period": "2015 DEC"
+        },
+        {
+          "year": "2016",
+          "months": 12,
+          "complete": true,
+          "value": 679582000000,
+          "unit": "GBP",
+          "method": "sum of available monthly observations",
+          "last_period": "2016 DEC"
+        },
+        {
+          "year": "2017",
+          "months": 12,
+          "complete": true,
+          "value": 717776000000,
+          "unit": "GBP",
+          "method": "sum of available monthly observations",
+          "last_period": "2017 DEC"
+        },
+        {
+          "year": "2018",
+          "months": 12,
+          "complete": true,
+          "value": 738341000000,
+          "unit": "GBP",
+          "method": "sum of available monthly observations",
+          "last_period": "2018 DEC"
+        },
+        {
+          "year": "2019",
+          "months": 12,
+          "complete": true,
+          "value": 759431000000,
+          "unit": "GBP",
+          "method": "sum of available monthly observations",
+          "last_period": "2019 DEC"
+        },
+        {
+          "year": "2020",
+          "months": 12,
+          "complete": true,
+          "value": 721015000000,
+          "unit": "GBP",
+          "method": "sum of available monthly observations",
+          "last_period": "2020 DEC"
+        },
+        {
+          "year": "2021",
+          "months": 12,
+          "complete": true,
+          "value": 811991000000,
+          "unit": "GBP",
+          "method": "sum of available monthly observations",
+          "last_period": "2021 DEC"
+        },
+        {
+          "year": "2022",
+          "months": 12,
+          "complete": true,
+          "value": 920567000000,
+          "unit": "GBP",
+          "method": "sum of available monthly observations",
+          "last_period": "2022 DEC"
+        },
+        {
+          "year": "2023",
+          "months": 12,
+          "complete": true,
+          "value": 985539000000,
+          "unit": "GBP",
+          "method": "sum of available monthly observations",
+          "last_period": "2023 DEC"
+        },
+        {
+          "year": "2024",
+          "months": 12,
+          "complete": true,
+          "value": 1019857000000,
+          "unit": "GBP",
+          "method": "sum of available monthly observations",
+          "last_period": "2024 DEC"
+        },
+        {
+          "year": "2025",
+          "months": 12,
+          "complete": true,
+          "value": 1091722000000,
+          "unit": "GBP",
+          "method": "sum of available monthly observations",
+          "last_period": "2025 DEC"
+        },
+        {
+          "year": "2026",
+          "months": 10,
+          "complete": false,
+          "value": 983346000000,
+          "unit": "GBP",
+          "method": "sum of available monthly observations",
+          "last_period": "2026 OCT"
+        }
+      ]
+    },
+    "anlp": {
+      "label": "Central government current expenditure",
+      "source": "https://api.beta.ons.gov.uk/v1/data?uri=%2Feconomy%2Fgovernmentpublicsectorandtaxes%2Fpublicsectorfinance%2Ftimeseries%2Fanlp%2Fpusf",
+      "annual": [
+        {
+          "year": "1997",
+          "months": 9,
+          "complete": false,
+          "value": 219261000000,
+          "unit": "GBP",
+          "method": "sum of available monthly observations",
+          "last_period": "1997 DEC"
+        },
+        {
+          "year": "1998",
+          "months": 12,
+          "complete": true,
+          "value": 302020000000,
+          "unit": "GBP",
+          "method": "sum of available monthly observations",
+          "last_period": "1998 DEC"
+        },
+        {
+          "year": "1999",
+          "months": 12,
+          "complete": true,
+          "value": 311247000000,
+          "unit": "GBP",
+          "method": "sum of available monthly observations",
+          "last_period": "1999 DEC"
+        },
+        {
+          "year": "2000",
+          "months": 12,
+          "complete": true,
+          "value": 327329000000,
+          "unit": "GBP",
+          "method": "sum of available monthly observations",
+          "last_period": "2000 DEC"
+        },
+        {
+          "year": "2001",
+          "months": 12,
+          "complete": true,
+          "value": 346093000000,
+          "unit": "GBP",
+          "method": "sum of available monthly observations",
+          "last_period": "2001 DEC"
+        },
+        {
+          "year": "2002",
+          "months": 12,
+          "complete": true,
+          "value": 372638000000,
+          "unit": "GBP",
+          "method": "sum of available monthly observations",
+          "last_period": "2002 DEC"
+        },
+        {
+          "year": "2003",
+          "months": 12,
+          "complete": true,
+          "value": 407156000000,
+          "unit": "GBP",
+          "method": "sum of available monthly observations",
+          "last_period": "2003 DEC"
+        },
+        {
+          "year": "2004",
+          "months": 12,
+          "complete": true,
+          "value": 435919000000,
+          "unit": "GBP",
+          "method": "sum of available monthly observations",
+          "last_period": "2004 DEC"
+        },
+        {
+          "year": "2005",
+          "months": 12,
+          "complete": true,
+          "value": 462609000000,
+          "unit": "GBP",
+          "method": "sum of available monthly observations",
+          "last_period": "2005 DEC"
+        },
+        {
+          "year": "2006",
+          "months": 12,
+          "complete": true,
+          "value": 490868000000,
+          "unit": "GBP",
+          "method": "sum of available monthly observations",
+          "last_period": "2006 DEC"
+        },
+        {
+          "year": "2007",
+          "months": 12,
+          "complete": true,
+          "value": 515292000000,
+          "unit": "GBP",
+          "method": "sum of available monthly observations",
+          "last_period": "2007 DEC"
+        },
+        {
+          "year": "2008",
+          "months": 12,
+          "complete": true,
+          "value": 544938000000,
+          "unit": "GBP",
+          "method": "sum of available monthly observations",
+          "last_period": "2008 DEC"
+        },
+        {
+          "year": "2009",
+          "months": 12,
+          "complete": true,
+          "value": 576622000000,
+          "unit": "GBP",
+          "method": "sum of available monthly observations",
+          "last_period": "2009 DEC"
+        },
+        {
+          "year": "2010",
+          "months": 12,
+          "complete": true,
+          "value": 619664000000,
+          "unit": "GBP",
+          "method": "sum of available monthly observations",
+          "last_period": "2010 DEC"
+        },
+        {
+          "year": "2011",
+          "months": 12,
+          "complete": true,
+          "value": 628593000000,
+          "unit": "GBP",
+          "method": "sum of available monthly observations",
+          "last_period": "2011 DEC"
+        },
+        {
+          "year": "2012",
+          "months": 12,
+          "complete": true,
+          "value": 649605000000,
+          "unit": "GBP",
+          "method": "sum of available monthly observations",
+          "last_period": "2012 DEC"
+        },
+        {
+          "year": "2013",
+          "months": 12,
+          "complete": true,
+          "value": 653149000000,
+          "unit": "GBP",
+          "method": "sum of available monthly observations",
+          "last_period": "2013 DEC"
+        },
+        {
+          "year": "2014",
+          "months": 12,
+          "complete": true,
+          "value": 667684000000,
+          "unit": "GBP",
+          "method": "sum of available monthly observations",
+          "last_period": "2014 DEC"
+        },
+        {
+          "year": "2015",
+          "months": 12,
+          "complete": true,
+          "value": 667719000000,
+          "unit": "GBP",
+          "method": "sum of available monthly observations",
+          "last_period": "2015 DEC"
+        },
+        {
+          "year": "2016",
+          "months": 12,
+          "complete": true,
+          "value": 676220000000,
+          "unit": "GBP",
+          "method": "sum of available monthly observations",
+          "last_period": "2016 DEC"
+        },
+        {
+          "year": "2017",
+          "months": 12,
+          "complete": true,
+          "value": 690957000000,
+          "unit": "GBP",
+          "method": "sum of available monthly observations",
+          "last_period": "2017 DEC"
+        },
+        {
+          "year": "2018",
+          "months": 12,
+          "complete": true,
+          "value": 707576000000,
+          "unit": "GBP",
+          "method": "sum of available monthly observations",
+          "last_period": "2018 DEC"
+        },
+        {
+          "year": "2019",
+          "months": 12,
+          "complete": true,
+          "value": 726828000000,
+          "unit": "GBP",
+          "method": "sum of available monthly observations",
+          "last_period": "2019 DEC"
+        },
+        {
+          "year": "2020",
+          "months": 12,
+          "complete": true,
+          "value": 891981000000,
+          "unit": "GBP",
+          "method": "sum of available monthly observations",
+          "last_period": "2020 DEC"
+        },
+        {
+          "year": "2021",
+          "months": 12,
+          "complete": true,
+          "value": 895941000000,
+          "unit": "GBP",
+          "method": "sum of available monthly observations",
+          "last_period": "2021 DEC"
+        },
+        {
+          "year": "2022",
+          "months": 12,
+          "complete": true,
+          "value": 944602000000,
+          "unit": "GBP",
+          "method": "sum of available monthly observations",
+          "last_period": "2022 DEC"
+        },
+        {
+          "year": "2023",
+          "months": 12,
+          "complete": true,
+          "value": 987563000000,
+          "unit": "GBP",
+          "method": "sum of available monthly observations",
+          "last_period": "2023 DEC"
+        },
+        {
+          "year": "2024",
+          "months": 12,
+          "complete": true,
+          "value": 1013077000000,
+          "unit": "GBP",
+          "method": "sum of available monthly observations",
+          "last_period": "2024 DEC"
+        },
+        {
+          "year": "2025",
+          "months": 12,
+          "complete": true,
+          "value": 1085255000000,
+          "unit": "GBP",
+          "method": "sum of available monthly observations",
+          "last_period": "2025 DEC"
+        },
+        {
+          "year": "2026",
+          "months": 10,
+          "complete": false,
+          "value": 953260000000,
+          "unit": "GBP",
+          "method": "sum of available monthly observations",
+          "last_period": "2026 OCT"
+        }
+      ]
+    }
+  }
+}
