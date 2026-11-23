@@ -1,0 +1,885 @@
+{
+  "schema_version": 1,
+  "publisher": "Office for National Statistics",
+  "generated_from": "2026-11-23T20:49:31.949904+00:00",
+  "year_definition": "UK financial year: 1 April to 31 March",
+  "note": "Receipts and expenditure are central government CURRENT measures, not total public sector revenue/spending and not directly comparable to calculate fiscal deficit. Partial financial years are flagged. Debt ratio uses last observation, not sum.",
+  "series": {
+    "hf6x": {
+      "label": "Public sector net debt excluding public sector banks",
+      "unit": "percent_of_gdp",
+      "source": "https://api.beta.ons.gov.uk/v1/data?uri=%2Feconomy%2Fgovernmentpublicsectorandtaxes%2Fpublicsectorfinance%2Ftimeseries%2Fhf6x%2Fpusf",
+      "years": [
+        {
+          "financial_year": "1992-93",
+          "months": 1,
+          "complete": false,
+          "period_start": "1993 MAR",
+          "period_end": "1993 MAR",
+          "value": 26.7,
+          "method": "last_available_month_in_financial_year"
+        },
+        {
+          "financial_year": "1993-94",
+          "months": 12,
+          "complete": true,
+          "period_start": "1993 APR",
+          "period_end": "1994 MAR",
+          "value": 31.2,
+          "method": "last_available_month_in_financial_year"
+        },
+        {
+          "financial_year": "1994-95",
+          "months": 12,
+          "complete": true,
+          "period_start": "1994 APR",
+          "period_end": "1995 MAR",
+          "value": 34.6,
+          "method": "last_available_month_in_financial_year"
+        },
+        {
+          "financial_year": "1995-96",
+          "months": 12,
+          "complete": true,
+          "period_start": "1995 APR",
+          "period_end": "1996 MAR",
+          "value": 36.1,
+          "method": "last_available_month_in_financial_year"
+        },
+        {
+          "financial_year": "1996-97",
+          "months": 12,
+          "complete": true,
+          "period_start": "1996 APR",
+          "period_end": "1997 MAR",
+          "value": 36.7,
+          "method": "last_available_month_in_financial_year"
+        },
+        {
+          "financial_year": "1997-98",
+          "months": 12,
+          "complete": true,
+          "period_start": "1997 APR",
+          "period_end": "1998 MAR",
+          "value": 36.6,
+          "method": "last_available_month_in_financial_year"
+        },
+        {
+          "financial_year": "1998-99",
+          "months": 12,
+          "complete": true,
+          "period_start": "1998 APR",
+          "period_end": "1999 MAR",
+          "value": 35.2,
+          "method": "last_available_month_in_financial_year"
+        },
+        {
+          "financial_year": "1999-00",
+          "months": 12,
+          "complete": true,
+          "period_start": "1999 APR",
+          "period_end": "2000 MAR",
+          "value": 32.5,
+          "method": "last_available_month_in_financial_year"
+        },
+        {
+          "financial_year": "2000-01",
+          "months": 12,
+          "complete": true,
+          "period_start": "2000 APR",
+          "period_end": "2001 MAR",
+          "value": 28.3,
+          "method": "last_available_month_in_financial_year"
+        },
+        {
+          "financial_year": "2001-02",
+          "months": 12,
+          "complete": true,
+          "period_start": "2001 APR",
+          "period_end": "2002 MAR",
+          "value": 28.1,
+          "method": "last_available_month_in_financial_year"
+        },
+        {
+          "financial_year": "2002-03",
+          "months": 12,
+          "complete": true,
+          "period_start": "2002 APR",
+          "period_end": "2003 MAR",
+          "value": 29.8,
+          "method": "last_available_month_in_financial_year"
+        },
+        {
+          "financial_year": "2003-04",
+          "months": 12,
+          "complete": true,
+          "period_start": "2003 APR",
+          "period_end": "2004 MAR",
+          "value": 31,
+          "method": "last_available_month_in_financial_year"
+        },
+        {
+          "financial_year": "2004-05",
+          "months": 12,
+          "complete": true,
+          "period_start": "2004 APR",
+          "period_end": "2005 MAR",
+          "value": 33.5,
+          "method": "last_available_month_in_financial_year"
+        },
+        {
+          "financial_year": "2005-06",
+          "months": 12,
+          "complete": true,
+          "period_start": "2005 APR",
+          "period_end": "2006 MAR",
+          "value": 34.3,
+          "method": "last_available_month_in_financial_year"
+        },
+        {
+          "financial_year": "2006-07",
+          "months": 12,
+          "complete": true,
+          "period_start": "2006 APR",
+          "period_end": "2007 MAR",
+          "value": 35.1,
+          "method": "last_available_month_in_financial_year"
+        },
+        {
+          "financial_year": "2007-08",
+          "months": 12,
+          "complete": true,
+          "period_start": "2007 APR",
+          "period_end": "2008 MAR",
+          "value": 35.6,
+          "method": "last_available_month_in_financial_year"
+        },
+        {
+          "financial_year": "2008-09",
+          "months": 12,
+          "complete": true,
+          "period_start": "2008 APR",
+          "period_end": "2009 MAR",
+          "value": 50.3,
+          "method": "last_available_month_in_financial_year"
+        },
+        {
+          "financial_year": "2009-10",
+          "months": 12,
+          "complete": true,
+          "period_start": "2009 APR",
+          "period_end": "2010 MAR",
+          "value": 64.4,
+          "method": "last_available_month_in_financial_year"
+        },
+        {
+          "financial_year": "2010-11",
+          "months": 12,
+          "complete": true,
+          "period_start": "2010 APR",
+          "period_end": "2011 MAR",
+          "value": 70.6,
+          "method": "last_available_month_in_financial_year"
+        },
+        {
+          "financial_year": "2011-12",
+          "months": 12,
+          "complete": true,
+          "period_start": "2011 APR",
+          "period_end": "2012 MAR",
+          "value": 73.8,
+          "method": "last_available_month_in_financial_year"
+        },
+        {
+          "financial_year": "2012-13",
+          "months": 12,
+          "complete": true,
+          "period_start": "2012 APR",
+          "period_end": "2013 MAR",
+          "value": 77,
+          "method": "last_available_month_in_financial_year"
+        },
+        {
+          "financial_year": "2013-14",
+          "months": 12,
+          "complete": true,
+          "period_start": "2013 APR",
+          "period_end": "2014 MAR",
+          "value": 78.6,
+          "method": "last_available_month_in_financial_year"
+        },
+        {
+          "financial_year": "2014-15",
+          "months": 12,
+          "complete": true,
+          "period_start": "2014 APR",
+          "period_end": "2015 MAR",
+          "value": 81.1,
+          "method": "last_available_month_in_financial_year"
+        },
+        {
+          "financial_year": "2015-16",
+          "months": 12,
+          "complete": true,
+          "period_start": "2015 APR",
+          "period_end": "2016 MAR",
+          "value": 80.6,
+          "method": "last_available_month_in_financial_year"
+        },
+        {
+          "financial_year": "2016-17",
+          "months": 12,
+          "complete": true,
+          "period_start": "2016 APR",
+          "period_end": "2017 MAR",
+          "value": 82.5,
+          "method": "last_available_month_in_financial_year"
+        },
+        {
+          "financial_year": "2017-18",
+          "months": 12,
+          "complete": true,
+          "period_start": "2017 APR",
+          "period_end": "2018 MAR",
+          "value": 81.5,
+          "method": "last_available_month_in_financial_year"
+        },
+        {
+          "financial_year": "2018-19",
+          "months": 12,
+          "complete": true,
+          "period_start": "2018 APR",
+          "period_end": "2019 MAR",
+          "value": 79.4,
+          "method": "last_available_month_in_financial_year"
+        },
+        {
+          "financial_year": "2019-20",
+          "months": 12,
+          "complete": true,
+          "period_start": "2019 APR",
+          "period_end": "2020 MAR",
+          "value": 84.1,
+          "method": "last_available_month_in_financial_year"
+        },
+        {
+          "financial_year": "2020-21",
+          "months": 12,
+          "complete": true,
+          "period_start": "2020 APR",
+          "period_end": "2021 MAR",
+          "value": 95.2,
+          "method": "last_available_month_in_financial_year"
+        },
+        {
+          "financial_year": "2021-22",
+          "months": 12,
+          "complete": true,
+          "period_start": "2021 APR",
+          "period_end": "2022 MAR",
+          "value": 93.9,
+          "method": "last_available_month_in_financial_year"
+        },
+        {
+          "financial_year": "2022-23",
+          "months": 12,
+          "complete": true,
+          "period_start": "2022 APR",
+          "period_end": "2023 MAR",
+          "value": 92.7,
+          "method": "last_available_month_in_financial_year"
+        },
+        {
+          "financial_year": "2023-24",
+          "months": 12,
+          "complete": true,
+          "period_start": "2023 APR",
+          "period_end": "2024 MAR",
+          "value": 93.7,
+          "method": "last_available_month_in_financial_year"
+        },
+        {
+          "financial_year": "2024-25",
+          "months": 12,
+          "complete": true,
+          "period_start": "2024 APR",
+          "period_end": "2025 MAR",
+          "value": 92.9,
+          "method": "last_available_month_in_financial_year"
+        },
+        {
+          "financial_year": "2025-26",
+          "months": 12,
+          "complete": true,
+          "period_start": "2025 APR",
+          "period_end": "2026 MAR",
+          "value": 93,
+          "method": "last_available_month_in_financial_year"
+        },
+        {
+          "financial_year": "2026-27",
+          "months": 7,
+          "complete": false,
+          "period_start": "2026 APR",
+          "period_end": "2026 OCT",
+          "value": 95.8,
+          "method": "last_available_month_in_financial_year"
+        }
+      ]
+    },
+    "anbv": {
+      "label": "Central government current receipts",
+      "unit": "GBP",
+      "source": "https://api.beta.ons.gov.uk/v1/data?uri=%2Feconomy%2Fgovernmentpublicsectorandtaxes%2Fpublicsectorfinance%2Ftimeseries%2Fanbv%2Fpusf",
+      "years": [
+        {
+          "financial_year": "1997-98",
+          "months": 12,
+          "complete": true,
+          "period_start": "1997 APR",
+          "period_end": "1998 MAR",
+          "value": 308099000000,
+          "method": "sum_of_available_months"
+        },
+        {
+          "financial_year": "1998-99",
+          "months": 12,
+          "complete": true,
+          "period_start": "1998 APR",
+          "period_end": "1999 MAR",
+          "value": 327392000000,
+          "method": "sum_of_available_months"
+        },
+        {
+          "financial_year": "1999-00",
+          "months": 12,
+          "complete": true,
+          "period_start": "1999 APR",
+          "period_end": "2000 MAR",
+          "value": 349562000000,
+          "method": "sum_of_available_months"
+        },
+        {
+          "financial_year": "2000-01",
+          "months": 12,
+          "complete": true,
+          "period_start": "2000 APR",
+          "period_end": "2001 MAR",
+          "value": 374918000000,
+          "method": "sum_of_available_months"
+        },
+        {
+          "financial_year": "2001-02",
+          "months": 12,
+          "complete": true,
+          "period_start": "2001 APR",
+          "period_end": "2002 MAR",
+          "value": 379716000000,
+          "method": "sum_of_available_months"
+        },
+        {
+          "financial_year": "2002-03",
+          "months": 12,
+          "complete": true,
+          "period_start": "2002 APR",
+          "period_end": "2003 MAR",
+          "value": 385076000000,
+          "method": "sum_of_available_months"
+        },
+        {
+          "financial_year": "2003-04",
+          "months": 12,
+          "complete": true,
+          "period_start": "2003 APR",
+          "period_end": "2004 MAR",
+          "value": 414736000000,
+          "method": "sum_of_available_months"
+        },
+        {
+          "financial_year": "2004-05",
+          "months": 12,
+          "complete": true,
+          "period_start": "2004 APR",
+          "period_end": "2005 MAR",
+          "value": 443974000000,
+          "method": "sum_of_available_months"
+        },
+        {
+          "financial_year": "2005-06",
+          "months": 12,
+          "complete": true,
+          "period_start": "2005 APR",
+          "period_end": "2006 MAR",
+          "value": 474861000000,
+          "method": "sum_of_available_months"
+        },
+        {
+          "financial_year": "2006-07",
+          "months": 12,
+          "complete": true,
+          "period_start": "2006 APR",
+          "period_end": "2007 MAR",
+          "value": 503869000000,
+          "method": "sum_of_available_months"
+        },
+        {
+          "financial_year": "2007-08",
+          "months": 12,
+          "complete": true,
+          "period_start": "2007 APR",
+          "period_end": "2008 MAR",
+          "value": 532321000000,
+          "method": "sum_of_available_months"
+        },
+        {
+          "financial_year": "2008-09",
+          "months": 12,
+          "complete": true,
+          "period_start": "2008 APR",
+          "period_end": "2009 MAR",
+          "value": 515036000000,
+          "method": "sum_of_available_months"
+        },
+        {
+          "financial_year": "2009-10",
+          "months": 12,
+          "complete": true,
+          "period_start": "2009 APR",
+          "period_end": "2010 MAR",
+          "value": 507026000000,
+          "method": "sum_of_available_months"
+        },
+        {
+          "financial_year": "2010-11",
+          "months": 12,
+          "complete": true,
+          "period_start": "2010 APR",
+          "period_end": "2011 MAR",
+          "value": 544674000000,
+          "method": "sum_of_available_months"
+        },
+        {
+          "financial_year": "2011-12",
+          "months": 12,
+          "complete": true,
+          "period_start": "2011 APR",
+          "period_end": "2012 MAR",
+          "value": 566685000000,
+          "method": "sum_of_available_months"
+        },
+        {
+          "financial_year": "2012-13",
+          "months": 12,
+          "complete": true,
+          "period_start": "2012 APR",
+          "period_end": "2013 MAR",
+          "value": 582362000000,
+          "method": "sum_of_available_months"
+        },
+        {
+          "financial_year": "2013-14",
+          "months": 12,
+          "complete": true,
+          "period_start": "2013 APR",
+          "period_end": "2014 MAR",
+          "value": 610570000000,
+          "method": "sum_of_available_months"
+        },
+        {
+          "financial_year": "2014-15",
+          "months": 12,
+          "complete": true,
+          "period_start": "2014 APR",
+          "period_end": "2015 MAR",
+          "value": 632168000000,
+          "method": "sum_of_available_months"
+        },
+        {
+          "financial_year": "2015-16",
+          "months": 12,
+          "complete": true,
+          "period_start": "2015 APR",
+          "period_end": "2016 MAR",
+          "value": 651226000000,
+          "method": "sum_of_available_months"
+        },
+        {
+          "financial_year": "2016-17",
+          "months": 12,
+          "complete": true,
+          "period_start": "2016 APR",
+          "period_end": "2017 MAR",
+          "value": 694872000000,
+          "method": "sum_of_available_months"
+        },
+        {
+          "financial_year": "2017-18",
+          "months": 12,
+          "complete": true,
+          "period_start": "2017 APR",
+          "period_end": "2018 MAR",
+          "value": 717622000000,
+          "method": "sum_of_available_months"
+        },
+        {
+          "financial_year": "2018-19",
+          "months": 12,
+          "complete": true,
+          "period_start": "2018 APR",
+          "period_end": "2019 MAR",
+          "value": 751108000000,
+          "method": "sum_of_available_months"
+        },
+        {
+          "financial_year": "2019-20",
+          "months": 12,
+          "complete": true,
+          "period_start": "2019 APR",
+          "period_end": "2020 MAR",
+          "value": 758561000000,
+          "method": "sum_of_available_months"
+        },
+        {
+          "financial_year": "2020-21",
+          "months": 12,
+          "complete": true,
+          "period_start": "2020 APR",
+          "period_end": "2021 MAR",
+          "value": 726812000000,
+          "method": "sum_of_available_months"
+        },
+        {
+          "financial_year": "2021-22",
+          "months": 12,
+          "complete": true,
+          "period_start": "2021 APR",
+          "period_end": "2022 MAR",
+          "value": 844477000000,
+          "method": "sum_of_available_months"
+        },
+        {
+          "financial_year": "2022-23",
+          "months": 12,
+          "complete": true,
+          "period_start": "2022 APR",
+          "period_end": "2023 MAR",
+          "value": 944645000000,
+          "method": "sum_of_available_months"
+        },
+        {
+          "financial_year": "2023-24",
+          "months": 12,
+          "complete": true,
+          "period_start": "2023 APR",
+          "period_end": "2024 MAR",
+          "value": 997265000000,
+          "method": "sum_of_available_months"
+        },
+        {
+          "financial_year": "2024-25",
+          "months": 12,
+          "complete": true,
+          "period_start": "2024 APR",
+          "period_end": "2025 MAR",
+          "value": 1037721000000,
+          "method": "sum_of_available_months"
+        },
+        {
+          "financial_year": "2025-26",
+          "months": 12,
+          "complete": true,
+          "period_start": "2025 APR",
+          "period_end": "2026 MAR",
+          "value": 1123492000000,
+          "method": "sum_of_available_months"
+        },
+        {
+          "financial_year": "2026-27",
+          "months": 7,
+          "complete": false,
+          "period_start": "2026 APR",
+          "period_end": "2026 OCT",
+          "value": 650010000000,
+          "method": "sum_of_available_months"
+        }
+      ]
+    },
+    "anlp": {
+      "label": "Central government current expenditure",
+      "unit": "GBP",
+      "source": "https://api.beta.ons.gov.uk/v1/data?uri=%2Feconomy%2Fgovernmentpublicsectorandtaxes%2Fpublicsectorfinance%2Ftimeseries%2Fanlp%2Fpusf",
+      "years": [
+        {
+          "financial_year": "1997-98",
+          "months": 12,
+          "complete": true,
+          "period_start": "1997 APR",
+          "period_end": "1998 MAR",
+          "value": 295599000000,
+          "method": "sum_of_available_months"
+        },
+        {
+          "financial_year": "1998-99",
+          "months": 12,
+          "complete": true,
+          "period_start": "1998 APR",
+          "period_end": "1999 MAR",
+          "value": 303192000000,
+          "method": "sum_of_available_months"
+        },
+        {
+          "financial_year": "1999-00",
+          "months": 12,
+          "complete": true,
+          "period_start": "1999 APR",
+          "period_end": "2000 MAR",
+          "value": 312698000000,
+          "method": "sum_of_available_months"
+        },
+        {
+          "financial_year": "2000-01",
+          "months": 12,
+          "complete": true,
+          "period_start": "2000 APR",
+          "period_end": "2001 MAR",
+          "value": 333603000000,
+          "method": "sum_of_available_months"
+        },
+        {
+          "financial_year": "2001-02",
+          "months": 12,
+          "complete": true,
+          "period_start": "2001 APR",
+          "period_end": "2002 MAR",
+          "value": 352003000000,
+          "method": "sum_of_available_months"
+        },
+        {
+          "financial_year": "2002-03",
+          "months": 12,
+          "complete": true,
+          "period_start": "2002 APR",
+          "period_end": "2003 MAR",
+          "value": 378474000000,
+          "method": "sum_of_available_months"
+        },
+        {
+          "financial_year": "2003-04",
+          "months": 12,
+          "complete": true,
+          "period_start": "2003 APR",
+          "period_end": "2004 MAR",
+          "value": 415123000000,
+          "method": "sum_of_available_months"
+        },
+        {
+          "financial_year": "2004-05",
+          "months": 12,
+          "complete": true,
+          "period_start": "2004 APR",
+          "period_end": "2005 MAR",
+          "value": 444107000000,
+          "method": "sum_of_available_months"
+        },
+        {
+          "financial_year": "2005-06",
+          "months": 12,
+          "complete": true,
+          "period_start": "2005 APR",
+          "period_end": "2006 MAR",
+          "value": 469434000000,
+          "method": "sum_of_available_months"
+        },
+        {
+          "financial_year": "2006-07",
+          "months": 12,
+          "complete": true,
+          "period_start": "2006 APR",
+          "period_end": "2007 MAR",
+          "value": 493782000000,
+          "method": "sum_of_available_months"
+        },
+        {
+          "financial_year": "2007-08",
+          "months": 12,
+          "complete": true,
+          "period_start": "2007 APR",
+          "period_end": "2008 MAR",
+          "value": 524298000000,
+          "method": "sum_of_available_months"
+        },
+        {
+          "financial_year": "2008-09",
+          "months": 12,
+          "complete": true,
+          "period_start": "2008 APR",
+          "period_end": "2009 MAR",
+          "value": 551720000000,
+          "method": "sum_of_available_months"
+        },
+        {
+          "financial_year": "2009-10",
+          "months": 12,
+          "complete": true,
+          "period_start": "2009 APR",
+          "period_end": "2010 MAR",
+          "value": 589682000000,
+          "method": "sum_of_available_months"
+        },
+        {
+          "financial_year": "2010-11",
+          "months": 12,
+          "complete": true,
+          "period_start": "2010 APR",
+          "period_end": "2011 MAR",
+          "value": 622625000000,
+          "method": "sum_of_available_months"
+        },
+        {
+          "financial_year": "2011-12",
+          "months": 12,
+          "complete": true,
+          "period_start": "2011 APR",
+          "period_end": "2012 MAR",
+          "value": 634988000000,
+          "method": "sum_of_available_months"
+        },
+        {
+          "financial_year": "2012-13",
+          "months": 12,
+          "complete": true,
+          "period_start": "2012 APR",
+          "period_end": "2013 MAR",
+          "value": 648179000000,
+          "method": "sum_of_available_months"
+        },
+        {
+          "financial_year": "2013-14",
+          "months": 12,
+          "complete": true,
+          "period_start": "2013 APR",
+          "period_end": "2014 MAR",
+          "value": 658762000000,
+          "method": "sum_of_available_months"
+        },
+        {
+          "financial_year": "2014-15",
+          "months": 12,
+          "complete": true,
+          "period_start": "2014 APR",
+          "period_end": "2015 MAR",
+          "value": 665134000000,
+          "method": "sum_of_available_months"
+        },
+        {
+          "financial_year": "2015-16",
+          "months": 12,
+          "complete": true,
+          "period_start": "2015 APR",
+          "period_end": "2016 MAR",
+          "value": 669349000000,
+          "method": "sum_of_available_months"
+        },
+        {
+          "financial_year": "2016-17",
+          "months": 12,
+          "complete": true,
+          "period_start": "2016 APR",
+          "period_end": "2017 MAR",
+          "value": 678628000000,
+          "method": "sum_of_available_months"
+        },
+        {
+          "financial_year": "2017-18",
+          "months": 12,
+          "complete": true,
+          "period_start": "2017 APR",
+          "period_end": "2018 MAR",
+          "value": 696548000000,
+          "method": "sum_of_available_months"
+        },
+        {
+          "financial_year": "2018-19",
+          "months": 12,
+          "complete": true,
+          "period_start": "2018 APR",
+          "period_end": "2019 MAR",
+          "value": 710225000000,
+          "method": "sum_of_available_months"
+        },
+        {
+          "financial_year": "2019-20",
+          "months": 12,
+          "complete": true,
+          "period_start": "2019 APR",
+          "period_end": "2020 MAR",
+          "value": 739821000000,
+          "method": "sum_of_available_months"
+        },
+        {
+          "financial_year": "2020-21",
+          "months": 12,
+          "complete": true,
+          "period_start": "2020 APR",
+          "period_end": "2021 MAR",
+          "value": 935559000000,
+          "method": "sum_of_available_months"
+        },
+        {
+          "financial_year": "2021-22",
+          "months": 12,
+          "complete": true,
+          "period_start": "2021 APR",
+          "period_end": "2022 MAR",
+          "value": 888020000000,
+          "method": "sum_of_available_months"
+        },
+        {
+          "financial_year": "2022-23",
+          "months": 12,
+          "complete": true,
+          "period_start": "2022 APR",
+          "period_end": "2023 MAR",
+          "value": 966652000000,
+          "method": "sum_of_available_months"
+        },
+        {
+          "financial_year": "2023-24",
+          "months": 12,
+          "complete": true,
+          "period_start": "2023 APR",
+          "period_end": "2024 MAR",
+          "value": 984170000000,
+          "method": "sum_of_available_months"
+        },
+        {
+          "financial_year": "2024-25",
+          "months": 12,
+          "complete": true,
+          "period_start": "2024 APR",
+          "period_end": "2025 MAR",
+          "value": 1030236000000,
+          "method": "sum_of_available_months"
+        },
+        {
+          "financial_year": "2025-26",
+          "months": 12,
+          "complete": true,
+          "period_start": "2025 APR",
+          "period_end": "2026 MAR",
+          "value": 1096355000000,
+          "method": "sum_of_available_months"
+        },
+        {
+          "financial_year": "2026-27",
+          "months": 7,
+          "complete": false,
+          "period_start": "2026 APR",
+          "period_end": "2026 OCT",
+          "value": 682700000000,
+          "method": "sum_of_available_months"
+        }
+      ]
+    }
+  }
+}
