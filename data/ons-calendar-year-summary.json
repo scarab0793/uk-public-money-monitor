@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
   "publisher": "Office for National Statistics",
-  "generated_from": "2026-11-23T21:00:51.974989+00:00",
+  "generated_from": "2026-11-23T21:04:03.688537+00:00",
   "year_definition": "Calendar year: 1 January to 31 December",
   "note": "ANBV/ANLP measure central government CURRENT receipts/expenditure, not total public sector income/spending. Do not subtract them to infer fiscal deficit. HF6X is a debt ratio, not a sum. Incomplete years are flagged.",
   "series": {
