@@ -1,0 +1,23 @@
+{
+  "attempted_at": "2026-11-23T16:01:40.288924+00:00",
+  "updated_count": 0,
+  "status": {
+    "hf6x": "unavailable",
+    "anbv": "unavailable",
+    "anlp": "unavailable"
+  },
+  "errors": {
+    "hf6x": {
+      "type": "RuntimeError",
+      "message": "ONS endpoints unavailable: https://www.ons.gov.uk/economy/governmentpublicsectorandtaxes/publicsectorfinance/timeseries/hf6x/dataset/pusf/data: HTTPError: HTTP Error 404: Not Found | https://api.ons.gov.uk/v1/timeseries/hf6x/dataset/PUSF/data: HTTPError: HTTP Error 404: Not Found"
+    },
+    "anbv": {
+      "type": "RuntimeError",
+      "message": "ONS endpoints unavailable: https://www.ons.gov.uk/economy/governmentpublicsectorandtaxes/publicsectorfinance/timeseries/anbv/dataset/pusf/data: HTTPError: HTTP Error 404: Not Found | https://api.ons.gov.uk/v1/timeseries/anbv/dataset/PUSF/data: HTTPError: HTTP Error 404: Not Found"
+    },
+    "anlp": {
+      "type": "RuntimeError",
+      "message": "ONS endpoints unavailable: https://www.ons.gov.uk/economy/governmentpublicsectorandtaxes/publicsectorfinance/timeseries/anlp/dataset/pusf/data: HTTPError: HTTP Error 404: Not Found | https://api.ons.gov.uk/v1/timeseries/anlp/dataset/PUSF/data: HTTPError: HTTP Error 404: Not Found"
+    }
+  }
+}
