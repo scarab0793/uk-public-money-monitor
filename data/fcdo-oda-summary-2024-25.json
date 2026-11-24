@@ -1,0 +1,102 @@
+{
+  "schema_version": 1,
+  "basis": "Calendar year nominal GBP, rounded to million; overlapping categories, never sum all rows.",
+  "records": [
+    {
+      "year": 2024,
+      "category": "Total ODA",
+      "value_gbp": 14082000000,
+      "source": "https://www.gov.uk/government/statistics/statistics-on-international-development-final-uk-oda-spend-2024/statistics-on-international-development-final-uk-oda-spend-2024"
+    },
+    {
+      "year": 2024,
+      "category": "Bilateral ODA",
+      "value_gbp": 11273000000,
+      "source": "https://www.gov.uk/government/statistics/statistics-on-international-development-final-uk-oda-spend-2024/statistics-on-international-development-final-uk-oda-spend-2024"
+    },
+    {
+      "year": 2024,
+      "category": "Multilateral core funding",
+      "value_gbp": 2809000000,
+      "source": "https://www.gov.uk/government/statistics/statistics-on-international-development-final-uk-oda-spend-2024/statistics-on-international-development-final-uk-oda-spend-2024"
+    },
+    {
+      "year": 2024,
+      "category": "Refugees in donor countries",
+      "value_gbp": 2827000000,
+      "source": "https://www.gov.uk/government/statistics/statistics-on-international-development-final-uk-oda-spend-2024/statistics-on-international-development-final-uk-oda-spend-2024"
+    },
+    {
+      "year": 2024,
+      "category": "Humanitarian aid",
+      "value_gbp": 1453000000,
+      "source": "https://www.gov.uk/government/statistics/statistics-on-international-development-final-uk-oda-spend-2024/statistics-on-international-development-final-uk-oda-spend-2024"
+    },
+    {
+      "year": 2024,
+      "category": "Africa region-specific bilateral ODA",
+      "value_gbp": 1885000000,
+      "source": "https://www.gov.uk/government/statistics/statistics-on-international-development-final-uk-oda-spend-2024/statistics-on-international-development-final-uk-oda-spend-2024"
+    },
+    {
+      "year": 2024,
+      "category": "FCDO ODA",
+      "value_gbp": 9469000000,
+      "source": "https://www.gov.uk/government/statistics/statistics-on-international-development-final-uk-oda-spend-2024/statistics-on-international-development-final-uk-oda-spend-2024"
+    },
+    {
+      "year": 2024,
+      "category": "Non-FCDO ODA",
+      "value_gbp": 4613000000,
+      "source": "https://www.gov.uk/government/statistics/statistics-on-international-development-final-uk-oda-spend-2024/statistics-on-international-development-final-uk-oda-spend-2024"
+    },
+    {
+      "year": 2025,
+      "category": "Total ODA",
+      "value_gbp": 13095000000,
+      "source": "https://assets.publishing.service.gov.uk/media/6ae1bd30e4367e5c8b0467e9/Statistics_on_International_Development_Final_UK_ODA_Spend_2025.pdf"
+    },
+    {
+      "year": 2025,
+      "category": "Bilateral ODA",
+      "value_gbp": 10501000000,
+      "source": "https://assets.publishing.service.gov.uk/media/6ae1bd30e4367e5c8b0467e9/Statistics_on_International_Development_Final_UK_ODA_Spend_2025.pdf"
+    },
+    {
+      "year": 2025,
+      "category": "Multilateral core funding",
+      "value_gbp": 2594000000,
+      "source": "https://assets.publishing.service.gov.uk/media/6ae1bd30e4367e5c8b0467e9/Statistics_on_International_Development_Final_UK_ODA_Spend_2025.pdf"
+    },
+    {
+      "year": 2025,
+      "category": "Refugees in donor countries",
+      "value_gbp": 2403000000,
+      "source": "https://assets.publishing.service.gov.uk/media/6ae1bd30e4367e5c8b0467e9/Statistics_on_International_Development_Final_UK_ODA_Spend_2025.pdf"
+    },
+    {
+      "year": 2025,
+      "category": "Humanitarian aid",
+      "value_gbp": 1324000000,
+      "source": "https://assets.publishing.service.gov.uk/media/6ae1bd30e4367e5c8b0467e9/Statistics_on_International_Development_Final_UK_ODA_Spend_2025.pdf"
+    },
+    {
+      "year": 2025,
+      "category": "Africa region-specific bilateral ODA",
+      "value_gbp": 2023000000,
+      "source": "https://assets.publishing.service.gov.uk/media/6ae1bd30e4367e5c8b0467e9/Statistics_on_International_Development_Final_UK_ODA_Spend_2025.pdf"
+    },
+    {
+      "year": 2025,
+      "category": "FCDO ODA",
+      "value_gbp": 9050000000,
+      "source": "https://assets.publishing.service.gov.uk/media/6ae1bd30e4367e5c8b0467e9/Statistics_on_International_Development_Final_UK_ODA_Spend_2025.pdf"
+    },
+    {
+      "year": 2025,
+      "category": "Non-FCDO ODA",
+      "value_gbp": 4045000000,
+      "source": "https://assets.publishing.service.gov.uk/media/6ae1bd30e4367e5c8b0467e9/Statistics_on_International_Development_Final_UK_ODA_Spend_2025.pdf"
+    }
+  ]
+}
