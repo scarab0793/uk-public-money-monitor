@@ -6,11 +6,16 @@ end=datetime.datetime.now(datetime.timezone.utc).date()
 start=end-datetime.timedelta(days=7)
 for name,url,prefix in [("contracts-finder","https://www.contractsfinder.service.gov.uk/Published/Notices/OCDS/Search","published"),("find-a-tender","https://www.find-tender.service.gov.uk/api/1.0/ocdsReleasePackages","updated")]:
     params={prefix+"From":str(start)+"T00:00:00Z",prefix+"To":str(end)+"T00:00:00Z","limit":100}
+    if prefix=="updated": params={k:v.removesuffix("Z") if isinstance(v,str) else v for k,v in params.items()}
     records={};seen=set()
     while url:
         if url in seen: raise RuntimeError("Pagination loop")
         seen.add(url)
-        r=requests.get(url,params=params,timeout=90);r.raise_for_status()
+        for attempt in range(4):
+            r=requests.get(url,params=params,timeout=90)
+            if r.status_code not in (403,429,503): break
+            time.sleep(int(r.headers.get("Retry-After","300")) if r.headers.get("Retry-After","300").isdigit() else 300)
+        r.raise_for_status()
         package=r.json()
         for rel in package["releases"]:
             key=(rel["ocid"],rel["id"])
