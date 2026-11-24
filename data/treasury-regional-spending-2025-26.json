@@ -1,0 +1,93 @@
+{
+  "schema_version": 1,
+  "source": "https://www.gov.uk/government/statistics/country-and-regional-analysis-2026/country-and-regional-analysis-november-2026",
+  "publication_date": "2026-11-18",
+  "year": "2025-26",
+  "basis": "Identifiable expenditure, nominal GBP; national and regional rows overlap and must not be summed together.",
+  "records": [
+    {
+      "area": "England",
+      "level": "nation",
+      "per_head_gbp": 13902,
+      "total_gbp": 817900000000
+    },
+    {
+      "area": "Scotland",
+      "level": "nation",
+      "per_head_gbp": 16303,
+      "total_gbp": 90400000000
+    },
+    {
+      "area": "Wales",
+      "level": "nation",
+      "per_head_gbp": 16128,
+      "total_gbp": 51200000000
+    },
+    {
+      "area": "Northern Ireland",
+      "level": "nation",
+      "per_head_gbp": 17096,
+      "total_gbp": 33000000000
+    },
+    {
+      "area": "UK",
+      "level": "UK",
+      "per_head_gbp": 14284,
+      "total_gbp": 992500000000
+    },
+    {
+      "area": "North East",
+      "level": "English region",
+      "per_head_gbp": 14908,
+      "total_gbp": null
+    },
+    {
+      "area": "North West",
+      "level": "English region",
+      "per_head_gbp": 14580,
+      "total_gbp": null
+    },
+    {
+      "area": "Yorkshire and the Humber",
+      "level": "English region",
+      "per_head_gbp": 13573,
+      "total_gbp": null
+    },
+    {
+      "area": "East Midlands",
+      "level": "English region",
+      "per_head_gbp": 12930,
+      "total_gbp": null
+    },
+    {
+      "area": "West Midlands",
+      "level": "English region",
+      "per_head_gbp": 13795,
+      "total_gbp": null
+    },
+    {
+      "area": "East",
+      "level": "English region",
+      "per_head_gbp": 12853,
+      "total_gbp": null
+    },
+    {
+      "area": "London",
+      "level": "English region",
+      "per_head_gbp": 16261,
+      "total_gbp": 148300000000
+    },
+    {
+      "area": "South East",
+      "level": "English region",
+      "per_head_gbp": 12758,
+      "total_gbp": null
+    },
+    {
+      "area": "South West",
+      "level": "English region",
+      "per_head_gbp": 13210,
+      "total_gbp": null
+    }
+  ]
+}
