@@ -1,0 +1,107 @@
+{
+  "schema_version": 1,
+  "source": "https://www.gov.uk/government/statistics/public-spending-statistics-release-november-2026/public-spending-statistics-november-2026",
+  "basis": "Real terms, expenditure on services; November 2026 release; rounded GBP billions. Not nominal cash spending or TME.",
+  "records": [
+    {
+      "year": "2024-25",
+      "function": "General public services",
+      "value_gbp": 164100000000
+    },
+    {
+      "year": "2024-25",
+      "function": "Defence",
+      "value_gbp": 65800000000
+    },
+    {
+      "year": "2024-25",
+      "function": "Public order and safety",
+      "value_gbp": 53500000000
+    },
+    {
+      "year": "2024-25",
+      "function": "Economic affairs",
+      "value_gbp": 90900000000
+    },
+    {
+      "year": "2024-25",
+      "function": "Environment protection",
+      "value_gbp": 17800000000
+    },
+    {
+      "year": "2024-25",
+      "function": "Housing and community amenities",
+      "value_gbp": 22400000000
+    },
+    {
+      "year": "2024-25",
+      "function": "Health",
+      "value_gbp": 250600000000
+    },
+    {
+      "year": "2024-25",
+      "function": "Recreation, culture and religion",
+      "value_gbp": 14100000000
+    },
+    {
+      "year": "2024-25",
+      "function": "Education",
+      "value_gbp": 127100000000
+    },
+    {
+      "year": "2024-25",
+      "function": "Social protection",
+      "value_gbp": 399200000000
+    },
+    {
+      "year": "2025-26",
+      "function": "General public services",
+      "value_gbp": 162600000000
+    },
+    {
+      "year": "2025-26",
+      "function": "Defence",
+      "value_gbp": 65400000000
+    },
+    {
+      "year": "2025-26",
+      "function": "Public order and safety",
+      "value_gbp": 55800000000
+    },
+    {
+      "year": "2025-26",
+      "function": "Economic affairs",
+      "value_gbp": 93700000000
+    },
+    {
+      "year": "2025-26",
+      "function": "Environment protection",
+      "value_gbp": 19100000000
+    },
+    {
+      "year": "2025-26",
+      "function": "Housing and community amenities",
+      "value_gbp": 22300000000
+    },
+    {
+      "year": "2025-26",
+      "function": "Health",
+      "value_gbp": 257600000000
+    },
+    {
+      "year": "2025-26",
+      "function": "Recreation, culture and religion",
+      "value_gbp": 15200000000
+    },
+    {
+      "year": "2025-26",
+      "function": "Education",
+      "value_gbp": 129300000000
+    },
+    {
+      "year": "2025-26",
+      "function": "Social protection",
+      "value_gbp": 410500000000
+    }
+  ]
+}
