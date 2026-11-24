@@ -1,0 +1,166 @@
+{
+  "schema_version": 1,
+  "basis": "Calendar year, nominal GBP rounded to nearest million as published; top ten country-specific bilateral ODA recipients only, not total foreign aid or military aid.",
+  "records": [
+    {
+      "year": 2024,
+      "rank": 1,
+      "country": "Ukraine",
+      "value_gbp": 270000000,
+      "source": "https://assets.publishing.service.gov.uk/media/68cae5911eabc899da7084f2/Statistics_on_International_Development_final_UK_ODA_spend_2024.pdf",
+      "source_figure": 6
+    },
+    {
+      "year": 2024,
+      "rank": 2,
+      "country": "Afghanistan",
+      "value_gbp": 192000000,
+      "source": "https://assets.publishing.service.gov.uk/media/68cae5911eabc899da7084f2/Statistics_on_International_Development_final_UK_ODA_spend_2024.pdf",
+      "source_figure": 6
+    },
+    {
+      "year": 2024,
+      "rank": 3,
+      "country": "Ethiopia",
+      "value_gbp": 182000000,
+      "source": "https://assets.publishing.service.gov.uk/media/68cae5911eabc899da7084f2/Statistics_on_International_Development_final_UK_ODA_spend_2024.pdf",
+      "source_figure": 6
+    },
+    {
+      "year": 2024,
+      "rank": 4,
+      "country": "Syria",
+      "value_gbp": 158000000,
+      "source": "https://assets.publishing.service.gov.uk/media/68cae5911eabc899da7084f2/Statistics_on_International_Development_final_UK_ODA_spend_2024.pdf",
+      "source_figure": 6
+    },
+    {
+      "year": 2024,
+      "rank": 5,
+      "country": "Somalia",
+      "value_gbp": 143000000,
+      "source": "https://assets.publishing.service.gov.uk/media/68cae5911eabc899da7084f2/Statistics_on_International_Development_final_UK_ODA_spend_2024.pdf",
+      "source_figure": 6
+    },
+    {
+      "year": 2024,
+      "rank": 6,
+      "country": "Yemen",
+      "value_gbp": 142000000,
+      "source": "https://assets.publishing.service.gov.uk/media/68cae5911eabc899da7084f2/Statistics_on_International_Development_final_UK_ODA_spend_2024.pdf",
+      "source_figure": 6
+    },
+    {
+      "year": 2024,
+      "rank": 7,
+      "country": "Sudan",
+      "value_gbp": 141000000,
+      "source": "https://assets.publishing.service.gov.uk/media/68cae5911eabc899da7084f2/Statistics_on_International_Development_final_UK_ODA_spend_2024.pdf",
+      "source_figure": 6
+    },
+    {
+      "year": 2024,
+      "rank": 8,
+      "country": "West Bank & Gaza Strip",
+      "value_gbp": 138000000,
+      "source": "https://assets.publishing.service.gov.uk/media/68cae5911eabc899da7084f2/Statistics_on_International_Development_final_UK_ODA_spend_2024.pdf",
+      "source_figure": 6
+    },
+    {
+      "year": 2024,
+      "rank": 9,
+      "country": "Nigeria",
+      "value_gbp": 138000000,
+      "source": "https://assets.publishing.service.gov.uk/media/68cae5911eabc899da7084f2/Statistics_on_International_Development_final_UK_ODA_spend_2024.pdf",
+      "source_figure": 6
+    },
+    {
+      "year": 2024,
+      "rank": 10,
+      "country": "South Sudan",
+      "value_gbp": 132000000,
+      "source": "https://assets.publishing.service.gov.uk/media/68cae5911eabc899da7084f2/Statistics_on_International_Development_final_UK_ODA_spend_2024.pdf",
+      "source_figure": 6
+    },
+    {
+      "year": 2025,
+      "rank": 1,
+      "country": "Ukraine",
+      "value_gbp": 271000000,
+      "source": "https://assets.publishing.service.gov.uk/media/6ae1bd30e4367e5c8b0467e9/Statistics_on_International_Development_Final_UK_ODA_Spend_2025.pdf",
+      "source_figure": 6
+    },
+    {
+      "year": 2025,
+      "rank": 2,
+      "country": "Yemen",
+      "value_gbp": 149000000,
+      "source": "https://assets.publishing.service.gov.uk/media/6ae1bd30e4367e5c8b0467e9/Statistics_on_International_Development_Final_UK_ODA_Spend_2025.pdf",
+      "source_figure": 6
+    },
+    {
+      "year": 2025,
+      "rank": 3,
+      "country": "Afghanistan",
+      "value_gbp": 145000000,
+      "source": "https://assets.publishing.service.gov.uk/media/6ae1bd30e4367e5c8b0467e9/Statistics_on_International_Development_Final_UK_ODA_Spend_2025.pdf",
+      "source_figure": 6
+    },
+    {
+      "year": 2025,
+      "rank": 4,
+      "country": "Nigeria",
+      "value_gbp": 142000000,
+      "source": "https://assets.publishing.service.gov.uk/media/6ae1bd30e4367e5c8b0467e9/Statistics_on_International_Development_Final_UK_ODA_Spend_2025.pdf",
+      "source_figure": 6
+    },
+    {
+      "year": 2025,
+      "rank": 5,
+      "country": "Sudan",
+      "value_gbp": 141000000,
+      "source": "https://assets.publishing.service.gov.uk/media/6ae1bd30e4367e5c8b0467e9/Statistics_on_International_Development_Final_UK_ODA_Spend_2025.pdf",
+      "source_figure": 6
+    },
+    {
+      "year": 2025,
+      "rank": 6,
+      "country": "Congo, Dem. Rep.",
+      "value_gbp": 136000000,
+      "source": "https://assets.publishing.service.gov.uk/media/6ae1bd30e4367e5c8b0467e9/Statistics_on_International_Development_Final_UK_ODA_Spend_2025.pdf",
+      "source_figure": 6
+    },
+    {
+      "year": 2025,
+      "rank": 7,
+      "country": "Somalia",
+      "value_gbp": 135000000,
+      "source": "https://assets.publishing.service.gov.uk/media/6ae1bd30e4367e5c8b0467e9/Statistics_on_International_Development_Final_UK_ODA_Spend_2025.pdf",
+      "source_figure": 6
+    },
+    {
+      "year": 2025,
+      "rank": 8,
+      "country": "Ethiopia",
+      "value_gbp": 132000000,
+      "source": "https://assets.publishing.service.gov.uk/media/6ae1bd30e4367e5c8b0467e9/Statistics_on_International_Development_Final_UK_ODA_Spend_2025.pdf",
+      "source_figure": 6
+    },
+    {
+      "year": 2025,
+      "rank": 9,
+      "country": "Pakistan",
+      "value_gbp": 113000000,
+      "source": "https://assets.publishing.service.gov.uk/media/6ae1bd30e4367e5c8b0467e9/Statistics_on_International_Development_Final_UK_ODA_Spend_2025.pdf",
+      "source_figure": 6
+    },
+    {
+      "year": 2025,
+      "rank": 10,
+      "country": "Palestine",
+      "value_gbp": 112000000,
+      "source": "https://assets.publishing.service.gov.uk/media/6ae1bd30e4367e5c8b0467e9/Statistics_on_International_Development_Final_UK_ODA_Spend_2025.pdf",
+      "source_figure": 6
+    }
+  ]
+}
