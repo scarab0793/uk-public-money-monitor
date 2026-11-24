@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
   "source": "ONS Public Sector Finances monthly series HF6X, ANBV, ANLP",
-  "source_retrieved_at": "2026-11-23T21:38:33.862794+00:00",
+  "source_retrieved_at": "2026-11-24T20:19:32.825403+00:00",
   "notes": "ANBV and ANLP are central government CURRENT receipts and expenditure; not total taxes or total public spending. Year-on-year changes compare the same month in the previous year. HF6X change is in percentage points. Monetary values converted from GBP million to GBP.",
   "count": 404,
   "months": [
