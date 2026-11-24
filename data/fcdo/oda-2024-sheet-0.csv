@@ -1,0 +1,40 @@
+Data Underlying Statistics on International Development: Data Guide,,
+This is a simplified data guide for project data underlying the SID publication. For further details please see:,,Full Data Guide
+Column Heading,Example,Description
+Year,2022,The calendar year in which project funds were spent
+ProjectID,ODA PROJECT 0001,"Otherwise known as Project ID, this column represents the unique identifier given to projects. The same project ID can occur across multiple years"
+ProjectTitle,Supporting Albania post-earthquake recovery,The title of the project.
+ProjectDescription,Humanitarian project focussed on repairing community infrastructure […],The description of the project.
+ExtendingAgencyText,UK Integrated Security Fund,"The Government department, fund or other official contributor of the ODA project. "
+Cross-GovernmentFundSpendingAgency,FCDO,Only for funds which are financed across government such as UK Intergrated Security Fund Projects; the UK government funding agency of these projects.
+RecipientCountryText,Albania,The benefitting country or region of the project.
+RecipientCountryCode,71,The code associated with this country or region.
+RegionText,Europe,"The broad region of the project; broken down into Africa, Americas, Asia, Europe, Pacific or 'Developing countries, unspecified' where the project is spend across these broad regions."
+IncomeGroup,UMICs,"The income group associated with the recipient country, based on Gross National Income (GNI) per capita Figures as reported by the World Bank. "
+ChannelofDelivery,Donor Government,Categorisation to show the (first) implementing partner of the project.
+ChannelCode,11001,The code associated with ChannelofDelivery.
+ChannelParent,11000,The broad cateogory code of the ChannelofDelivery.
+BiMultiBreakdown,Other bilateral,"The category of Bilateral/Multilateral. Classified into Multilateral , Bi through Multi and Other bilateral."
+TypeofFinanceCode,110,The code associated with the financial instrument of the project.
+TypeofFinanceText,Standard grant,The financial instrument of the project in plain text.
+TypeofAidCode,C01,The code defined by broad categories of aid support defined by the OECD DAC 
+TypeofAidText,Project-type interventions,The text description of the type of aid code
+SpecificSectorCode,72050,The detailed sector for the project which captures its purpose. Each project can have up to ten sector codes. Projects are displayed on separate lines for each associated sector code. 
+SpecificSectorText,Relief co-ordination and support services,The category of the sector code of the project written in plain text
+BroadSectorCode,720,The broad sector code associated with the broader sector category.
+BroadSectorText,Humanitarian Aid,The broad sector category written in plain text.
+%sector,100,The percentage of the project associated with the specific sector code/text. 
+AmountsExtended(£thousands),22.585,The amount of money disbursed for this project in GBP thousands.
+AmountsReceived(£thousands),0,The amount of money received for this project in GBP thousands.
+HeadlineMeasureofODA(£thousands),22.585,"Net disbursements for this project, in GBP thousands. This value equates to the AmountsExtended minus the AmountsReceived."
+,,
+"Note: a small number of project lines have had sensitive information redacted, for example where publication would raise security or commerical concerns.  This has been done in line with the Freedom of Information Act 2000 criteria.",,
+"Additionally, due to the security situation in Afghanistan, we have temporarily removed potentially sensitive information (project title, description, channel of delivery, co-operation modality and detailed sector code) for UK Official Development Assistance (ODA) programmes in Afghanistan.",,
+,,
+"Notification:
+
+This dataset is an updated version of Data Underlying Statistics on International Development - updated on 26 September 2025.  Further information can be found on our revisions statement on our webpage: https://www.gov.uk/government/statistics/statistics-on-international-development-final-uk-oda-spend-2024
+
+We apologise for any inconvenience caused by this error. Please contact statistics@fcdo.gov.uk if you have any questions.  
+
+Our revisions policy can be found at: https://assets.publishing.service.gov.uk/media/61543348d3bf7f718faab6d2/FCDO-Revisions-Policy.pdf",,

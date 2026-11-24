@@ -1,0 +1,42 @@
+[
+  {
+    "year": 2024,
+    "sheet": "Data_Guide",
+    "rows": 34,
+    "columns": 3,
+    "file": "data/fcdo/oda-2024-sheet-0.csv",
+    "source": "https://assets.publishing.service.gov.uk/media/68d677144e830dd22fa1ceb2/Data-underlying-SID-2017-2024.ods"
+  },
+  {
+    "year": 2024,
+    "sheet": "Data",
+    "rows": 70562,
+    "columns": 26,
+    "file": "data/fcdo/oda-2024-sheet-1.csv",
+    "source": "https://assets.publishing.service.gov.uk/media/68d677144e830dd22fa1ceb2/Data-underlying-SID-2017-2024.ods"
+  },
+  {
+    "year": 2025,
+    "sheet": "Notice_of_changes",
+    "rows": 1,
+    "columns": 1,
+    "file": "data/fcdo/oda-2025-sheet-0.csv",
+    "source": "https://assets.publishing.service.gov.uk/media/6adf3a94d798ae11e9bc5cd4/data-underlying-SID-2017-2025.ods"
+  },
+  {
+    "year": 2025,
+    "sheet": "Data_Guide",
+    "rows": 33,
+    "columns": 3,
+    "file": "data/fcdo/oda-2025-sheet-1.csv",
+    "source": "https://assets.publishing.service.gov.uk/media/6adf3a94d798ae11e9bc5cd4/data-underlying-SID-2017-2025.ods"
+  },
+  {
+    "year": 2025,
+    "sheet": "Data",
+    "rows": 77540,
+    "columns": 28,
+    "file": "data/fcdo/oda-2025-sheet-2.csv",
+    "source": "https://assets.publishing.service.gov.uk/media/6adf3a94d798ae11e9bc5cd4/data-underlying-SID-2017-2025.ods"
+  }
+]
