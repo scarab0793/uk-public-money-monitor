@@ -1,0 +1,384 @@
+{
+  "schema_version": 1,
+  "basis": "Accrued HMRC revenue; nominal rounded GBP. 2020-21 uses 2024-25 report Figure 15; later years use 2025-26 report Figure 14. Other includes CGT only in 2020-21. Totals as published.",
+  "records": [
+    {
+      "year": "2020-21",
+      "category": "Income Tax",
+      "value_gbp": 192000000000,
+      "is_total": false,
+      "source": "https://assets.publishing.service.gov.uk/media/687e5d318adf4250705c96d8/HMRC_annual_report_and_accounts_2024_to_2025.pdf"
+    },
+    {
+      "year": "2020-21",
+      "category": "National Insurance",
+      "value_gbp": 141500000000,
+      "is_total": false,
+      "source": "https://assets.publishing.service.gov.uk/media/687e5d318adf4250705c96d8/HMRC_annual_report_and_accounts_2024_to_2025.pdf"
+    },
+    {
+      "year": "2020-21",
+      "category": "VAT",
+      "value_gbp": 122100000000,
+      "is_total": false,
+      "source": "https://assets.publishing.service.gov.uk/media/687e5d318adf4250705c96d8/HMRC_annual_report_and_accounts_2024_to_2025.pdf"
+    },
+    {
+      "year": "2020-21",
+      "category": "Corporation Tax",
+      "value_gbp": 53700000000,
+      "is_total": false,
+      "source": "https://assets.publishing.service.gov.uk/media/687e5d318adf4250705c96d8/HMRC_annual_report_and_accounts_2024_to_2025.pdf"
+    },
+    {
+      "year": "2020-21",
+      "category": "Hydrocarbon oils",
+      "value_gbp": 21300000000,
+      "is_total": false,
+      "source": "https://assets.publishing.service.gov.uk/media/687e5d318adf4250705c96d8/HMRC_annual_report_and_accounts_2024_to_2025.pdf"
+    },
+    {
+      "year": "2020-21",
+      "category": "Other incl. CGT",
+      "value_gbp": 65600000000,
+      "is_total": false,
+      "source": "https://assets.publishing.service.gov.uk/media/687e5d318adf4250705c96d8/HMRC_annual_report_and_accounts_2024_to_2025.pdf"
+    },
+    {
+      "year": "2020-21",
+      "category": "Stamp taxes",
+      "value_gbp": 12600000000,
+      "is_total": false,
+      "source": "https://assets.publishing.service.gov.uk/media/687e5d318adf4250705c96d8/HMRC_annual_report_and_accounts_2024_to_2025.pdf"
+    },
+    {
+      "year": "2020-21",
+      "category": "Capital Gains Tax",
+      "value_gbp": null,
+      "is_total": false,
+      "source": "https://assets.publishing.service.gov.uk/media/687e5d318adf4250705c96d8/HMRC_annual_report_and_accounts_2024_to_2025.pdf"
+    },
+    {
+      "year": "2020-21",
+      "category": "Total revenue",
+      "value_gbp": 608800000000,
+      "is_total": true,
+      "source": "https://assets.publishing.service.gov.uk/media/687e5d318adf4250705c96d8/HMRC_annual_report_and_accounts_2024_to_2025.pdf"
+    },
+    {
+      "year": "2021-22",
+      "category": "Income Tax",
+      "value_gbp": 233400000000,
+      "is_total": false,
+      "source": "https://assets.publishing.service.gov.uk/media/6a4f66c406e7256c331df8a2/HMRC_annual_report_and_accounts_2025_to_2026.pdf"
+    },
+    {
+      "year": "2021-22",
+      "category": "National Insurance",
+      "value_gbp": 158300000000,
+      "is_total": false,
+      "source": "https://assets.publishing.service.gov.uk/media/6a4f66c406e7256c331df8a2/HMRC_annual_report_and_accounts_2025_to_2026.pdf"
+    },
+    {
+      "year": "2021-22",
+      "category": "VAT",
+      "value_gbp": 148700000000,
+      "is_total": false,
+      "source": "https://assets.publishing.service.gov.uk/media/6a4f66c406e7256c331df8a2/HMRC_annual_report_and_accounts_2025_to_2026.pdf"
+    },
+    {
+      "year": "2021-22",
+      "category": "Corporation Tax",
+      "value_gbp": 68300000000,
+      "is_total": false,
+      "source": "https://assets.publishing.service.gov.uk/media/6a4f66c406e7256c331df8a2/HMRC_annual_report_and_accounts_2025_to_2026.pdf"
+    },
+    {
+      "year": "2021-22",
+      "category": "Hydrocarbon oils",
+      "value_gbp": 25800000000,
+      "is_total": false,
+      "source": "https://assets.publishing.service.gov.uk/media/6a4f66c406e7256c331df8a2/HMRC_annual_report_and_accounts_2025_to_2026.pdf"
+    },
+    {
+      "year": "2021-22",
+      "category": "Other excluding CGT",
+      "value_gbp": 62100000000,
+      "is_total": false,
+      "source": "https://assets.publishing.service.gov.uk/media/6a4f66c406e7256c331df8a2/HMRC_annual_report_and_accounts_2025_to_2026.pdf"
+    },
+    {
+      "year": "2021-22",
+      "category": "Stamp taxes",
+      "value_gbp": 18700000000,
+      "is_total": false,
+      "source": "https://assets.publishing.service.gov.uk/media/6a4f66c406e7256c331df8a2/HMRC_annual_report_and_accounts_2025_to_2026.pdf"
+    },
+    {
+      "year": "2021-22",
+      "category": "Capital Gains Tax",
+      "value_gbp": 15800000000,
+      "is_total": false,
+      "source": "https://assets.publishing.service.gov.uk/media/6a4f66c406e7256c331df8a2/HMRC_annual_report_and_accounts_2025_to_2026.pdf"
+    },
+    {
+      "year": "2021-22",
+      "category": "Total revenue",
+      "value_gbp": 731100000000,
+      "is_total": true,
+      "source": "https://assets.publishing.service.gov.uk/media/6a4f66c406e7256c331df8a2/HMRC_annual_report_and_accounts_2025_to_2026.pdf"
+    },
+    {
+      "year": "2022-23",
+      "category": "Income Tax",
+      "value_gbp": 258000000000,
+      "is_total": false,
+      "source": "https://assets.publishing.service.gov.uk/media/6a4f66c406e7256c331df8a2/HMRC_annual_report_and_accounts_2025_to_2026.pdf"
+    },
+    {
+      "year": "2022-23",
+      "category": "National Insurance",
+      "value_gbp": 175800000000,
+      "is_total": false,
+      "source": "https://assets.publishing.service.gov.uk/media/6a4f66c406e7256c331df8a2/HMRC_annual_report_and_accounts_2025_to_2026.pdf"
+    },
+    {
+      "year": "2022-23",
+      "category": "VAT",
+      "value_gbp": 166900000000,
+      "is_total": false,
+      "source": "https://assets.publishing.service.gov.uk/media/6a4f66c406e7256c331df8a2/HMRC_annual_report_and_accounts_2025_to_2026.pdf"
+    },
+    {
+      "year": "2022-23",
+      "category": "Corporation Tax",
+      "value_gbp": 80500000000,
+      "is_total": false,
+      "source": "https://assets.publishing.service.gov.uk/media/6a4f66c406e7256c331df8a2/HMRC_annual_report_and_accounts_2025_to_2026.pdf"
+    },
+    {
+      "year": "2022-23",
+      "category": "Hydrocarbon oils",
+      "value_gbp": 25000000000,
+      "is_total": false,
+      "source": "https://assets.publishing.service.gov.uk/media/6a4f66c406e7256c331df8a2/HMRC_annual_report_and_accounts_2025_to_2026.pdf"
+    },
+    {
+      "year": "2022-23",
+      "category": "Other excluding CGT",
+      "value_gbp": 71800000000,
+      "is_total": false,
+      "source": "https://assets.publishing.service.gov.uk/media/6a4f66c406e7256c331df8a2/HMRC_annual_report_and_accounts_2025_to_2026.pdf"
+    },
+    {
+      "year": "2022-23",
+      "category": "Stamp taxes",
+      "value_gbp": 19000000000,
+      "is_total": false,
+      "source": "https://assets.publishing.service.gov.uk/media/6a4f66c406e7256c331df8a2/HMRC_annual_report_and_accounts_2025_to_2026.pdf"
+    },
+    {
+      "year": "2022-23",
+      "category": "Capital Gains Tax",
+      "value_gbp": 17000000000,
+      "is_total": false,
+      "source": "https://assets.publishing.service.gov.uk/media/6a4f66c406e7256c331df8a2/HMRC_annual_report_and_accounts_2025_to_2026.pdf"
+    },
+    {
+      "year": "2022-23",
+      "category": "Total revenue",
+      "value_gbp": 814000000000,
+      "is_total": true,
+      "source": "https://assets.publishing.service.gov.uk/media/6a4f66c406e7256c331df8a2/HMRC_annual_report_and_accounts_2025_to_2026.pdf"
+    },
+    {
+      "year": "2023-24",
+      "category": "Income Tax",
+      "value_gbp": 286200000000,
+      "is_total": false,
+      "source": "https://assets.publishing.service.gov.uk/media/6a4f66c406e7256c331df8a2/HMRC_annual_report_and_accounts_2025_to_2026.pdf"
+    },
+    {
+      "year": "2023-24",
+      "category": "National Insurance",
+      "value_gbp": 177000000000,
+      "is_total": false,
+      "source": "https://assets.publishing.service.gov.uk/media/6a4f66c406e7256c331df8a2/HMRC_annual_report_and_accounts_2025_to_2026.pdf"
+    },
+    {
+      "year": "2023-24",
+      "category": "VAT",
+      "value_gbp": 165500000000,
+      "is_total": false,
+      "source": "https://assets.publishing.service.gov.uk/media/6a4f66c406e7256c331df8a2/HMRC_annual_report_and_accounts_2025_to_2026.pdf"
+    },
+    {
+      "year": "2023-24",
+      "category": "Corporation Tax",
+      "value_gbp": 89600000000,
+      "is_total": false,
+      "source": "https://assets.publishing.service.gov.uk/media/6a4f66c406e7256c331df8a2/HMRC_annual_report_and_accounts_2025_to_2026.pdf"
+    },
+    {
+      "year": "2023-24",
+      "category": "Hydrocarbon oils",
+      "value_gbp": 24900000000,
+      "is_total": false,
+      "source": "https://assets.publishing.service.gov.uk/media/6a4f66c406e7256c331df8a2/HMRC_annual_report_and_accounts_2025_to_2026.pdf"
+    },
+    {
+      "year": "2023-24",
+      "category": "Other excluding CGT",
+      "value_gbp": 70900000000,
+      "is_total": false,
+      "source": "https://assets.publishing.service.gov.uk/media/6a4f66c406e7256c331df8a2/HMRC_annual_report_and_accounts_2025_to_2026.pdf"
+    },
+    {
+      "year": "2023-24",
+      "category": "Stamp taxes",
+      "value_gbp": 15000000000,
+      "is_total": false,
+      "source": "https://assets.publishing.service.gov.uk/media/6a4f66c406e7256c331df8a2/HMRC_annual_report_and_accounts_2025_to_2026.pdf"
+    },
+    {
+      "year": "2023-24",
+      "category": "Capital Gains Tax",
+      "value_gbp": 14300000000,
+      "is_total": false,
+      "source": "https://assets.publishing.service.gov.uk/media/6a4f66c406e7256c331df8a2/HMRC_annual_report_and_accounts_2025_to_2026.pdf"
+    },
+    {
+      "year": "2023-24",
+      "category": "Total revenue",
+      "value_gbp": 843400000000,
+      "is_total": true,
+      "source": "https://assets.publishing.service.gov.uk/media/6a4f66c406e7256c331df8a2/HMRC_annual_report_and_accounts_2025_to_2026.pdf"
+    },
+    {
+      "year": "2024-25",
+      "category": "Income Tax",
+      "value_gbp": 309400000000,
+      "is_total": false,
+      "source": "https://assets.publishing.service.gov.uk/media/6a4f66c406e7256c331df8a2/HMRC_annual_report_and_accounts_2025_to_2026.pdf"
+    },
+    {
+      "year": "2024-25",
+      "category": "National Insurance",
+      "value_gbp": 168800000000,
+      "is_total": false,
+      "source": "https://assets.publishing.service.gov.uk/media/6a4f66c406e7256c331df8a2/HMRC_annual_report_and_accounts_2025_to_2026.pdf"
+    },
+    {
+      "year": "2024-25",
+      "category": "VAT",
+      "value_gbp": 178500000000,
+      "is_total": false,
+      "source": "https://assets.publishing.service.gov.uk/media/6a4f66c406e7256c331df8a2/HMRC_annual_report_and_accounts_2025_to_2026.pdf"
+    },
+    {
+      "year": "2024-25",
+      "category": "Corporation Tax",
+      "value_gbp": 89700000000,
+      "is_total": false,
+      "source": "https://assets.publishing.service.gov.uk/media/6a4f66c406e7256c331df8a2/HMRC_annual_report_and_accounts_2025_to_2026.pdf"
+    },
+    {
+      "year": "2024-25",
+      "category": "Hydrocarbon oils",
+      "value_gbp": 24700000000,
+      "is_total": false,
+      "source": "https://assets.publishing.service.gov.uk/media/6a4f66c406e7256c331df8a2/HMRC_annual_report_and_accounts_2025_to_2026.pdf"
+    },
+    {
+      "year": "2024-25",
+      "category": "Other excluding CGT",
+      "value_gbp": 72300000000,
+      "is_total": false,
+      "source": "https://assets.publishing.service.gov.uk/media/6a4f66c406e7256c331df8a2/HMRC_annual_report_and_accounts_2025_to_2026.pdf"
+    },
+    {
+      "year": "2024-25",
+      "category": "Stamp taxes",
+      "value_gbp": 18800000000,
+      "is_total": false,
+      "source": "https://assets.publishing.service.gov.uk/media/6a4f66c406e7256c331df8a2/HMRC_annual_report_and_accounts_2025_to_2026.pdf"
+    },
+    {
+      "year": "2024-25",
+      "category": "Capital Gains Tax",
+      "value_gbp": 13800000000,
+      "is_total": false,
+      "source": "https://assets.publishing.service.gov.uk/media/6a4f66c406e7256c331df8a2/HMRC_annual_report_and_accounts_2025_to_2026.pdf"
+    },
+    {
+      "year": "2024-25",
+      "category": "Total revenue",
+      "value_gbp": 876000000000,
+      "is_total": true,
+      "source": "https://assets.publishing.service.gov.uk/media/6a4f66c406e7256c331df8a2/HMRC_annual_report_and_accounts_2025_to_2026.pdf"
+    },
+    {
+      "year": "2025-26",
+      "category": "Income Tax",
+      "value_gbp": 338200000000,
+      "is_total": false,
+      "source": "https://assets.publishing.service.gov.uk/media/6a4f66c406e7256c331df8a2/HMRC_annual_report_and_accounts_2025_to_2026.pdf"
+    },
+    {
+      "year": "2025-26",
+      "category": "National Insurance",
+      "value_gbp": 202200000000,
+      "is_total": false,
+      "source": "https://assets.publishing.service.gov.uk/media/6a4f66c406e7256c331df8a2/HMRC_annual_report_and_accounts_2025_to_2026.pdf"
+    },
+    {
+      "year": "2025-26",
+      "category": "VAT",
+      "value_gbp": 186900000000,
+      "is_total": false,
+      "source": "https://assets.publishing.service.gov.uk/media/6a4f66c406e7256c331df8a2/HMRC_annual_report_and_accounts_2025_to_2026.pdf"
+    },
+    {
+      "year": "2025-26",
+      "category": "Corporation Tax",
+      "value_gbp": 95400000000,
+      "is_total": false,
+      "source": "https://assets.publishing.service.gov.uk/media/6a4f66c406e7256c331df8a2/HMRC_annual_report_and_accounts_2025_to_2026.pdf"
+    },
+    {
+      "year": "2025-26",
+      "category": "Hydrocarbon oils",
+      "value_gbp": 24900000000,
+      "is_total": false,
+      "source": "https://assets.publishing.service.gov.uk/media/6a4f66c406e7256c331df8a2/HMRC_annual_report_and_accounts_2025_to_2026.pdf"
+    },
+    {
+      "year": "2025-26",
+      "category": "Other excluding CGT",
+      "value_gbp": 73900000000,
+      "is_total": false,
+      "source": "https://assets.publishing.service.gov.uk/media/6a4f66c406e7256c331df8a2/HMRC_annual_report_and_accounts_2025_to_2026.pdf"
+    },
+    {
+      "year": "2025-26",
+      "category": "Stamp taxes",
+      "value_gbp": 19700000000,
+      "is_total": false,
+      "source": "https://assets.publishing.service.gov.uk/media/6a4f66c406e7256c331df8a2/HMRC_annual_report_and_accounts_2025_to_2026.pdf"
+    },
+    {
+      "year": "2025-26",
+      "category": "Capital Gains Tax",
+      "value_gbp": 25200000000,
+      "is_total": false,
+      "source": "https://assets.publishing.service.gov.uk/media/6a4f66c406e7256c331df8a2/HMRC_annual_report_and_accounts_2025_to_2026.pdf"
+    },
+    {
+      "year": "2025-26",
+      "category": "Total revenue",
+      "value_gbp": 966400000000,
+      "is_total": true,
+      "source": "https://assets.publishing.service.gov.uk/media/6a4f66c406e7256c331df8a2/HMRC_annual_report_and_accounts_2025_to_2026.pdf"
+    }
+  ]
+}
