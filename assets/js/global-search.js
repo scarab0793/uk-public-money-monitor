@@ -19,7 +19,7 @@
     let s = 0;
     for (const re of terms) {
       const m = re.exec(it.low);
-      if (m) s += m.index === 0 ? 6 : 4; else if (re.test(it.dlow)) s += 1; else return 0;
+      if (m) s += 4; else if (re.test(it.dlow)) s += 1; else return 0;
     }
     if (it.low === q) s += 20;
     return s;
