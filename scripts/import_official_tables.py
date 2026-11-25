@@ -94,7 +94,7 @@ def parse_wide_table(df, period_parser, header_prefix):
             break
     if hdr is None:
         raise RuntimeError(f"Header row {header_prefix!r} not found")
-    columns = [str(c).strip() for c in df.iloc[hdr, 1:].tolist()]
+    columns = [re.sub(r"\s+", " ", re.sub(r"\s*\[(?:note|Note)[^\]]*\]", "", str(c))).strip() for c in df.iloc[hdr, 1:].tolist()]
     series = {c: [] for c in columns if c and c != "nan"}
     for i in range(hdr + 1, len(df)):
         period = period_parser(df.iat[i, 0])
@@ -117,9 +117,9 @@ def import_hmrc_receipts():
     book = read_book(att["url"])
     monthly = parse_wide_table(book["Receipts_Monthly"], norm_month, "Table 1")
     annual = parse_wide_table(book["Receipts_Annually"], norm_fy, "Table 2")
-    total = "Total HMRC Receipts"
-    if total not in monthly or len(monthly[total]) < 60 or total not in annual or len(annual[total]) < 10:
-        raise RuntimeError("Receipts tables failed validation")
+    total = next((c for c in annual if c.lower().startswith("total hmrc receipts")), None)
+    if not total or total not in monthly or len(monthly[total]) < 60 or total not in annual or len(annual[total]) < 10:
+        raise RuntimeError("Receipts tables failed validation: columns=%s monthly=%d annual=%d" % (list(annual)[:6], len(monthly.get(total) or []), len(annual.get(total) or [])))
     latest = max(p for p, v in monthly[total] if v is not None)
     taxes = []
     for name in annual:
