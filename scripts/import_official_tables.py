@@ -89,7 +89,7 @@ def parse_wide_table(df, period_parser, header_prefix):
     """HMRC layout: a header row whose first cell starts with header_prefix, then one row per period."""
     hdr = None
     for i in range(min(len(df), 40)):
-        if str(df.iat[i, 0]).strip().startswith(header_prefix):
+        if str(df.iat[i, 0]).strip().startswith(header_prefix) and df.iloc[i, 1:].notna().sum() >= 3:
             hdr = i
             break
     if hdr is None:

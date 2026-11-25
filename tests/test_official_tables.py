@@ -20,7 +20,7 @@ class ParserTests(unittest.TestCase):
             ["May 2017", 42703, -106, "[x]"],
             ["Notes", N, N, N],
         ])
-        s = ot.parse_wide_table(df, ot.norm_month, "Table 1 HMRC")
+        s = ot.parse_wide_table(df, ot.norm_month, "Table 1")
         self.assertEqual(s["Total HMRC Receipts"], [["2017-04", 56228.0], ["2017-05", 42703.0]])
         self.assertEqual(s["Income Tax"][1], ["2017-05", -106.0])
         self.assertEqual(s["Vaping Products Duty"], [["2017-04", None], ["2017-05", None]])
