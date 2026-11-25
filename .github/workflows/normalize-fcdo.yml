@@ -8,6 +8,9 @@ on:
   workflow_dispatch:
 permissions:
   contents: write
+concurrency:
+  group: fcdo-data
+  cancel-in-progress: false
 jobs:
   normalize:
     runs-on: ubuntu-latest
@@ -23,5 +26,6 @@ jobs:
           git add data/fcdo-normalized
           if ! git diff --cached --quiet; then
             git commit -m "Publish normalized FCDO data"
-            git push
+            for i in 1 2 3 4; do git pull -q --rebase origin main && git push -q origin HEAD:main && exit 0; sleep $((i*10)); done
+            exit 1
           fi
