@@ -2,7 +2,8 @@
 Usage: python explore_govuk.py <govuk path> [attachment-substring ...]"""
 import io, sys, json, requests, pandas as pd
 path = sys.argv[1]; full = [a[6:] for a in sys.argv[2:] if a.startswith("sheet=")]
-wanted = [w.lower() for w in sys.argv[2:] if not w.startswith("sheet=")]
+engine_override = next((a[7:] for a in sys.argv[2:] if a.startswith("engine=")), None)
+wanted = [w.lower() for w in sys.argv[2:] if not w.startswith(("sheet=", "engine="))]
 if path.startswith("search:"):
     q = requests.get("https://www.gov.uk/api/search.json", params={"q": path[7:], "count": 15, "fields": "title,link,public_timestamp,format"}, timeout=60).json()
     for r in q.get("results", []):
@@ -28,7 +29,7 @@ for a in docs:
     raw = requests.get(url, timeout=180).content
     if url.lower().endswith(".csv"):
         print(raw[:3000].decode("utf-8", "replace")); continue
-    book = pd.ExcelFile(io.BytesIO(raw), engine="odf" if url.lower().endswith(".ods") else None)
+    book = pd.ExcelFile(io.BytesIO(raw), engine=engine_override or ("odf" if url.lower().endswith(".ods") else None))
     for s in book.sheet_names:
         if full and s in full:
             df = book.parse(s, header=None)
