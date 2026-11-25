@@ -46,7 +46,7 @@
       b.addEventListener('click', () => { list.classList.remove('open'); });
       list.append(b);
     });
-    status.textContent = hits.length.toLocaleString('en-GB') + ' matches' + (hits.length > shown.length ? ' · showing the best ' + shown.length : '');
+    status.textContent = hits.length.toLocaleString('en-GB') + (hits.length === 1 ? ' match' : ' matches') + (hits.length > shown.length ? ' · showing the best ' + shown.length : '');
     list.classList.add('open'); input.setAttribute('aria-expanded', 'true');
   }
   if (input) {
