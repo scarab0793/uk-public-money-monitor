@@ -83,6 +83,22 @@
    "limitations": "Non-identifiable spending (e.g. most defence, debt interest) is not allocated to regions."
   },
   {
+   "id": "dwp-benefits",
+   "module": "Benefit spending and caseloads",
+   "anchor": "welfare",
+   "publisher": "Department for Work and Pensions",
+   "source": "https://www.gov.uk/government/collections/benefit-expenditure-and-caseload-tables",
+   "file": "data/welfare/benefit-expenditure-caseloads.json",
+   "stamp": "retrieved_at",
+   "refresh": "Checked daily; DWP publishes after each Budget and Spring Statement",
+   "workflow": "refresh-official-tables.yml",
+   "unit": "GBP million (nominal or real terms as labelled); caseloads in thousands",
+   "basis": "Outturn, with DWP forecasts flagged separately",
+   "verification": "verified",
+   "licence": "Open Government Licence v3.0",
+   "limitations": "Great Britain only: Northern Ireland social security is paid by the NI Executive. Benefits devolved to Scotland leave these tables once transferred. Tax credits and Child Benefit (HMRC) are not DWP benefits. Every year's benefit lines are checked to add up to the published total."
+  },
+  {
    "id": "council-tax",
    "module": "Council Tax bills in England",
    "anchor": "council-tax",

@@ -54,6 +54,12 @@
    "file": "nation-or-region.json",
    "count": 13,
    "bytes": 670
+  },
+  {
+   "type": "Benefit",
+   "file": "benefit.json",
+   "count": 30,
+   "bytes": 2706
   }
  ]
 }

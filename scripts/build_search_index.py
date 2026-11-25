@@ -85,6 +85,16 @@ def main():
             if r["level"] in ("nation", "english_region"):
                 v = r["blocks"][0][-1]
                 add("Nation or region", r["area"].replace("Total ", ""), "Identifiable public spending", "#regional-spending", v[2] * 1e6 if v[2] else None, v[0])
+    wf = load("welfare/benefit-expenditure-caseloads.json")
+    if wf:
+        t = wf["tables"]["Table_1a"]
+        i = max(j for j, f in enumerate(t["forecast"]) if not f)
+        cut = next(j for j, r in enumerate(t["rows"]) if r["name"].lower().startswith("total benefit expenditure"))
+        for r in t["rows"][:cut]:
+            v = r["values"][i]
+            if r["name"].lower().startswith("of which") or not v:
+                continue
+            add("Benefit", r["name"], "DWP benefit spending, Great Britain", go("welfare", "welfare-filter", r["name"]), v * 1e6, t["years"][i])
     import re
     import shutil
     folder = OUT.parent

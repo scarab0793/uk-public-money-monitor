@@ -425,6 +425,20 @@ def parse_dwp_table(df):
     return dict(title=title, unit=unit, years=years, forecast=[f.startswith("forecast") for f in flags], rows=rows)
 
 
+def dwp_total_check(t):
+    """The benefit lines above 'Total benefit expenditure' must add up to it in every year."""
+    rows = t["rows"]
+    cut = next(i for i, r in enumerate(rows) if r["name"].lower().startswith("total benefit expenditure"))
+    items = [r for r in rows[:cut] if not r["name"].lower().startswith("of which")]
+    bad = []
+    for i, y in enumerate(t["years"]):
+        total = rows[cut]["values"][i]
+        s = sum(r["values"][i] or 0 for r in items)
+        if total is None or abs(s - total) > max(1, abs(total) * 0.001):
+            bad.append(y)
+    return dict(check="benefit lines sum to the published total", years_checked=len(t["years"]), years_mismatched=bad)
+
+
 def import_dwp_benefits():
     q = requests.get(GOVUK + "/api/search.json", headers=UA, timeout=60, params={
         "q": "Benefit expenditure and caseload tables", "count": 40, "fields": "title,link"}).json()
@@ -446,11 +460,15 @@ def import_dwp_benefits():
             names = {x["name"] for x in tables["Table_1a"]["rows"]}
             if len(tables["Table_1a"]["rows"]) < 30 or not any(n.startswith("State Pension") for n in names) or "nominal" not in tables["Table_1a"]["unit"]:
                 raise RuntimeError(f"Table 1a failed validation ({len(tables['Table_1a']['rows'])} rows, unit {tables['Table_1a']['unit']!r})")
+            checks = {k: dwp_total_check(tables[k]) for k in ("Table_1a", "Table_1b")}
+            for k, c in checks.items():
+                if c["years_mismatched"]:
+                    raise RuntimeError(f"{k}: benefit lines do not add up to the published total in {c['years_mismatched']}")
             notes = [" ".join(str(v).strip() for v in row if isinstance(v, str) and v.strip()) for row in book["Notes"].itertuples(index=False)] if "Notes" in book else []
             notes = [n for n in notes if n][:120]
             return dict(
                 dataset=f"{r['title']}: {att.get('title', '').strip()}", publisher="Department for Work and Pensions", page=GOVUK + r["link"],
-                attachment=att["url"], release_updated_at=doc.get("public_updated_at"), tables=tables, notes=notes,
+                attachment=att["url"], release_updated_at=doc.get("public_updated_at"), tables=tables, checks=checks, notes=notes,
                 caveats=["Great Britain DWP benefit expenditure; Northern Ireland social security is paid by the NI Executive and is not included in these tables.",
                          "Benefits devolved to Scotland are counted by DWP only until the Scottish Government took them over.",
                          "Years marked as forecast are DWP projections at the time of the fiscal event, not spending.",

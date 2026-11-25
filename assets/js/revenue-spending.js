@@ -24,12 +24,12 @@
     svg.setAttribute('viewBox', `0 0 ${w} ${h + 30}`); svg.setAttribute('width', '100%'); svg.setAttribute('role', 'img'); svg.setAttribute('aria-label', label);
     const bw = (w - pad) / points.length, zero = pad / 2 + (max / span) * h;
     const top = document.createElementNS(ns, 'text'); top.setAttribute('x', 0); top.setAttribute('y', 12); top.setAttribute('fill', '#b9c7d9'); top.setAttribute('font-size', '12'); top.textContent = 'max ' + fmt(max); svg.append(top);
-    points.forEach(([lab, v], i) => {
+    points.forEach(([lab, v, dim], i) => {
       const x = pad + i * bw;
       if (v != null) {
         const r = document.createElementNS(ns, 'rect'), y = v >= 0 ? zero - (v / span) * h : zero, hh = Math.abs(v / span) * h;
         r.setAttribute('x', x + 1); r.setAttribute('y', y); r.setAttribute('width', Math.max(1, bw - 2)); r.setAttribute('height', Math.max(0.5, hh));
-        r.setAttribute('fill', v >= 0 ? '#7ac5ff' : '#f2a65a');
+        r.setAttribute('fill', dim ? '#4f7fa6' : v >= 0 ? '#7ac5ff' : '#f2a65a');
         const t = document.createElementNS(ns, 'title'); t.textContent = lab + ': ' + fmt(v); r.append(t); svg.append(r);
       }
       if (i % Math.ceil(points.length / 8) === 0) {
@@ -189,5 +189,63 @@
       out, el('details', null, el('summary', { text: 'What these figures mean' }), ...d.caveats.map(c => el('p', { class: 'small', text: c })), el('p', { class: 'small', text: 'Index: UK identifiable spending per person = 100.' })));
     render();
   }
-  receipts(); tes(); regions();
+
+  // ---------------- DWP benefit expenditure and caseloads ----------------
+  async function welfare() {
+    const box = document.getElementById('welfare-body'); if (!box) return;
+    let d;
+    try { const r = await fetch('./data/welfare/benefit-expenditure-caseloads.json', { cache: 'no-store' }); if (!r.ok) throw 0; d = await r.json(); } catch (e) { box.textContent = 'Benefit expenditure data is not available yet.'; return; }
+    const T = d.tables, MEASURES = [['Table_1a', 'Spending, cash (nominal)'], ['Table_1b', 'Spending, real terms'], ['Table_1c', 'Caseload (people or awards)']];
+    const mSel = el('select', { id: 'welfare-measure' }, ...MEASURES.filter(m => T[m[0]]).map(m => el('option', { value: m[0], text: m[1] })));
+    const base = T.Table_1a, lastOut = base.years.filter((y, i) => !base.forecast[i]).pop();
+    const ySel = el('select', { id: 'welfare-year' }, ...base.years.slice().reverse().map((y, i, a) => el('option', { value: y, text: y + (base.forecast[base.years.indexOf(y)] ? ' (forecast)' : '') })));
+    ySel.value = lastOut;
+    const q = el('input', { id: 'welfare-filter', placeholder: 'Benefit name, e.g. Universal Credit, PIP, State Pension', autocomplete: 'off' });
+    const out = el('div'), chart = el('div');
+    const fmt = (v, k) => v == null ? 'Not available' : k === 'Table_1c' ? (v >= 1000 ? (v / 1000).toLocaleString('en-GB', { maximumFractionDigits: 2 }) + ' million' : Math.round(v).toLocaleString('en-GB') + ' thousand') : fmtM(v);
+    function split(t) {
+      const cut = t.rows.findIndex(r => /^total benefit expenditure/i.test(r.name));
+      const items = [];
+      (cut < 0 ? t.rows : t.rows.slice(0, cut)).forEach(r => { if (/^of which/i.test(r.name) && items.length) items[items.length - 1].parts.push(r); else items.push({ r, parts: [] }); });
+      return { items, totals: cut < 0 ? [] : t.rows.slice(cut).filter(r => !r.section) };
+    }
+    function showChart(r, k) {
+      const t = T[k];
+      chart.replaceChildren(el('h3', { text: r.name + ' over time' }),
+        el('p', { class: 'small', text: t.unit + ' · from ' + t.years[t.forecast.indexOf(true)] + ' the values are DWP forecasts, not spending (darker bars)' }),
+        bars(t.years.map((y, i) => [y + (t.forecast[i] ? ' (forecast)' : ''), r.values[i], t.forecast[i]]), v => fmt(v, k), r.name + ' history'));
+    }
+    function render() {
+      const k = mSel.value, t = T[k], i = t.years.indexOf(ySel.value), f = q.value.trim().toLowerCase();
+      if (i < 0) { out.replaceChildren(el('p', { text: 'This year is not in the selected table.' })); return; }
+      const { items, totals } = split(t);
+      const shown = items.filter(x => x.r.values[i] != null && x.r.values[i] !== 0 && (!f || x.r.name.toLowerCase().includes(f) || x.parts.some(p => p.name.toLowerCase().includes(f))))
+        .sort((a, b) => b.r.values[i] - a.r.values[i]);
+      const max = Math.max(1, ...shown.map(x => x.r.values[i]));
+      const list = el('div');
+      list.append(el('p', { class: 'small' }, el('span', { class: 'badge', text: t.forecast[i] ? 'Forecast' : 'Outturn' }), document.createTextNode(' ' + t.title + ' · ' + t.unit + ' · ' + ySel.value + (t.forecast[i] ? ' is a DWP forecast at the latest fiscal event, not money spent.' : ''))));
+      for (const x of shown) {
+        const v = x.r.values[i];
+        const row = el('div', { class: 'barrow', style: 'cursor:pointer', title: 'Show history' }, el('span', { class: 'barlabel', text: x.r.name + (x.r.marker ? ' ' + x.r.marker : '') }), el('span', { class: 'bar', style: 'width:' + Math.max(0.5, v / max * 100) + '%' }), el('span', { class: 'barval', text: fmt(v, k) }));
+        row.onclick = () => showChart(x.r, k);
+        list.append(row);
+        if (x.parts.length) list.append(el('details', { class: 'small' }, el('summary', { text: 'of which' }), ...x.parts.map(p => el('p', { text: p.name.replace(/^of which /i, '') + ': ' + fmt(p.values[i], k) }))));
+      }
+      const hidden = items.length - shown.length;
+      if (!f && hidden) list.append(el('p', { class: 'small', text: hidden + ' benefits with no spending or no published figure in this year are not listed (for example benefits that had ended or not yet started, or that moved to HMRC or the Scottish Government).' }));
+      if (!f) for (const r of totals) if (r.values[i] != null) list.append(el('p', null, el('strong', { text: r.name + ': ' }), document.createTextNode(fmt(r.values[i], k))));
+      out.replaceChildren(list);
+    }
+    mSel.onchange = () => { chart.replaceChildren(); render(); }; ySel.onchange = render; q.oninput = render;
+    box.replaceChildren(
+      el('p', { class: 'small', text: 'Source: ' }, ext(d.page, 'DWP ' + d.dataset), document.createTextNode(' · release ' + new Date(d.release_updated_at).toLocaleDateString('en-GB') + ' · '), ext(d.attachment, 'Download the official tables')),
+      el('div', { class: 'filters' }, el('div', null, el('label', { for: 'welfare-measure', text: 'Measure' }), mSel), el('div', null, el('label', { for: 'welfare-year', text: 'Financial year' }), ySel), el('div', null, el('label', { for: 'welfare-filter', text: 'Find a benefit' }), q)),
+      out, chart,
+      el('details', null, el('summary', { text: 'What these figures mean' }), ...d.caveats.map(c => el('p', { class: 'small', text: c })),
+        el('p', { class: 'small', text: 'Markers after a benefit name are DWP\'s: (C) contributory, (IR) income-related, (NC / NIR) non-contributory and not income-related.' })));
+    render();
+    const t1a = split(T.Table_1a).items; const first = t1a.find(x => /^universal credit$/i.test(x.r.name));
+    if (first) showChart(first.r, 'Table_1a');
+  }
+  receipts(); tes(); regions(); welfare();
 })();
