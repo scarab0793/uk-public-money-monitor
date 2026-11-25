@@ -611,6 +611,9 @@ def import_nhs_trust_accounts():
     r = requests.get(TAC_PAGE, headers=UA, timeout=60)
     r.raise_for_status()
     links = tac_links(r.text)
+    if not links:
+        title = re.search(r"<title>(.*?)</title>", r.text, re.S)
+        raise RuntimeError(f"No TAC files found on the page (HTTP {r.status_code}, {len(r.text)} bytes, {r.text.count('.xlsx')} .xlsx mentions, title {title.group(1).strip()[:80] if title else None!r})")
     prev = json.loads(OUT["nhs-trust-accounts"].read_text()) if OUT["nhs-trust-accounts"].exists() else {"years": {}}
     years, errors = dict(prev.get("years", {})), []
     for fy in sorted(links, reverse=True)[:5]:
