@@ -1,10 +1,15 @@
 {
-  "attempted_at": "2026-11-24T20:19:32.825403+00:00",
-  "updated_count": 3,
+  "attempted_at": "2026-11-25T19:33:09.671510+00:00",
+  "updated_count": 2,
   "status": {
     "hf6x": "updated",
-    "anbv": "updated",
+    "anbv": "unavailable",
     "anlp": "updated"
   },
-  "errors": {}
+  "errors": {
+    "anbv": {
+      "type": "ValueError",
+      "message": "source unavailable"
+    }
+  }
 }
