@@ -1,0 +1,59 @@
+{
+ "fields": [
+  "name",
+  "detail_index",
+  "link_suffix",
+  "amount_gbp",
+  "period"
+ ],
+ "files": [
+  {
+   "type": "Major project",
+   "file": "major-project.json",
+   "count": 189,
+   "bytes": 21874
+  },
+  {
+   "type": "Major project (historical)",
+   "file": "major-project-historical.json",
+   "count": 316,
+   "bytes": 31672
+  },
+  {
+   "type": "Overseas aid project",
+   "file": "overseas-aid-project.json",
+   "count": 32045,
+   "bytes": 4052152
+  },
+  {
+   "type": "Supplier",
+   "file": "supplier.json",
+   "count": 2446,
+   "bytes": 262030
+  },
+  {
+   "type": "Public buyer",
+   "file": "public-buyer.json",
+   "count": 1125,
+   "bytes": 95440
+  },
+  {
+   "type": "Council",
+   "file": "council.json",
+   "count": 296,
+   "bytes": 15121
+  },
+  {
+   "type": "Tax",
+   "file": "tax.json",
+   "count": 46,
+   "bytes": 3682
+  },
+  {
+   "type": "Nation or region",
+   "file": "nation-or-region.json",
+   "count": 13,
+   "bytes": 670
+  }
+ ]
+}
