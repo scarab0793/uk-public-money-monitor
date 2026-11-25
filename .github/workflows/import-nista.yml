@@ -6,6 +6,7 @@ on:
   push:
     paths:
       - 'scripts/fetch_nista.py'
+      - 'scripts/verify_gmpp_2025_26.py'
       - '.github/workflows/import-nista.yml'
 permissions:
   contents: write
@@ -23,12 +24,17 @@ jobs:
           python-version: '3.12'
       - name: Download and validate official project data
         run: python -u scripts/fetch_nista.py
+      - name: Verify 2025-26 records against the official NISTA CSV
+        run: |
+          pip install requests
+          python -u scripts/verify_gmpp_2025_26.py
       - name: Commit source-backed dataset
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add data/nista-raw-projects.json data/nista-2024-25-projects.json
+          git add data/nista-raw-projects.json data/nista-2024-25-projects.json data/nista-2025-26-official.json data/audits
           if ! git diff --cached --quiet; then
             git commit -m "data: refresh official NISTA major projects"
-            git push
+            for i in 1 2 3 4; do git pull -q --rebase origin main && git push -q origin HEAD:main && exit 0; sleep $((i*10)); done
+            exit 1
           fi
