@@ -699,6 +699,9 @@ def header_frame(df):
     return df.iloc[1:]
 
 
+GRANT_RECIPIENT_MIN = 100000  # recipients listed on the site; smaller recipients are counted in the totals only
+
+
 def import_grants():
     q = requests.get(GOVUK + "/api/search.json", headers=UA, timeout=60, params={"q": "Government grants statistics", "count": 30, "fields": "title,link"}).json()
     hits = [r for r in q.get("results", []) if re.match(r"government grants statistics \d{4} to \d{4}$", r.get("title", ""), re.I)
@@ -756,14 +759,15 @@ def import_grants():
                            txt(d.get("Grant Programme:Title"))[:160], str(d.get("Award Date") or "")[:10], d.get("Allocation Method") if isinstance(d.get("Allocation Method"), str) else None, key])
     if len(schemes) < 100 or n_awards < 1000 or len(t1["rows"]) < 10:
         raise RuntimeError(f"Grants register failed validation ({len(schemes)} schemes, {n_awards} awards, {len(t1['rows'])} departments)")
-    rec_rows = sorted(([k, v["name"], v["coh"], v["chc"], round(v["total"], 2), v["n"], sorted(f for f in v["funders"] if f)[:6], sorted(s for s in v["schemes"] if s)[:6]]
+    rec_rows = sorted(([k, v["name"], v["coh"], v["chc"], round(v["total"], 2), v["n"], sorted(f for f in v["funders"] if f)[:3], sorted(s for s in v["schemes"] if s)[:3]]
                        for k, v in recipients.items()), key=lambda x: -x[4])
     awards.sort(key=lambda a: -a[0])
     return dict(dataset=r["title"], publisher="Cabinet Office (Government Grants Information System)", page=GOVUK + r["link"], attachment=reg_att["url"],
                 release_updated_at=doc.get("public_updated_at"), financial_year=fy, departments=t1,
                 schemes=dict(fields=["code", "title", "funder", "managed_by", "fy_value_gbp", "allocation_method", "cofog"], rows=sorted(schemes, key=lambda s: -(s[4] or 0))),
-                recipients=dict(fields=["key", "name", "company_number", "charity_number", "awarded_gbp", "awards", "funders", "schemes"], rows=rec_rows[:20000], total_recipients=len(rec_rows)),
-                awards=dict(fields=["amount_gbp", "title", "recipient", "funder", "scheme", "award_date", "allocation_method", "recipient_key"], rows=awards[:3000], total_awards=n_awards),
+                recipients=dict(fields=["key", "name", "company_number", "charity_number", "awarded_gbp", "awards", "funders", "schemes"], rows=[x for x in rec_rows if x[4] >= GRANT_RECIPIENT_MIN], total_recipients=len(rec_rows),
+                                min_awarded_gbp=GRANT_RECIPIENT_MIN, total_awarded_gbp=round(sum(x[4] for x in rec_rows), 2)),
+                awards=dict(fields=["amount_gbp", "title", "recipient", "funder", "scheme", "award_date", "allocation_method", "recipient_key"], rows=awards[:2000], total_awards=n_awards),
                 caveats=["Grant spending by department (Table 1) is money paid in each financial year, in £ million.",
                          "Scheme values are the scheme's spending in the financial year. Award amounts are the value of each award as recorded, which can cover several years and is not the same as money paid in this year.",
                          "Recipients are grouped only by their published identifier (Companies House, charity or other register). Organisations without an identifier are not merged with others of the same name.",
