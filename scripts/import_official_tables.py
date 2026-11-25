@@ -334,13 +334,13 @@ def parse_header_table(df, key="Authority"):
 
 
 def import_council_tax():
-    org = "ministry-of-housing-communities-local-government"
     q = requests.get(GOVUK + "/api/search.json", headers=UA, timeout=60, params={
-        "q": "Council Tax levels set by local authorities in England", "filter_organisations": org, "order": "-public_timestamp", "count": 20, "fields": "title,link"}).json()
+        "q": "Council Tax levels set by local authorities in England", "count": 40, "fields": "title,link"}).json()
+    hits = [r for r in q.get("results", []) if re.match(r"council tax levels set by local authorities in england \d{4} to \d{4}$", r.get("title", ""), re.I)
+            and r.get("link", "").startswith("/government/statistics/")]
+    hits.sort(key=lambda r: r["title"][-12:], reverse=True)  # newest financial year first
     errors = []
-    for r in q.get("results", []):
-        if not re.match(r"council tax levels set by local authorities in england \d{4} to \d{4}$", r.get("title", ""), re.I):
-            continue
+    for r in hits:
         try:
             doc = content(r["link"])
             att = attachment(doc, r"Tables 1 to 9|Tables_1-9")
