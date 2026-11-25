@@ -1,7 +1,8 @@
 """Diagnostic: list GOV.UK publication attachments and preview spreadsheet structure.
 Usage: python explore_govuk.py <govuk path> [attachment-substring ...]"""
 import io, sys, json, requests, pandas as pd
-path = sys.argv[1]; wanted = [w.lower() for w in sys.argv[2:]]
+path = sys.argv[1]; full = [a[6:] for a in sys.argv[2:] if a.startswith("sheet=")]
+wanted = [w.lower() for w in sys.argv[2:] if not w.startswith("sheet=")]
 if path.startswith("search:"):
     q = requests.get("https://www.gov.uk/api/search.json", params={"q": path[7:], "count": 15, "fields": "title,link,public_timestamp,format"}, timeout=60).json()
     for r in q.get("results", []):
@@ -29,6 +30,16 @@ for a in docs:
         print(raw[:3000].decode("utf-8", "replace")); continue
     book = pd.ExcelFile(io.BytesIO(raw), engine="odf" if url.lower().endswith(".ods") else None)
     for s in book.sheet_names:
+        if full and s in full:
+            df = book.parse(s, header=None)
+            print("--- FULL SHEET", s, df.shape)
+            for i in range(len(df)):
+                cells = [f"{j}:{str(v)[:90]}" for j, v in enumerate(df.iloc[i].tolist()) if str(v) != "nan"]
+                if cells:
+                    print("ROW", i, " | ".join(cells)[:4000])
+            continue
+        if full:
+            continue
         df = book.parse(s, header=None, nrows=14)
         print("--- SHEET", s, df.shape)
         print(df.iloc[:14, :12].to_string(max_colwidth=28))
