@@ -1,0 +1,36 @@
+name: Refresh HMRC receipts and Treasury spending tables
+on:
+  schedule:
+    - cron: '30 7 * * *'
+  push:
+    branches: [main]
+    paths:
+      - 'scripts/import_official_tables.py'
+      - '.github/workflows/refresh-official-tables.yml'
+  workflow_dispatch:
+permissions:
+  contents: write
+concurrency:
+  group: official-tables
+  cancel-in-progress: false
+jobs:
+  refresh:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: {python-version: '3.12'}
+      - run: pip install requests pandas odfpy openpyxl
+      - run: python -m unittest tests.test_official_tables -v
+      - run: python -u scripts/import_official_tables.py
+      - name: Publish
+        if: always()
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add data/official-tables-report.json data/hmrc data/treasury 2>/dev/null || true
+          if git diff --cached --quiet; then echo "No changes"; exit 0; fi
+          git commit -q -m "data: refresh HMRC receipts and Treasury spending tables"
+          for i in 1 2 3 4; do git pull -q --rebase origin main && git push -q origin HEAD:main && exit 0; sleep $((i*10)); done
+          exit 1
