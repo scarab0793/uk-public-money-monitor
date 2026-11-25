@@ -1,19 +1,24 @@
 {
+ "council-tax": {
+  "checked_at": "2026-11-25T17:43:31Z",
+  "error": "No Council Tax levels release found",
+  "status": "failed_kept_previous"
+ },
  "cra": {
   "attachment": "https://assets.publishing.service.gov.uk/media/6afb14bb9be17c68c69ca90c/CRA_2026_Chapter_A_tables_.xlsx",
-  "checked_at": "2026-11-25T17:21:28Z",
+  "checked_at": "2026-11-25T17:43:31Z",
   "release_updated_at": "2026-11-18T09:30:02+00:00",
-  "status": "updated"
+  "status": "unchanged"
  },
  "hmrc-receipts": {
   "attachment": "https://assets.publishing.service.gov.uk/media/6af706889be17c68c69ca800/NS_Table.ods",
-  "checked_at": "2026-11-25T17:21:28Z",
+  "checked_at": "2026-11-25T17:43:31Z",
   "release_updated_at": "2026-11-20T07:00:02+00:00",
   "status": "unchanged"
  },
  "pss-tes": {
   "attachment": "https://assets.publishing.service.gov.uk/media/6af4752ba4004bdbe54e5500/PSS_Nov_2026_TES.xlsx",
-  "checked_at": "2026-11-25T17:21:28Z",
+  "checked_at": "2026-11-25T17:43:31Z",
   "release_updated_at": "2026-11-18T09:30:01+00:00",
   "status": "unchanged"
  }
