@@ -608,12 +608,18 @@ def parse_tac(book, kind):
 
 
 def import_nhs_trust_accounts():
-    r = requests.get(TAC_PAGE, headers=UA, timeout=60)
-    r.raise_for_status()
-    links = tac_links(r.text)
-    if not links:
-        title = re.search(r"<title>(.*?)</title>", r.text, re.S)
-        raise RuntimeError(f"No TAC files found on the page (HTTP {r.status_code}, {len(r.text)} bytes, {r.text.count('.xlsx')} .xlsx mentions, title {title.group(1).strip()[:80] if title else None!r})")
+    curated = json.loads(Path("data/nhs/tac-sources.json").read_text())["years"]
+    links, page_note = dict(curated), "curated list (data/nhs/tac-sources.json)"
+    try:
+        r = requests.get(TAC_PAGE, headers=UA, timeout=60)
+        found = tac_links(r.text) if r.status_code == 200 else {}
+        if found:
+            links.update(found)
+            page_note = "NHS England page"
+        else:
+            page_note += f"; the page returned HTTP {r.status_code} to an automated request"
+    except requests.RequestException as exc:
+        page_note += f"; page not reachable ({exc.__class__.__name__})"
     prev = json.loads(OUT["nhs-trust-accounts"].read_text()) if OUT["nhs-trust-accounts"].exists() else {"years": {}}
     years, errors = dict(prev.get("years", {})), []
     for fy in sorted(links, reverse=True)[:5]:
@@ -637,7 +643,7 @@ def import_nhs_trust_accounts():
         raise RuntimeError("; ".join(errors) or "No TAC data found")
     latest = max(years)
     return dict(dataset="NHS providers: trust accounts consolidation (TAC) data", publisher="NHS England", page=TAC_PAGE,
-                attachment=years[latest]["files"].get("trust"), release_updated_at=None, errors=errors, unit="£ thousand, nominal", tables=TAC_TABLES,
+                attachment=years[latest]["files"].get("trust"), release_updated_at=None, errors=errors, links_from=page_note, unit="£ thousand, nominal", tables=TAC_TABLES,
                 caveats=["Audited annual accounts data of NHS trusts and NHS foundation trusts in England, as submitted to NHS England for consolidation.",
                          "Figures are on each trust's group basis (including subsidiaries and charities it consolidates) and before NHS England's consolidation adjustments, so trusts cannot be added up to an NHS total without double counting payments between NHS bodies.",
                          "Operating expenses are shown as negative numbers in the statement of comprehensive income, as in the accounts.",

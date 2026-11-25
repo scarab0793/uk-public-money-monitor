@@ -1,0 +1,32 @@
+{
+ "page": "https://www.england.nhs.uk/financial-accounting-and-reporting/nhs-providers-tac-data-publications/",
+ "checked_at": "2026-11-25",
+ "note": "File links copied from the NHS England page. The page refuses automated requests from GitHub Actions, so new years are added here when NHS England publishes them; the files themselves download normally.",
+ "years": {
+  "2020-21": {
+   "illustrative": "https://www.england.nhs.uk/wp-content/uploads/2022/07/2020-21-NHS-Provider-TAC-Illustrative-file.xlsx",
+   "trust": "https://www.england.nhs.uk/wp-content/uploads/2022/07/TAC-data-published-in-NHS-trust-accounts-for-2020-21.xlsx",
+   "foundation": "https://www.england.nhs.uk/wp-content/uploads/2022/07/TAC-data-published-in-NHS-foundation-trust-accounts-for-2020-21.xlsx"
+  },
+  "2021-22": {
+   "illustrative": "https://www.england.nhs.uk/wp-content/uploads/2023/07/2021-22-NHS-provider-TAC-ilustrative-file.xlsx",
+   "trust": "https://www.england.nhs.uk/wp-content/uploads/2023/07/TAC-data-published-in-NHS-trusts-accounts-for-2021-22.xlsx",
+   "foundation": "https://www.england.nhs.uk/wp-content/uploads/2023/07/TAC-data-published-in-NHS-foundation-trusts-accounts-for-2021-22.xlsx"
+  },
+  "2022-23": {
+   "illustrative": "https://www.england.nhs.uk/wp-content/uploads/2024/04/202223-NHS-Provider-TAC-Illustrative-File.xlsx",
+   "trust": "https://www.england.nhs.uk/wp-content/uploads/2024/04/TAC-data-published-in-NHS-trusts-accounts-for-2022-23.xlsx",
+   "foundation": "https://www.england.nhs.uk/wp-content/uploads/2024/04/TAC-data-published-in-NHS-foundation-trusts-accounts-for-2022-23.xlsx"
+  },
+  "2023-24": {
+   "illustrative": "https://www.england.nhs.uk/wp-content/uploads/2025/01/2023-24-NHS-Provider-TAC-illustrative-file.xlsx",
+   "trust": "https://www.england.nhs.uk/wp-content/uploads/2025/01/TAC-data-published-in-NHS-trusts-accounts-for-2023-24.xlsx",
+   "foundation": "https://www.england.nhs.uk/wp-content/uploads/2025/01/TAC-data-published-in-NHS-foundation-trusts-accounts-for-2023-24.xlsx"
+  },
+  "2024-25": {
+   "illustrative": "https://www.england.nhs.uk/wp-content/uploads/2026/04/2024-25-NHS-Provider-TAC-illustrative-file.xlsx",
+   "trust": "https://www.england.nhs.uk/wp-content/uploads/2026/04/TAC-data-published-in-NHS-trusts-accounts-for-2024-25.xlsx",
+   "foundation": "https://www.england.nhs.uk/wp-content/uploads/2026/04/TAC-data-published-in-NHS-foundation-trusts-accounts-for-2024-25.xlsx"
+  }
+ }
+}
