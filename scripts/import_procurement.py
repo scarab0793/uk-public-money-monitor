@@ -206,6 +206,7 @@ class Importer:
         except Exception as exc:
             rep["days_failed"] += 1
             rep["errors"].append(f"{day}: {exc}")
+            print(f"{source} {day}: FAILED {exc}", flush=True)
             entry = self.state["sources"][source]["days"].setdefault(str(day), {})
             # A day that was already archived completely stays complete; the refresh error is recorded.
             if entry.get("status") != "complete":
@@ -222,6 +223,7 @@ class Importer:
                                                  "package": meta, "release": rel, **({"problem": problem} if problem else {})}
         rep["pages"] += pages
         rep["releases_fetched"] += len(releases)
+        print(f"{source} {day}: {len(releases)} releases, {pages} pages{' (partial day)' if partial else ''}", flush=True)
         rep["days_partial" if partial else "days_complete"] += 1
         self.state["sources"][source]["days"][str(day)] = dict(status="partial" if partial else "complete", releases=len(releases), pages=pages,
                                                                 fetched_at=fetched_at, window_end=iso(end))
