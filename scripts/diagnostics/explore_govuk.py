@@ -32,3 +32,7 @@ for a in docs:
         df = book.parse(s, header=None, nrows=14)
         print("--- SHEET", s, df.shape)
         print(df.iloc[:14, :12].to_string(max_colwidth=28))
+        for i in range(min(len(df), 10)):
+            cells = [f"{j}:{str(v)[:70]}" for j, v in enumerate(df.iloc[i].tolist()) if str(v) != "nan"]
+            if cells:
+                print("ROW", i, " | ".join(cells)[:3000])
