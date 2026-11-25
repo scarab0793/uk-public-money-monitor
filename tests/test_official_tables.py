@@ -143,6 +143,20 @@ class ParserTests(unittest.TestCase):
                               ["Alpha NHS Trust", "TAC02 SoCI", 1, "A02CY01", 12, "SCI0100A", 7]])
         self.assertEqual(ot.parse_tac({"All Data": older}, "foundation")[0]["values"], {"A02CY01": {"SCI0100A": 7.0}})
 
+    def test_grants_table1_blocks_and_ids(self):
+        df = pd.DataFrame([["1 Grant spending by department", N, N, N, N, N, N],
+                           [N, "Formula", N, "General", N, "Total", N],
+                           ["Department", "2023/24", "2024/25", "2023/24", "2024/25", "2023/24", "2024/25"],
+                           ["DfE", 77714, 84179, 5585, 3660, 83299, 87838],
+                           ["HMT", "[x]", 1, 2, 3, N, 4]])
+        t = ot.parse_grants_table1(df)
+        self.assertEqual(t["years"], ["2023-24", "2024-25"])
+        self.assertEqual(t["rows"][0]["values"]["total"], [83299.0, 87838.0])
+        self.assertEqual(t["rows"][1]["values"]["formula"], [None, 1.0])
+        self.assertEqual(ot.grant_id(10100538.0, 8), "10100538")
+        self.assertEqual(ot.grant_id("123", 8), "00000123")
+        self.assertIsNone(ot.grant_id(float("nan"), 8))
+
 
 if __name__ == "__main__":
     unittest.main()

@@ -30,7 +30,8 @@ OUT = {"hmrc-receipts": Path("data/hmrc/receipts.json"), "pss-tes": Path("data/t
        "cra": Path("data/treasury/country-regional-analysis.json"), "council-tax": Path("data/local-government/council-tax-england.json"),
        "dwp-benefits": Path("data/welfare/benefit-expenditure-caseloads.json"),
        "la-outturn": Path("data/local-government/revenue-outturn-england.json"),
-       "nhs-trust-accounts": Path("data/nhs/trust-accounts.json")}
+       "nhs-trust-accounts": Path("data/nhs/trust-accounts.json"),
+       "grants": Path("data/grants/government-grants.json")}
 REPORT = Path("data/official-tables-report.json")
 
 
@@ -48,10 +49,10 @@ def attachment(doc, pattern):
     raise RuntimeError(f"No attachment matching {pattern!r} on {doc.get('base_path')}")
 
 
-def read_book(url):
+def read_book(url, engine=None):
     r = requests.get(url, headers=UA, timeout=300)
     r.raise_for_status()
-    engine = "odf" if url.lower().endswith(".ods") else "openpyxl"
+    engine = engine or ("odf" if url.lower().endswith(".ods") else "openpyxl")
     return pd.read_excel(io.BytesIO(r.content), sheet_name=None, header=None, engine=engine)
 
 
@@ -651,10 +652,127 @@ def import_nhs_trust_accounts():
                          "Trusts that merged or were created in a year appear only for the years they existed; a missing trust is not a zero."],
                 years=dict(sorted(years.items())))
 
+def parse_grants_table1(df):
+    """Table 1: department rows; Formula, General and Total blocks of financial-year columns, £ million."""
+    hdr = next(i for i in range(min(len(df), 15)) if str(df.iat[i, 0]).strip().lower() == "department")
+    blocks, current = [], None
+    for j in range(1, df.shape[1]):
+        b = df.iat[hdr - 1, j]
+        if isinstance(b, str) and b.strip():
+            current = b.strip()
+        y = str(df.iat[hdr, j]).strip()
+        if current and re.match(r"^\d{4}/\d{2}$", y):
+            blocks.append((j, current.lower(), f"{y[:4]}-{y[5:]}"))
+    years = sorted({y for _, _, y in blocks})
+    rows = []
+    for i in range(hdr + 1, len(df)):
+        dept = df.iat[i, 0]
+        if not isinstance(dept, str) or not dept.strip():
+            continue
+        if re.match(r"^(source|note)", dept.strip(), re.I):
+            break
+        vals = {}
+        for j, b, y in blocks:
+            vals.setdefault(b, {})[y] = cell_number(df.iat[i, j])
+        rows.append(dict(department=dept.strip(), values={b: [v.get(y) for y in years] for b, v in vals.items()}))
+    return dict(unit="£ million", years=years, rows=rows)
+
+
+def txt(v):
+    return "" if v is None or (isinstance(v, float) and pd.isna(v)) else str(v).strip()
+
+
+def grant_id(v, width=0):
+    if v is None or (isinstance(v, float) and pd.isna(v)):
+        return None
+    t = str(v).strip()
+    if t.endswith(".0"):
+        t = t[:-2]
+    if not t or t.lower() in ("nan", "none", "n/a", "0"):
+        return None
+    return t.zfill(width) if width and t.isdigit() else t
+
+
+def header_frame(df):
+    df = df.copy()
+    df.columns = [str(c).strip() for c in df.iloc[0]]
+    return df.iloc[1:]
+
+
+def import_grants():
+    q = requests.get(GOVUK + "/api/search.json", headers=UA, timeout=60, params={"q": "Government grants statistics", "count": 30, "fields": "title,link"}).json()
+    hits = [r for r in q.get("results", []) if re.match(r"government grants statistics \d{4} to \d{4}$", r.get("title", ""), re.I)]
+    hits.sort(key=lambda r: r["title"][-12:], reverse=True)
+    if not hits:
+        raise RuntimeError("No government grants statistics release found")
+    r = hits[0]
+    doc = content(r["link"])
+    m = re.search(r"(\d{4}) to (\d{4})$", r["title"])
+    fy = f"{m.group(1)}-{m.group(2)[2:]}"
+    t1 = parse_grants_table1(read_book(attachment(doc, r"statistical tables")["url"])["Table_1"])
+    reg_att = attachment(doc, r"Grants Register")
+    book = read_book(reg_att["url"], engine="calamine")
+    sch = header_frame(book["#Schemes"])
+    schemes = []
+    for row in sch.itertuples(index=False):
+        d = dict(zip(sch.columns, row))
+        v = cell_number(d.get("FY value"))
+        if not isinstance(d.get("Grant Programme:Title"), str):
+            continue
+        schemes.append([d.get("Grant Programme:Code"), d["Grant Programme:Title"].strip(), (d.get("Funding Org:Name") or "").strip(),
+                        (d.get("Managed by: Organisation Name") or "").strip() if isinstance(d.get("Managed by: Organisation Name"), str) else None,
+                        v, d.get("Allocation method") if isinstance(d.get("Allocation method"), str) else None,
+                        d.get("COFOG: Sector type") if isinstance(d.get("COFOG: Sector type"), str) else None])
+    recipients, awards, n_awards = {}, [], 0
+    for sheet, df in book.items():
+        if sheet.startswith("#") or sheet == "Meta" or df.shape[1] < 20:
+            continue
+        a = header_frame(df)
+        if "Amount Awarded" not in a.columns:
+            continue
+        for row in a.itertuples(index=False):
+            d = dict(zip(a.columns, row))
+            amt = cell_number(d.get("Amount Awarded"))
+            name = d.get("Recipient Org:Name")
+            if amt is None or not isinstance(name, str):
+                continue
+            n_awards += 1
+            rid = txt(d.get("Recipient Org:Identifier"))
+            coh = grant_id(d.get("Recipient Org:Company Number"), 8)
+            chc = grant_id(d.get("Recipient Org:Charity Number"))
+            if rid.upper().startswith("GB-COH-"):
+                coh = coh or rid[7:].strip().zfill(8)
+            # Group by a published identifier only; awards without one are kept apart per identifier-less name.
+            key = ("GB-COH-" + coh) if coh else rid if rid and not rid.startswith("360G-") else f"{rid or 'noid'}|{name.strip().casefold()}"
+            rec = recipients.setdefault(key, dict(name=name.strip(), coh=None, chc=None, total=0.0, n=0, funders=set(), schemes=set()))
+            rec["total"] += amt
+            rec["n"] += 1
+            rec["funders"].add(txt(d.get("Funding Org:Name")))
+            rec["schemes"].add(txt(d.get("Grant Programme:Title")))
+            rec["coh"] = rec["coh"] or coh
+            rec["chc"] = rec["chc"] or chc
+            awards.append([amt, txt(d.get("Title"))[:160], name.strip(), txt(d.get("Funding Org:Name")),
+                           txt(d.get("Grant Programme:Title"))[:160], str(d.get("Award Date") or "")[:10], d.get("Allocation Method") if isinstance(d.get("Allocation Method"), str) else None, key])
+    if len(schemes) < 100 or n_awards < 1000 or len(t1["rows"]) < 10:
+        raise RuntimeError(f"Grants register failed validation ({len(schemes)} schemes, {n_awards} awards, {len(t1['rows'])} departments)")
+    rec_rows = sorted(([k, v["name"], v["coh"], v["chc"], round(v["total"], 2), v["n"], sorted(f for f in v["funders"] if f)[:6], sorted(s for s in v["schemes"] if s)[:6]]
+                       for k, v in recipients.items()), key=lambda x: -x[4])
+    awards.sort(key=lambda a: -a[0])
+    return dict(dataset=r["title"], publisher="Cabinet Office (Government Grants Information System)", page=GOVUK + r["link"], attachment=reg_att["url"],
+                release_updated_at=doc.get("public_updated_at"), financial_year=fy, departments=t1,
+                schemes=dict(fields=["code", "title", "funder", "managed_by", "fy_value_gbp", "allocation_method", "cofog"], rows=sorted(schemes, key=lambda s: -(s[4] or 0))),
+                recipients=dict(fields=["key", "name", "company_number", "charity_number", "awarded_gbp", "awards", "funders", "schemes"], rows=rec_rows[:20000], total_recipients=len(rec_rows)),
+                awards=dict(fields=["amount_gbp", "title", "recipient", "funder", "scheme", "award_date", "allocation_method", "recipient_key"], rows=awards[:3000], total_awards=n_awards),
+                caveats=["Grant spending by department (Table 1) is money paid in each financial year, in £ million.",
+                         "Scheme values are the scheme's spending in the financial year. Award amounts are the value of each award as recorded, which can cover several years and is not the same as money paid in this year.",
+                         "Recipients are grouped only by their published identifier (Companies House, charity or other register). Organisations without an identifier are not merged with others of the same name.",
+                         "Formula grants (for example to councils and schools) are mostly shown as totals by department; the register lists awards only where departments publish them.",
+                         "Covers UK government departments' grants as reported to the Government Grants Information System; devolved governments' grants are not included."])
+
 
 IMPORTERS = {"hmrc-receipts": import_hmrc_receipts, "pss-tes": import_pss, "cra": import_cra, "council-tax": import_council_tax,
              "dwp-benefits": import_dwp_benefits, "la-outturn": import_la_outturn,
-             "nhs-trust-accounts": import_nhs_trust_accounts}
+             "nhs-trust-accounts": import_nhs_trust_accounts, "grants": import_grants}
 
 
 def main(names):
