@@ -701,7 +701,8 @@ def header_frame(df):
 
 def import_grants():
     q = requests.get(GOVUK + "/api/search.json", headers=UA, timeout=60, params={"q": "Government grants statistics", "count": 30, "fields": "title,link"}).json()
-    hits = [r for r in q.get("results", []) if re.match(r"government grants statistics \d{4} to \d{4}$", r.get("title", ""), re.I)]
+    hits = [r for r in q.get("results", []) if re.match(r"government grants statistics \d{4} to \d{4}$", r.get("title", ""), re.I)
+            and r.get("link", "").startswith("/government/statistics/") and "/announcements/" not in r.get("link", "")]
     hits.sort(key=lambda r: r["title"][-12:], reverse=True)
     if not hits:
         raise RuntimeError("No government grants statistics release found")
