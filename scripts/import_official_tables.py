@@ -29,7 +29,8 @@ UA = {"User-Agent": "uk-public-money-monitor/1.0 (+https://github.com/scarab0793
 OUT = {"hmrc-receipts": Path("data/hmrc/receipts.json"), "pss-tes": Path("data/treasury/pss-expenditure-on-services.json"),
        "cra": Path("data/treasury/country-regional-analysis.json"), "council-tax": Path("data/local-government/council-tax-england.json"),
        "dwp-benefits": Path("data/welfare/benefit-expenditure-caseloads.json"),
-       "la-outturn": Path("data/local-government/revenue-outturn-england.json")}
+       "la-outturn": Path("data/local-government/revenue-outturn-england.json"),
+       "nhs-trust-accounts": Path("data/nhs/trust-accounts.json")}
 REPORT = Path("data/official-tables-report.json")
 
 
@@ -548,9 +549,102 @@ def import_la_outturn():
                          "County and district councils in two-tier areas provide different services, so their totals are not comparable with unitary councils."],
                 years=dict(sorted(years.items())))
 
+TAC_PAGE = "https://www.england.nhs.uk/financial-accounting-and-reporting/nhs-providers-tac-data-publications/"
+TAC_TABLES = {"A02CY01": "TAC02 SoCI", "A08CY01": "TAC08 Op Exp", "A06CY01": "TAC06 Op Inc 1"}
+
+
+def tac_links(html):
+    """Pair each year's TAC data files with the illustrative file listed just before them on the NHS England page."""
+    years, illustrative = {}, None
+    for href, text in re.findall(r'<a[^>]+href="([^"]+\.xlsx)"[^>]*>(.*?)</a>', html, re.I | re.S):
+        text = re.sub(r"<[^>]+>|\s+", " ", text).strip()
+        if "illustrative" in (href + text).lower():
+            illustrative = href
+            continue
+        m = re.search(r"(\d{4})[/-](\d{2})", text) or re.search(r"(\d{4})-(\d{2})\.xlsx$", href)
+        if not m:
+            continue
+        fy = f"{m.group(1)}-{m.group(2)}"
+        kind = "foundation" if "foundation" in (href + text).lower() else "trust"
+        years.setdefault(fy, {"illustrative": illustrative})[kind] = href
+    return years
+
+
+def tac_labels(book):
+    """Subcode -> line label for the TAC sheets we publish, read from the year's illustrative form."""
+    labels = {}
+    for code, sheet in TAC_TABLES.items():
+        df = book.get(sheet)
+        if df is None:
+            continue
+        for i in range(len(df)):
+            sub, label = df.iat[i, df.shape[1] - 1], df.iat[i, 1]
+            if isinstance(sub, str) and re.match(r"^[A-Z]{3}\d{4}[A-Z]?$", sub.strip()) and isinstance(label, str):
+                labels.setdefault(code, {})[sub.strip()] = re.sub(r"\s+", " ", label).strip()
+    return labels
+
+
+def parse_tac(book, kind):
+    data = next(v for k, v in book.items() if k.strip().lower() == "all data")
+    head = [str(v).strip().lower() for v in data.iloc[0]]
+    col = {h: j for j, h in enumerate(head)}
+    plist = next((v for k, v in book.items() if "provider" in k.lower()), None)
+    meta = {}
+    if plist is not None:
+        for i in range(1, len(plist)):
+            name = plist.iat[i, 0]
+            if isinstance(name, str) and name.strip():
+                meta[name.strip().casefold()] = dict(code=str(plist.iat[i, 1]).strip(), region=str(plist.iat[i, 2]).strip(), sector=str(plist.iat[i, 3]).strip())
+    orgs = {}
+    for row in data.iloc[1:].itertuples(index=False):
+        main = str(row[col["maincode"]]).strip()
+        if main not in TAC_TABLES:
+            continue
+        name = str(row[col["organisationname"]]).strip()
+        v = cell_number(row[col["total"]])
+        o = orgs.setdefault(name, dict(name=name, type="NHS foundation trust" if kind == "foundation" else "NHS trust", **meta.get(name.casefold(), {}), values={}))
+        o["values"].setdefault(main, {})[str(row[col["subcode"]]).strip()] = v
+    return list(orgs.values())
+
+
+def import_nhs_trust_accounts():
+    r = requests.get(TAC_PAGE, headers=UA, timeout=60)
+    r.raise_for_status()
+    links = tac_links(r.text)
+    prev = json.loads(OUT["nhs-trust-accounts"].read_text()) if OUT["nhs-trust-accounts"].exists() else {"years": {}}
+    years, errors = dict(prev.get("years", {})), []
+    for fy in sorted(links, reverse=True)[:5]:
+        L = links[fy]
+        if years.get(fy, {}).get("files") == L:
+            continue
+        try:
+            labels = tac_labels(read_book(L["illustrative"])) if L.get("illustrative") else {}
+            orgs = []
+            for kind in ("trust", "foundation"):
+                if L.get(kind):
+                    orgs += parse_tac(read_book(L[kind]), kind)
+            bad = [o["name"] for o in orgs if None not in [o["values"].get("A02CY01", {}).get(c) for c in ("SCI0100A", "SCI0110A", "SCI0125A", "SCI0140A")]
+                   and abs(sum(o["values"]["A02CY01"][c] for c in ("SCI0100A", "SCI0110A", "SCI0125A")) - o["values"]["A02CY01"]["SCI0140A"]) > 2]
+            if len(orgs) < 150 or len(bad) > 5 or "A02CY01" not in labels:
+                raise RuntimeError(f"TAC {fy} failed validation ({len(orgs)} providers, {len(bad)} with income - expenses != operating result, labels {list(labels)})")
+            years[fy] = dict(files=L, labels=labels, providers=orgs, identity_failures=bad)
+        except Exception as exc:
+            errors.append(f"{fy}: {exc}")
+    if not years:
+        raise RuntimeError("; ".join(errors) or "No TAC data found")
+    latest = max(years)
+    return dict(dataset="NHS providers: trust accounts consolidation (TAC) data", publisher="NHS England", page=TAC_PAGE,
+                attachment=years[latest]["files"].get("trust"), release_updated_at=None, errors=errors, unit="£ thousand, nominal", tables=TAC_TABLES,
+                caveats=["Audited annual accounts data of NHS trusts and NHS foundation trusts in England, as submitted to NHS England for consolidation.",
+                         "Figures are on each trust's group basis (including subsidiaries and charities it consolidates) and before NHS England's consolidation adjustments, so trusts cannot be added up to an NHS total without double counting payments between NHS bodies.",
+                         "Operating expenses are shown as negative numbers in the statement of comprehensive income, as in the accounts.",
+                         "Trusts that merged or were created in a year appear only for the years they existed; a missing trust is not a zero."],
+                years=dict(sorted(years.items())))
+
 
 IMPORTERS = {"hmrc-receipts": import_hmrc_receipts, "pss-tes": import_pss, "cra": import_cra, "council-tax": import_council_tax,
-             "dwp-benefits": import_dwp_benefits, "la-outturn": import_la_outturn}
+             "dwp-benefits": import_dwp_benefits, "la-outturn": import_la_outturn,
+             "nhs-trust-accounts": import_nhs_trust_accounts}
 
 
 def main(names):

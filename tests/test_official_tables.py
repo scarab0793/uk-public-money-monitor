@@ -127,6 +127,19 @@ class ParserTests(unittest.TestCase):
         self.assertEqual(len(t["authorities"]), 2)
         self.assertEqual(t["identity_failures"], 0)
 
+    def test_tac_long_format_and_provider_metadata(self):
+        data = pd.DataFrame([["OrganisationName", "WorkSheetName", "TableID", "MainCode", "RowNumber", "SubCode", "Total"],
+                             ["Alpha NHS Trust", "TAC02 SoCI", 1, "A02CY01", 12, "SCI0100A", 100],
+                             ["Alpha NHS Trust", "TAC02 SoCI", 1, "A02CY01", 14, "SCI0125A", -90],
+                             ["Alpha NHS Trust", "TAC02 SoCI", 1, "A02PY01", 12, "SCI0100A", 80],
+                             ["Alpha NHS Trust", "TAC03 SoFP", 1, "A03CY01", 1, "SFP0100", 5]])
+        plist = pd.DataFrame([["Full name of Provider", "NHS code", "Region", "Sector"], ["Alpha NHS Trust", "RAA", "London", "Acute"]])
+        orgs = ot.parse_tac({"Intro": pd.DataFrame(), "List of providers": plist, "All data": data}, "trust")
+        self.assertEqual(len(orgs), 1)
+        self.assertEqual(orgs[0]["code"], "RAA")
+        self.assertEqual(orgs[0]["type"], "NHS trust")
+        self.assertEqual(orgs[0]["values"], {"A02CY01": {"SCI0100A": 100.0, "SCI0125A": -90.0}})
+
 
 if __name__ == "__main__":
     unittest.main()
