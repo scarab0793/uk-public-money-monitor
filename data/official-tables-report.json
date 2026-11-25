@@ -1,37 +1,42 @@
 {
  "council-tax": {
   "attachment": "https://assets.publishing.service.gov.uk/media/69de1fa63e81003ae0422508/Tables_1-9_2026-27.ods",
-  "checked_at": "2026-11-25T18:15:37Z",
+  "checked_at": "2026-11-25T18:26:51Z",
   "release_updated_at": "2026-03-25T09:30:00+00:00",
   "status": "unchanged"
  },
  "cra": {
   "attachment": "https://assets.publishing.service.gov.uk/media/6afb14bb9be17c68c69ca90c/CRA_2026_Chapter_A_tables_.xlsx",
-  "checked_at": "2026-11-25T18:15:37Z",
+  "checked_at": "2026-11-25T18:26:51Z",
   "release_updated_at": "2026-11-18T09:30:02+00:00",
   "status": "unchanged"
  },
  "dwp-benefits": {
   "attachment": "https://assets.publishing.service.gov.uk/media/6b0061d507e86cba56db977a/Benefit-Expenditure-and-Caseloads-Tables-Autumn-2026..ods",
-  "checked_at": "2026-11-25T18:15:37Z",
+  "checked_at": "2026-11-25T18:26:51Z",
   "release_updated_at": "2026-11-24T12:30:07+00:00",
   "status": "unchanged"
  },
  "hmrc-receipts": {
   "attachment": "https://assets.publishing.service.gov.uk/media/6af706889be17c68c69ca800/NS_Table.ods",
-  "checked_at": "2026-11-25T18:15:37Z",
+  "checked_at": "2026-11-25T18:26:51Z",
   "release_updated_at": "2026-11-20T07:00:02+00:00",
   "status": "unchanged"
  },
  "la-outturn": {
   "attachment": "https://assets.publishing.service.gov.uk/media/6ab26f73997a4b2950cced10/RSX_LA_Data_2025-26_data_by_LA.ods",
-  "checked_at": "2026-11-25T18:15:37Z",
+  "checked_at": "2026-11-25T18:26:51Z",
   "release_updated_at": "2026-09-17T09:30:00+01:00",
-  "status": "updated"
+  "status": "unchanged"
+ },
+ "nhs-trust-accounts": {
+  "checked_at": "2026-11-25T18:26:51Z",
+  "error": "No TAC data found",
+  "status": "failed_kept_previous"
  },
  "pss-tes": {
   "attachment": "https://assets.publishing.service.gov.uk/media/6af4752ba4004bdbe54e5500/PSS_Nov_2026_TES.xlsx",
-  "checked_at": "2026-11-25T18:15:37Z",
+  "checked_at": "2026-11-25T18:26:51Z",
   "release_updated_at": "2026-11-18T09:30:01+00:00",
   "status": "unchanged"
  }
