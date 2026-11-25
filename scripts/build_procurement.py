@@ -45,7 +45,7 @@ NOTICE_URL = {
     "contracts-finder": "https://www.contractsfinder.service.gov.uk/Notice/",
     "find-a-tender": "https://www.find-tender.service.gov.uk/Notice/",
 }
-DESC_CHARS = 300
+DESC_CHARS = 160
 IMPLAUSIBLE_GBP = 50_000_000_000  # single award above £50bn is flagged for review
 # Identifier schemes that name a legal entity in a public register.
 REGISTERED_SCHEMES = ("GB-COH", "GB-PPON", "GB-CHC", "GB-SC", "GB-NIC", "GB-MPR", "GB-EDU", "GB-NHS", "GB-UKPRN", "GB-GOR", "GB-LAE", "GB-LAS", "GB-PLA", "GB-SHPE", "GB-UKCRN")
@@ -469,6 +469,10 @@ def build(raw_dir: Path, out_dir: Path, generated_at=None):
                    fp=(p.first or "")[:10] or None, lu=(p.last or "")[:10] or None, v=p.tender_value, fw=p.fw, cat=p.cat, cpv=p.cpv,
                    reg=sorted(p.regions)[:6] or None, url=p.source_url(), aw=awards_out or None, n=p.n, am=amendments or None,
                    q=q or None)
+        # Compact rows: the id is src:ocid and standard notice links keep only their path; the page rebuilds both.
+        row.pop("id")
+        if row["url"] and row["url"].startswith(NOTICE_URL[source]):
+            row["u"] = row.pop("url")[len(NOTICE_URL[source]):]
         month_rows[month].append({k: v for k, v in row.items() if v is not None})
 
     # cross-source duplicate flags (never removed)
@@ -476,7 +480,7 @@ def build(raw_dir: Path, out_dir: Path, generated_at=None):
     by_id = {}
     for rows in month_rows.values():
         for r in rows:
-            by_id[r["id"]] = r
+            by_id[r["src"] + ":" + r["ocid"]] = r
     for ids in dup_index.values():
         srcs = {i.split(":")[0] for i in ids}
         if len(srcs) > 1:
@@ -497,7 +501,7 @@ def build(raw_dir: Path, out_dir: Path, generated_at=None):
 
     months = []
     for month, rows in sorted(month_rows.items()):
-        rows.sort(key=lambda r: (r.get("fp") or "", r["id"]), reverse=True)
+        rows.sort(key=lambda r: (r.get("fp") or "", r["src"], r["ocid"]), reverse=True)
         dump(out_dir / "notices" / f"{month}.json", dict(month=month, rows=rows))
         months.append(dict(month=month, notices=len(rows), cf=sum(r["src"] == "cf" for r in rows), fts=sum(r["src"] == "fts" for r in rows)))
 

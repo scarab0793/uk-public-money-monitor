@@ -2,6 +2,9 @@
 // Data is built by scripts/build_procurement.py into data/procurement/.
 (function () {
   'use strict';
+  const NOTICE_BASE = { cf: 'https://www.contractsfinder.service.gov.uk/Notice/', fts: 'https://www.find-tender.service.gov.uk/Notice/' };
+  // Notice rows are stored compactly: rebuild the record id and the standard notice link.
+  function expand(r, m) { r._m = m; if (!r.id) r.id = r.src + ':' + r.ocid; if (!r.url && r.u != null) r.url = NOTICE_BASE[r.src] + r.u; return r; }
   const ROOT = './data/procurement/';
   const SRC = { cf: 'Contracts Finder', fts: 'Find a Tender' };
   const STAGE = { planning: 'Planned procurement', tender: 'Open or closed tender', award: 'Awarded', contract: 'Contract signed', cancelled: 'Cancelled', terminated: 'Terminated', other: 'Other notice' };
@@ -86,7 +89,7 @@
   // ---------- notices ----------
   async function loadMonths(n) {
     const months = summary.months.map(m => m.month).filter(m => /^\d{4}-\d{2}$/.test(m)).sort().reverse().slice(0, n);
-    const data = await Promise.all(months.map(m => get('notices/' + m + '.json').then(d => d.rows.map(r => (r._m = m, r)))));
+    const data = await Promise.all(months.map(m => get('notices/' + m + '.json').then(d => d.rows.map(r => expand(r, m)))));
     return data.flat();
   }
   function maxAward(r) { return Math.max(0, ...(r.aw || []).map(a => (a[1] && a[1][1] === 'GBP' && r.fw !== 'framework') ? a[1][0] : 0)); }
@@ -221,6 +224,7 @@
     panel.scrollIntoView({ behavior: 'smooth', block: 'start' });
     try {
       const d = await get('notices/' + month + '.json');
+      d.rows.forEach(x => expand(x, month));
       const r = d.rows.find(x => x.id === id);
       if (!r) throw Error('not found');
       r._m = month;

@@ -162,7 +162,8 @@ class BuilderTests(unittest.TestCase):
         self.assertEqual((r["st"], r["n"], r["v"]), ("contract", 2, [900000, "GBP"]))
         self.assertEqual(r["aw"][0][1], [850000, "GBP"])  # award value
         self.assertEqual(r["aw"][0][2], [860000, "GBP"])  # contract value kept separately
-        self.assertEqual(r["url"], "https://www.find-tender.service.gov.uk/Notice/200-2026")
+        self.assertEqual(r["u"], "200-2026")  # stored relative to the Find a Tender notice base
+        self.assertNotIn("id", r)
         self.assertEqual(summary["sources"]["find-a-tender"]["by_year"]["2026"]["award_value_gbp"], 850000)
         # Supplier is keyed by its Companies House number (zero-padded), linked through the PPON party.
         self.assertEqual(r["aw"][0][3], [["Acme Ltd", "GB-COH-01234567"]])
