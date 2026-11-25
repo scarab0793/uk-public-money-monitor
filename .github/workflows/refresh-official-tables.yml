@@ -29,7 +29,7 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          for p in data/official-tables-report.json data/hmrc data/treasury; do [ -e "$p" ] && git add "$p"; done
+          for p in data/official-tables-report.json data/hmrc data/treasury data/local-government; do [ -e "$p" ] && git add "$p"; done
           if git diff --cached --quiet; then echo "No changes"; exit 0; fi
           git commit -q -m "data: refresh HMRC receipts and Treasury spending tables"
           for i in 1 2 3 4; do git pull -q --rebase origin main && git push -q origin HEAD:main && exit 0; sleep $((i*10)); done

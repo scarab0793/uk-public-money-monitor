@@ -27,7 +27,7 @@ import requests
 GOVUK = "https://www.gov.uk"
 UA = {"User-Agent": "uk-public-money-monitor/1.0 (+https://github.com/scarab0793/uk-public-money-monitor)"}
 OUT = {"hmrc-receipts": Path("data/hmrc/receipts.json"), "pss-tes": Path("data/treasury/pss-expenditure-on-services.json"),
-       "cra": Path("data/treasury/country-regional-analysis.json")}
+       "cra": Path("data/treasury/country-regional-analysis.json"), "council-tax": Path("data/local-government/council-tax-england.json")}
 REPORT = Path("data/official-tables-report.json")
 
 
@@ -312,7 +312,59 @@ def import_cra():
     raise RuntimeError("; ".join(errors) or "No Country and Regional Analysis release found")
 
 
-IMPORTERS = {"hmrc-receipts": import_hmrc_receipts, "pss-tes": import_pss, "cra": import_cra}
+def parse_header_table(df, key="Authority"):
+    """Generic MHCLG layout: title in row 0, a header row containing `key`, data rows until the end."""
+    title = str(df.iat[0, 0]).strip()
+    hdr = next(i for i in range(min(len(df), 15)) if any(str(v).strip() == key for v in df.iloc[i].tolist()))
+    heads = [re.sub(r"\s+", " ", str(v)).strip() if str(v) != "nan" else None for v in df.iloc[hdr].tolist()]
+    rows = []
+    for i in range(hdr + 1, len(df)):
+        vals = df.iloc[i].tolist()
+        if all(str(v) == "nan" for v in vals):
+            continue
+        rec = {}
+        for h, v in zip(heads, vals):
+            if not h:
+                continue
+            n = cell_number(v)
+            rec[h] = n if n is not None and h not in ("E-code", "E Code", "ONS Code") else (None if str(v) in ("nan", "[x]", "[z]") else str(v).strip())
+        if rec.get(key):
+            rows.append(rec)
+    return dict(title=title, columns=[h for h in heads if h], rows=rows)
+
+
+def import_council_tax():
+    org = "ministry-of-housing-communities-local-government"
+    q = requests.get(GOVUK + "/api/search.json", headers=UA, timeout=60, params={
+        "q": "Council Tax levels set by local authorities in England", "filter_organisations": org, "order": "-public_timestamp", "count": 20, "fields": "title,link"}).json()
+    errors = []
+    for r in q.get("results", []):
+        if not re.match(r"council tax levels set by local authorities in england \d{4} to \d{4}$", r.get("title", ""), re.I):
+            continue
+        try:
+            doc = content(r["link"])
+            att = attachment(doc, r"Tables 1 to 9|Tables_1-9")
+            book = read_book(att["url"])
+            t9 = parse_header_table(book["Table_9"])
+            t8 = parse_header_table(book["Table_8a"]) if "Table_8a" in book else None
+            bands = [c for c in t9["columns"] if c.startswith("Band")]
+            if len(t9["rows"]) < 250 or len(bands) != 8:
+                raise RuntimeError(f"Table 9 failed validation ({len(t9['rows'])} rows, bands {bands})")
+            year = re.search(r"(\d{4}) to (\d{4})$", r["title"])
+            return dict(
+                dataset=r["title"], publisher="Ministry of Housing, Communities and Local Government", page=GOVUK + r["link"],
+                attachment=att["url"], release_updated_at=doc.get("public_updated_at"),
+                financial_year=f"{year.group(1)}-{year.group(2)[2:]}", unit="GBP per year",
+                caveats=["Area council tax is the total bill for a dwelling occupied by two adults, including county, police, fire and combined authority precepts but excluding parish precepts.",
+                         "Bills are reduced by discounts, exemptions and Council Tax Support; most dwellings are in Bands A to C.",
+                         "England only. Scotland, Wales and Northern Ireland (domestic rates) have separate systems."],
+                area_bills=t9, authority_band_d=t8)
+        except Exception as exc:
+            errors.append(f"{r['link']}: {exc}")
+    raise RuntimeError("; ".join(errors) or "No Council Tax levels release found")
+
+
+IMPORTERS = {"hmrc-receipts": import_hmrc_receipts, "pss-tes": import_pss, "cra": import_cra, "council-tax": import_council_tax}
 
 
 def main(names):

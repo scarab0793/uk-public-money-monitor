@@ -66,6 +66,13 @@ class ParserTests(unittest.TestCase):
         self.assertEqual(t["rows"][0]["blocks"][0][-1], ["2025-26", "outturn", 14908.0])
         self.assertEqual(t["rows"][0]["blocks"][1][0], ["2023-24", "outturn", 105.0])
 
+    def test_header_table(self):
+        df = pd.DataFrame([["Table 9: Area council tax", N, N, N], ["note", N, N, N],
+                           ["E Code", "Authority", "Band A", "Band D"], ["E5011", "Camden", 1471.7, 2207.55], ["E5010", "City of London", "[x]", 1329.56], [N, N, N, N]])
+        t = ot.parse_header_table(df)
+        self.assertEqual(t["columns"], ["E Code", "Authority", "Band A", "Band D"])
+        self.assertEqual(t["rows"][1], {"E Code": "E5010", "Authority": "City of London", "Band A": None, "Band D": 1329.56})
+
 
 if __name__ == "__main__":
     unittest.main()
