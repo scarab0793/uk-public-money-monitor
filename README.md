@@ -14,6 +14,7 @@ Every figure comes from an official publisher and links back to it. Data is refr
 | Spending by nation and English region | HM Treasury Country and Regional Analysis | `data/treasury/country-regional-analysis.json` | daily check |
 | Benefit spending and caseloads, 1948-49 to forecast | DWP benefit expenditure and caseload tables | `data/welfare/benefit-expenditure-caseloads.json` | daily check |
 | NHS trust and foundation trust accounts | NHS England TAC data | `data/nhs/trust-accounts.json` | daily check |
+| Government grants: departments, schemes, recipients, awards | Cabinet Office Government Grants Register | `data/grants/government-grants.json` | daily check |
 | Council Tax bills by band | MHCLG | `data/local-government/council-tax-england.json` | daily check |
 | Council spending by service | MHCLG revenue outturn (RSX) | `data/local-government/revenue-outturn-england.json` | daily check |
 | Overseas development assistance | FCDO / Statistics on International Development | `data/fcdo-normalized/` | weekly |
@@ -36,7 +37,7 @@ Every figure comes from an official publisher and links back to it. Data is refr
 | Workflow | What it does |
 | --- | --- |
 | `procurement.yml` | Contracts Finder and Find a Tender import into monthly raw partitions (stored as assets of the `procurement-raw` release), then builds the published database |
-| `refresh-official-tables.yml` | HMRC, Treasury, DWP, NHS and MHCLG tables (`scripts/import_official_tables.py`) |
+| `refresh-official-tables.yml` | HMRC, Treasury, DWP, NHS, MHCLG and grants tables (`scripts/import_official_tables.py`) |
 | `import-fcdo.yml`, `normalize-fcdo.yml` | ODA data |
 | `import-nista.yml` | major projects, including verification of the 2025-26 records |
 | `build-search-index.yml` | site-wide search index (`data/search/`) after any data workflow |
@@ -48,7 +49,7 @@ The site is static (`index.html` plus `assets/js/`). To run it locally, serve th
 
 ## Known gaps
 
-See "Not covered yet, and why" on the Sources section, or `gaps` in `data/catalogue.json`. In short: military aid has no official machine-readable series; NHS commissioners and the devolved health services, council spending outside England, and government pay, grants and property are next.
+See "Not covered yet, and why" on the Sources section, or `gaps` in `data/catalogue.json`. In short: military aid has no official machine-readable series; NHS commissioners and the devolved health services, council spending outside England, and government pay and property are next.
 
 The NHS England page that lists the trust accounts files refuses automated requests, so the file links for each new year are added to `data/nhs/tac-sources.json` when NHS England publishes them.
 
