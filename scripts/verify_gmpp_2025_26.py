@@ -43,6 +43,10 @@ def num(v):
 def same(a, b):
     if norm(a) == norm(b):
         return True
+    # A blank transcribed value for an official non-numeric entry (exemption, range, "not yet costed")
+    # is the intended treatment: the text is kept in the official rows and never shown as a number.
+    if norm(a) in ("", "none") and num(b) is None:
+        return True
     x, y = num(a), num(b)
     if x is None or y is None:
         return False
