@@ -146,7 +146,25 @@
     const years = T['A.1b'].rows[0].blocks[0].map(v => v[0]).reverse();
     const ySel = el('select', { id: 'cra-year' }, ...years.map(y => el('option', { value: y, text: y })));
     const out = el('div');
+    const F = T['A.15'];
+    const fSel = el('select', { id: 'cra-function' }, el('option', { value: '', text: 'All services' }));
+    if (F) for (const f of F.functions) fSel.append(el('option', { value: f.name, text: (f.level === 'component' ? '– ' : '') + f.name.charAt(0).toUpperCase() + f.name.slice(1) }));
+    function renderFunction() {
+      const y = ySel.value, fn = fSel.value, rows = (F.years[y] || []);
+      const fmt = v => v == null ? 'Not available' : '£' + Math.round(v).toLocaleString('en-GB') + ' per person';
+      out.replaceChildren(el('p', { class: 'small', text: F.title.replace(/\s+/g, ' ') + ' · ' + fSel.options[fSel.selectedIndex].text.replace('– ', '') + ', ' + y + ', cash' }));
+      for (const [title, list] of [['Countries of the UK', rows.filter(r => r.level === 'nation')], ['English regions', rows.filter(r => r.level === 'english_region')]]) {
+        const max = Math.max(...list.map(r => r.values[fn] || 0));
+        out.append(el('h3', { text: title }));
+        for (const r of list.slice().sort((a, b) => (b.values[fn] || 0) - (a.values[fn] || 0)))
+          out.append(el('div', { class: 'barrow' }, el('span', { class: 'barlabel', text: r.area.replace(/^Total /, '') }), el('span', { class: 'bar', style: 'width:' + Math.max(1, (r.values[fn] || 0) / (max || 1) * 100) + '%' }), el('span', { class: 'barval', text: fmt(r.values[fn]) })));
+      }
+      const uk = rows.find(r => /^uk identifiable/i.test(r.area));
+      if (uk) out.append(el('p', { class: 'small', text: 'UK identifiable: ' + fmt(uk.values[fn]) }));
+    }
     function render() {
+      mSel.disabled = !!fSel.value;
+      if (fSel.value && F) return renderFunction();
       const t = T[mSel.value], y = ySel.value, perHead = /per head/i.test(t.units[0] || '') || /b$/.test(mSel.value);
       const val = r => (r.blocks[0].find(v => v[0] === y) || [])[2];
       const idx = r => r.blocks[1] ? (r.blocks[1].find(v => v[0] === y) || [])[2] : null;
@@ -164,10 +182,10 @@
         }
       }
     }
-    mSel.onchange = render; ySel.onchange = render;
+    mSel.onchange = render; ySel.onchange = render; fSel.onchange = render;
     box.replaceChildren(
       el('p', { class: 'small', text: 'Source: ' }, ext(d.page, 'HM Treasury ' + d.dataset), document.createTextNode(' · release ' + new Date(d.release_updated_at).toLocaleDateString('en-GB') + ' · '), ext(d.attachment, 'Download the official tables')),
-      el('div', { class: 'filters' }, el('div', null, el('label', { for: 'cra-measure', text: 'Measure' }), mSel), el('div', null, el('label', { for: 'cra-year', text: 'Financial year' }), ySel)),
+      el('div', { class: 'filters' }, F ? el('div', null, el('label', { for: 'cra-function', text: 'Spending on' }), fSel) : null, el('div', null, el('label', { for: 'cra-measure', text: 'Measure' }), mSel), el('div', null, el('label', { for: 'cra-year', text: 'Financial year' }), ySel)),
       out, el('details', null, el('summary', { text: 'What these figures mean' }), ...d.caveats.map(c => el('p', { class: 'small', text: c })), el('p', { class: 'small', text: 'Index: UK identifiable spending per person = 100.' })));
     render();
   }

@@ -281,6 +281,32 @@ def parse_cra_table(df):
     return dict(title=title, units=[b["unit"] for b in blocks], rows=rows)
 
 
+def parse_cra_by_function(df):
+    """Table A.15 layout: function names across one header row; a year label row, then one row per area."""
+    title = str(df.iat[0, 0]).strip()
+    hdr = next(i for i in range(min(len(df), 10)) if sum(isinstance(v, str) and re.match(r"\s*(\d+\.|of which)", v) is not None for v in df.iloc[i].tolist()) >= 5)
+    funcs = {}
+    for j, v in enumerate(df.iloc[hdr].tolist()):
+        if isinstance(v, str) and v.strip() and not v.strip().lower().startswith("total"):
+            name = v.strip()
+            funcs[j] = dict(label=name, name=re.sub(r"^(?:\d+\.\s*|of which:\s*)", "", name).strip(), level="component" if name.lower().startswith("of which") else "function")
+    years, year = {}, None
+    for i in range(hdr + 1, len(df)):
+        lab = df.iat[i, 0]
+        if not isinstance(lab, str) or not lab.strip():
+            continue
+        lab = lab.strip()
+        if re.fullmatch(r"\d{4}-\d{2}", lab):
+            year = lab
+            continue
+        if year is None:
+            continue
+        vals = {funcs[j]["name"]: cell_number(df.iat[i, j]) for j in funcs}
+        if any(v is not None for v in vals.values()):
+            years.setdefault(year, []).append(dict(area=re.sub(r"\s*\(\d+\)", "", lab), level=area_level(lab), values=vals))
+    return dict(title=title, functions=list(funcs.values()), years=years)
+
+
 def find_latest(query, title_re):
     q = requests.get(GOVUK + "/api/search.json", headers=UA, timeout=60, params={
         "q": query, "filter_organisations": "hm-treasury", "order": "-public_timestamp", "count": 20, "fields": "title,link"}).json()
@@ -297,6 +323,10 @@ def import_cra():
             att = attachment(doc, r"A tables|Chapter_A")
             book = read_book(att["url"])
             tables = {k: parse_cra_table(book[k]) for k in ("A.1a", "A.1b", "A.2a", "A.2b") if k in book}
+            if "A.15" in book:
+                tables["A.15"] = parse_cra_by_function(book["A.15"])
+                if not any(len(v) >= 13 for v in tables["A.15"]["years"].values()):
+                    raise RuntimeError("Table A.15 failed validation")
             if "A.1b" not in tables or len([r for r in tables["A.1b"]["rows"] if r["level"] == "english_region"]) != 9:
                 raise RuntimeError("Table A.1b failed validation")
             return dict(

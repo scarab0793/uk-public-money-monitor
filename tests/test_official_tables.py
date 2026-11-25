@@ -73,6 +73,19 @@ class ParserTests(unittest.TestCase):
         self.assertEqual(t["columns"], ["E Code", "Authority", "Band A", "Band D"])
         self.assertEqual(t["rows"][1], {"E Code": "E5010", "Authority": "City of London", "Band A": None, "Band D": 1329.56})
 
+    def test_cra_by_function(self):
+        df = pd.DataFrame([["Table A.15 UK identifiable expenditure on services by function per head", N, N, N, N, N, N],
+                           ["note", N, N, N, N, N, "£ per head"],
+                           [N, "1. General public services", " of which: public and common services", "2. Defence", "7. Health", "9. Education", "Total Expenditure on Services"],
+                           [N, N, N, N, N, N, N],
+                           ["2025-26", N, N, N, N, N, N],
+                           ["North East", 161, 160, 8, 3382, 1476, N],
+                           ["Scotland", 200, 150, 9, 3900, 1500, N]])
+        t = ot.parse_cra_by_function(df)
+        self.assertEqual([f["name"] for f in t["functions"]], ["General public services", "public and common services", "Defence", "Health", "Education"])
+        self.assertEqual(t["years"]["2025-26"][0]["values"]["Health"], 3382.0)
+        self.assertEqual(t["years"]["2025-26"][1]["level"], "nation")
+
 
 if __name__ == "__main__":
     unittest.main()
