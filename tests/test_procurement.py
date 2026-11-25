@@ -117,7 +117,7 @@ class ImporterTests(unittest.TestCase):
         with tempfile.TemporaryDirectory() as tmp:
             imp = make_importer(tmp, FakeSession({}), state=state)
             days = [str(d) for d in imp.daily_days("find-a-tender")]
-            self.assertEqual(days, ["2026-11-10", "2026-11-20", "2026-11-21", "2026-11-22", "2026-11-23", "2026-11-24", "2026-11-25"])
+            self.assertEqual(days, ["2026-11-10"] + [f"2026-11-{d}" for d in range(16, 26)])
             back = imp.backfill_days("find-a-tender")
             self.assertEqual([str(next(back)) for _ in range(3)], ["2026-11-24", "2026-11-23", "2026-11-21"])
 
@@ -185,6 +185,20 @@ class BuilderTests(unittest.TestCase):
         fts = [release("o1", "1", "2026-05-01T00:00:00Z", parties=[p]), release("o2", "1", "2026-05-01T00:00:00Z", parties=[q])]
         summary, _ = self.build(fts=fts)
         self.assertEqual(summary["quality"]["identifier_conflicts"], 1)
+
+    def test_framework_and_call_off_classification(self):
+        self.assertEqual(bp.framework_kind({"procurementMethodDetails": "Below threshold - award under framework"}), "call_off")
+        self.assertEqual(bp.framework_kind({"procurementMethodDetails": "Call-off from a dynamic purchasing system"}), "call_off")
+        self.assertEqual(bp.framework_kind({"lots": [{"techniques": {"hasFrameworkAgreement": True}}]}), "framework")
+        self.assertIsNone(bp.framework_kind({"procurementMethodDetails": "Open procedure"}))
+
+    def test_contract_value_used_when_award_has_none(self):
+        fts = [release("o9", "1", "2026-07-01T00:00:00Z", tag=["award", "contract"], tender={"title": "T"},
+                       awards=[{"id": "1", "suppliers": [{"name": "S"}]}],
+                       contracts=[{"id": "1", "awardID": "1", "dateSigned": "2026-06-30", "value": {"amount": 500, "currency": "GBP"}}])]
+        summary, out = self.build(fts=fts)
+        row = json.loads((out / "notices" / "2026-07.json").read_text())["rows"][0]
+        self.assertEqual(row["aw"][0][:2], ["2026-06-30", [500, "GBP"]])
 
     def test_identifier_cleaning(self):
         self.assertEqual(bp.clean_identifier("GB-COH", "2036219"), ("GB-COH", "02036219"))

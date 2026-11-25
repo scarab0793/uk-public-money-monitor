@@ -49,7 +49,7 @@ jobs:
       - name: Import (${{ env.MODE }})
         run: |
           cat > /tmp/checkpoint.sh <<'SH'
-          git add data/procurement/import-state.json data/procurement/import-log.json
+          git add data/procurement/import-*.json
           git diff --cached --quiet && exit 0
           git commit -q -m "data: procurement import checkpoint"
           for i in 1 2 3 4; do git pull -q --rebase origin main && git push -q origin HEAD:main && exit 0; sleep $((i*10)); done

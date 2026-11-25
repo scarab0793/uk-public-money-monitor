@@ -61,7 +61,7 @@ SOURCES = {
 PAGE_LIMIT = 100
 MAX_PAGES_PER_DAY = 3000
 REQUEST_PAUSE = 2.0
-DAILY_OVERLAP_DAYS = 3
+DAILY_OVERLAP_DAYS = 7  # Contracts Finder can publish OCDS releases several days late
 
 
 def utcnow():

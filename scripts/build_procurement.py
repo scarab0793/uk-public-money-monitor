@@ -50,7 +50,7 @@ IMPLAUSIBLE_GBP = 50_000_000_000  # single award above £50bn is flagged for rev
 # Identifier schemes that name a legal entity in a public register.
 REGISTERED_SCHEMES = ("GB-COH", "GB-PPON", "GB-CHC", "GB-SC", "GB-NIC", "GB-MPR", "GB-EDU", "GB-NHS", "GB-UKPRN", "GB-GOR", "GB-LAE", "GB-LAS", "GB-PLA", "GB-SHPE", "GB-UKCRN")
 # Source-local supplier registrations: stable inside one portal only.
-LOCAL_SCHEMES = ("GB-CFS", "GB-FTS")
+LOCAL_SCHEMES = ("GB-CFS", "GB-FTS", "GB-SRS")
 SCHEME_RANK = {s: i for i, s in enumerate(REGISTERED_SCHEMES + LOCAL_SCHEMES)}
 
 
@@ -123,12 +123,13 @@ def merge_by_id(old: dict, items, fold):
 
 def framework_kind(tender):
     details = norm_key(tender.get("procurementMethodDetails"))
-    if "call off" in details or "mini competition" in details:
+    if any(k in details for k in ("call off", "mini competition", "under framework", "under a framework", "dynamic purchasing")):
         return "call_off"
-    tech = tender.get("techniques") or {}
-    if tech.get("hasFrameworkAgreement") is True or tender.get("hasFrameworkAgreement") is True or (tech.get("frameworkAgreement") or {}).get("method"):
-        return "framework"
-    if "framework" in details:
+    techs = [tender.get("techniques") or {}] + [(lot or {}).get("techniques") or {} for lot in tender.get("lots") or [] if isinstance(lot, dict)]
+    for tech in techs:
+        if tech.get("hasFrameworkAgreement") is True or tech.get("frameworkAgreement"):
+            return "framework"
+    if tender.get("hasFrameworkAgreement") is True or "framework" in details:
         return "framework"
     return None
 
@@ -412,9 +413,11 @@ def build(raw_dir: Path, out_dir: Path, generated_at=None):
         for aid, a in sorted(p.awards.items()):
             if a.get("status") in ("cancelled", "unsuccessful"):
                 continue
-            value = a.get("value")
             c = contract_by_award.get(aid) or {}
             cvalue = c.get("value")
+            # Awarded value: the award value, or the signed contract value where no award value is published.
+            value = a.get("value") or cvalue
+            adate = (a.get("date") or c.get("dateSigned") or c.get("start") or "")[:10]
             sup_out = []
             for sid, sname in a.get("suppliers", []):
                 root = resolve_supplier(p, sid, sname)
@@ -431,7 +434,7 @@ def build(raw_dir: Path, out_dir: Path, generated_at=None):
                         s["valued"] += 1
                     if p.fw == "framework":
                         s["fw"] += 1
-                    s["awards"].append([nid, month, p.title, bname, (a.get("date") or "")[:10], value, p.fw])
+                    s["awards"].append([nid, month, p.title, bname, adate, value, p.fw])
             if value and value[1] and value[1] != "GBP":
                 quality[source]["non_gbp_awards"] += 1
             if value and value[1] == "GBP" and value[0] > IMPLAUSIBLE_GBP:
@@ -439,8 +442,8 @@ def build(raw_dir: Path, out_dir: Path, generated_at=None):
                 q.append("implausible_value")
             if not value:
                 quality[source]["awards_without_value"] += 1
-            awards_out.append([(a.get("date") or "")[:10] or None, value, cvalue, sup_out, c.get("start"), c.get("end")])
-            ayear = (a.get("date") or p.first or "")[:4]
+            awards_out.append([adate or None, value, cvalue, sup_out, c.get("start"), c.get("end")])
+            ayear = (adate or p.first or "")[:4]
             t = totals[source][ayear]
             t["awards"] += 1
             amt = gbp_for_total(value, p.fw)
@@ -451,7 +454,7 @@ def build(raw_dir: Path, out_dir: Path, generated_at=None):
             elif amt is not None:
                 t["award_value_gbp"] += amt
                 t["awards_valued"] += 1
-                largest.append((amt, nid, month, p.title, bname, (a.get("date") or "")[:10], [s[0] for s in sup_out], source))
+                largest.append((amt, nid, month, p.title, bname, adate, [s[0] for s in sup_out], source))
             if value:
                 dup_index[(norm_key(p.title), norm_key(bname), value[0])].append(nid)
         totals[source][year]["notices"] += 1
