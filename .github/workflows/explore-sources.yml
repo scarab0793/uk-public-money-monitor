@@ -1,0 +1,18 @@
+name: Explore official sources (diagnostic)
+on:
+  workflow_dispatch:
+    inputs:
+      path: {description: GOV.UK path, required: true}
+      match: {description: attachment substrings (space separated), default: ''}
+permissions:
+  contents: read
+jobs:
+  explore:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: {python-version: '3.12'}
+      - run: pip install requests pandas odfpy openpyxl
+      - run: python scripts/diagnostics/explore_govuk.py "${{ inputs.path }}" ${{ inputs.match }}
