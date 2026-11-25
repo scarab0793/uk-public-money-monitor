@@ -6,7 +6,7 @@ if path.startswith("search:"):
     q = requests.get("https://www.gov.uk/api/search.json", params={"q": path[7:], "count": 15, "fields": "title,link,public_timestamp,format"}, timeout=60).json()
     for r in q.get("results", []):
         print("HIT", r.get("public_timestamp", "")[:10], r.get("format"), r.get("title"), "|", r.get("link"))
-    path = next((r["link"] for r in q.get("results", []) if r.get("link", "").startswith("/government/statistics/")), None)
+    path = next((r["link"] for r in q.get("results", []) if r.get("link", "").startswith(("/government/statistics/", "/government/publications/"))), None)
     if not path:
         sys.exit(0)
 api = "https://www.gov.uk/api/content/" + path.strip("/")
