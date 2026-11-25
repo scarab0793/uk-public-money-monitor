@@ -108,6 +108,25 @@ class ParserTests(unittest.TestCase):
         self.assertEqual(t["rows"][1]["values"], [0.0, None, 90000.0])
         self.assertEqual(t["rows"][0]["marker"], "(NC / NIR)")
 
+    def test_rsx_services_measures_and_missing(self):
+        df = pd.DataFrame([
+            ["Worksheet 2", N, N, N, N, N, N, N, N, N],
+            ["E-code", "ONS Code", "Local authority", "Notes", "Class", "Education services - Employees (C1)",
+             "Education services - Total Expenditure (C3 = C1 + C2)", "Education services - Total Income (C6 = C4 + C5)",
+             "Education services - Net Current Expenditure (C7 = C3 - C6)", "Public Health - Net Current Expenditure (C7 = C3 - C6)"],
+            ["E3831", "E07000223", "Adur", N, "SD", 5, 345, 657, -312, 0],
+            ["E9999", "E0", "Late Council", "M", "UA", N, N, N, N, "[x]"],
+            ["England", N, N, N, N, 1, 2, 3, 4, 5],
+        ])
+        t = ot.parse_rsx(df)
+        self.assertEqual(t["services"], ["Education services", "Public Health"])
+        self.assertEqual(t["authorities"][0]["values"]["Education services"], [345.0, 657.0, -312.0])
+        self.assertEqual(t["authorities"][0]["values"]["Public Health"], [None, None, 0.0])
+        self.assertEqual(t["authorities"][1]["values"]["Education services"], [None, None, None])
+        self.assertEqual(t["authorities"][1]["notes"], "M")
+        self.assertEqual(len(t["authorities"]), 2)
+        self.assertEqual(t["identity_failures"], 0)
+
 
 if __name__ == "__main__":
     unittest.main()

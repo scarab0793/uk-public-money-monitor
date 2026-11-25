@@ -28,7 +28,8 @@ GOVUK = "https://www.gov.uk"
 UA = {"User-Agent": "uk-public-money-monitor/1.0 (+https://github.com/scarab0793/uk-public-money-monitor)"}
 OUT = {"hmrc-receipts": Path("data/hmrc/receipts.json"), "pss-tes": Path("data/treasury/pss-expenditure-on-services.json"),
        "cra": Path("data/treasury/country-regional-analysis.json"), "council-tax": Path("data/local-government/council-tax-england.json"),
-       "dwp-benefits": Path("data/welfare/benefit-expenditure-caseloads.json")}
+       "dwp-benefits": Path("data/welfare/benefit-expenditure-caseloads.json"),
+       "la-outturn": Path("data/local-government/revenue-outturn-england.json")}
 REPORT = Path("data/official-tables-report.json")
 
 
@@ -478,8 +479,78 @@ def import_dwp_benefits():
     raise RuntimeError("; ".join(errors) or "No benefit expenditure tables found")
 
 
+RSX_MEASURES = {"C3": "total_expenditure", "C6": "total_income", "C7": "net_current_expenditure"}
+
+
+def parse_rsx(df):
+    """MHCLG RSX 'data by LA' sheet: a header row starting with 'E-code', columns '<service> - <measure> (Cn ...)',
+    then one row per authority.  Values are £ thousand; blanks and symbols stay None."""
+    hdr = next(i for i in range(min(len(df), 30)) if str(df.iat[i, 0]).strip().lower() == "e-code")
+    head = [re.sub(r"\s+", " ", str(v)).strip() for v in df.iloc[hdr]]
+    idx = {h.lower(): j for j, h in enumerate(head)}
+    cols, services = {}, []
+    for j, h in enumerate(head):
+        m = re.match(r"^(.+?) - .*\((C\d+[a-z]?)\b", h)
+        if m and m.group(2) in RSX_MEASURES:
+            svc = m.group(1).strip()
+            if svc not in services:
+                services.append(svc)
+            cols[(svc, RSX_MEASURES[m.group(2)])] = j
+    measures = list(RSX_MEASURES.values())
+    rows, problems = [], 0
+    for i in range(hdr + 1, len(df)):
+        code = str(df.iat[i, 0]).strip()
+        if not re.match(r"^E\d{4}$", code):
+            continue
+        vals = {}
+        for svc in services:
+            v = [cell_number(df.iat[i, cols[(svc, m)]]) if (svc, m) in cols else None for m in measures]
+            if None not in v and abs(v[0] - v[1] - v[2]) > 2:
+                problems += 1
+            vals[svc] = v
+        get = lambda name: (str(df.iat[i, idx[name]]).strip() if name in idx and str(df.iat[i, idx[name]]) != "nan" else None)
+        rows.append(dict(ecode=code, ons=get("ons code"), name=get("local authority"), cls=get("class"), notes=get("notes"), values=vals))
+    return dict(unit="£ thousand", services=services, measures=measures, authorities=rows, identity_failures=problems)
+
+
+def import_la_outturn():
+    q = requests.get(GOVUK + "/api/search.json", headers=UA, timeout=60, params={
+        "q": "Local authority revenue expenditure and financing England individual local authority data outturn", "count": 40, "fields": "title,link"}).json()
+    hits = {}
+    for r in q.get("results", []):
+        m = re.search(r"(\d{4}) to (\d{4}) individual local authority data - outturn$", r.get("title", ""), re.I)
+        if m and int(m.group(1)) >= 2021:
+            hits[f"{m.group(1)}-{m.group(2)[2:]}"] = r
+    prev = json.loads(OUT["la-outturn"].read_text()) if OUT["la-outturn"].exists() else {"years": {}}
+    years, errors = dict(prev.get("years", {})), []
+    for fy, r in sorted(hits.items(), reverse=True)[:5]:
+        try:
+            doc = content(r["link"])
+            if years.get(fy, {}).get("release_updated_at") == doc.get("public_updated_at"):
+                continue
+            att = attachment(doc, r"RSX")
+            book = read_book(att["url"])
+            sheet = next(k for k in book if k.upper().startswith("RSX_LA_DATA"))
+            t = parse_rsx(book[sheet])
+            if len(t["authorities"]) < 300 or len(t["services"]) < 8 or t["identity_failures"] > 20:
+                raise RuntimeError(f"RSX failed validation ({len(t['authorities'])} authorities, {len(t['services'])} services, {t['identity_failures']} identity failures)")
+            years[fy] = dict(dataset=r["title"], page=GOVUK + r["link"], attachment=att["url"], release_updated_at=doc.get("public_updated_at"), **t)
+        except Exception as exc:
+            errors.append(f"{fy}: {exc}")
+    if not years:
+        raise RuntimeError("; ".join(errors) or "No revenue outturn release found")
+    return dict(publisher="Ministry of Housing, Communities and Local Government", page=GOVUK + "/government/collections/local-authority-revenue-expenditure-and-financing",
+                attachment=years[max(years)]["attachment"], release_updated_at=years[max(years)]["release_updated_at"], errors=errors,
+                caveats=["Revenue outturn: money actually spent on day-to-day services by English local authorities in the financial year, in £ thousand, nominal.",
+                         "Net current expenditure is total expenditure minus sales, fees, charges and other income; it is not the same as the Council Tax requirement.",
+                         "Capital spending (buildings, roads) is reported separately and is not included.",
+                         "Authorities that did not return their form in time have no figures for that year; they are shown as not available, never as zero.",
+                         "County and district councils in two-tier areas provide different services, so their totals are not comparable with unitary councils."],
+                years=dict(sorted(years.items())))
+
+
 IMPORTERS = {"hmrc-receipts": import_hmrc_receipts, "pss-tes": import_pss, "cra": import_cra, "council-tax": import_council_tax,
-             "dwp-benefits": import_dwp_benefits}
+             "dwp-benefits": import_dwp_benefits, "la-outturn": import_la_outturn}
 
 
 def main(names):
