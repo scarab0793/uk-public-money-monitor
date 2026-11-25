@@ -175,8 +175,18 @@ def parse_tes(df):
                 values.append([y, k if k in ("outturn", "plans", "plan", "forecast") else None, cell_number(v)])
         if not any(v[2] is not None for v in values):
             continue  # footnote line
-        level = "component" if label.lower().startswith("of which") else ("total" if label.lower().startswith("total") or "accounting adjustments" in label.lower() else "function")
-        rows.append(dict(label=label, level=level, values=values))
+        low = label.lower()
+        if low.startswith("of which"):
+            level = "component"
+        elif low.startswith(("total", "public sector expenditure on services")):
+            level = "total"
+        elif low.startswith("accounting adjustments"):
+            level = "adjustment"
+        else:
+            level = "function"
+        name = re.sub(r"\s*\(\d+\)(?:,\s*\(\d+\))*", "", label)
+        name = re.sub(r"^(?:\d+\.\s*|of which:\s*)", "", name).strip()
+        rows.append(dict(label=label, name=name[:1].upper() + name[1:], level=level, values=values))
     return dict(title=title, rows=rows)
 
 

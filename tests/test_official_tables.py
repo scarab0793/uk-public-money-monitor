@@ -38,13 +38,16 @@ class ParserTests(unittest.TestCase):
             [N, "outturn", "outturn", "outturn", "outturn", "outturn", "plans"],
             ["1. General public services", 1, 2, 3, 4, 5, 6],
             ["of which: debt interest", 0.5, 1, 1, 1, 1, 1],
-            ["Total expenditure on services", 10, 20, 30, 40, 50, 60],
+            ["Public sector expenditure on services", 10, 20, 30, 40, 50, 60],
+            ["Accounting adjustments", 1, 1, 1, 1, 1, 1],
+            ["Total Managed Expenditure(7)", 11, 21, 31, 41, 51, 61],
             ["(1) Footnote text", N, N, N, N, N, N],
         ])
         t = ot.parse_tes(df)
-        self.assertEqual([r["level"] for r in t["rows"]], ["function", "component", "total"])
+        self.assertEqual([r["level"] for r in t["rows"]], ["function", "component", "total", "adjustment", "total"])
         self.assertEqual(t["rows"][0]["values"][-1], ["2025-26", "plans", 6.0])
         self.assertEqual(t["rows"][0]["values"][0], ["2020-21", "outturn", 1.0])
+        self.assertEqual([r["name"] for r in t["rows"]][::4], ["General public services", "Total Managed Expenditure"])
 
 
 if __name__ == "__main__":
