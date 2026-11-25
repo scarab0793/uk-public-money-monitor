@@ -11,8 +11,10 @@ if path.startswith("search:"):
     path = next((r["link"] for r in q.get("results", []) if r.get("link", "").startswith(("/government/statistics/", "/government/publications/"))), None)
     if not path:
         sys.exit(0)
-api = "https://www.gov.uk/api/content/" + path.strip("/")
-d = requests.get(api, timeout=60).json()
+if path.startswith("url:"):
+    d = {"title": "direct", "details": {"attachments": [{"title": "direct", "url": path[4:]}]}}
+else:
+    d = requests.get("https://www.gov.uk/api/content/" + path.strip("/"), timeout=60).json()
 print("TITLE", d.get("title"), "| updated", d.get("public_updated_at"))
 docs = d.get("details", {}).get("attachments") or []
 for doc in d.get("links", {}).get("documents", []) or []:
