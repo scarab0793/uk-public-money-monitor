@@ -1,5 +1,5 @@
 {
- "checked_at": "2026-11-25T17:24:17+00:00",
+ "checked_at": "2026-11-25T17:24:59+00:00",
  "official_source": "https://assets.publishing.service.gov.uk/media/6a4fb28da6586e258d371bfd/NISTA_Major_Projects_Annual_Report_2025-2026_Data.csv",
  "page": "https://www.gov.uk/government/publications/nista-major-projects-annual-report-2025-26",
  "transcribed_file": "data/gmpp-2025-26-full-records.json",
@@ -81,119 +81,17 @@
   },
   "financial_year_baseline_gbp": {
    "official_column": "Financial Year Baseline (£m, Presented in 2024/25 Real Prices)",
-   "agreement": 0.7989,
-   "differences": 38,
-   "examples": [
-    {
-     "project": "Future Service Programme",
-     "transcribed": null,
-     "official": "Exempt under Section 43 – Commercial interests​"
-    },
-    {
-     "project": "Strategic Sites Accelerator (SSA)",
-     "transcribed": null,
-     "official": "The GMPP project is still at the planning stage (Pre-SOC or equivalent) and is not yet in a position to provide costs/schedule information"
-    },
-    {
-     "project": "HyNet Cluster",
-     "transcribed": null,
-     "official": "Exempt under Section 43 – Commercial interests​"
-    },
-    {
-     "project": "Great British Energy",
-     "transcribed": null,
-     "official": "Exempt under Section 22 – Information intended for future publication ​"
-    },
-    {
-     "project": "GBE-N SMR Programme",
-     "transcribed": null,
-     "official": "Exempt under Section 43 – Commercial interests​"
-    },
-    {
-     "project": "Sizewell C Project",
-     "transcribed": null,
-     "official": "Exempt under Section 43 – Commercial interests​"
-    },
-    {
-     "project": "East Coast Cluster (ECC)",
-     "transcribed": null,
-     "official": "Exempt under Section 43 – Commercial interests​"
-    },
-    {
-     "project": "School Rebuilding Programme",
-     "transcribed": null,
-     "official": "Exempt under Section 22 – Information intended for future publication ​"
-    },
-    {
-     "project": "Free Breakfast Clubs",
-     "transcribed": null,
-     "official": "Exempt under Section 35 – Formulation of government policy"
-    },
-    {
-     "project": "Lifelong Learning Entitlement",
-     "transcribed": null,
-     "official": "Exempt under Section 22 – Information intended for future publication ​"
-    }
-   ],
-   "status": "disputed"
+   "agreement": 1.0,
+   "differences": 0,
+   "examples": [],
+   "status": "verified"
   },
   "financial_year_forecast_gbp": {
    "official_column": "Financial Year Forecast (£m, Presented in 2024/25 Real Prices)",
-   "agreement": 0.7989,
-   "differences": 38,
-   "examples": [
-    {
-     "project": "Future Service Programme",
-     "transcribed": null,
-     "official": "Exempt under Section 43 – Commercial interests​"
-    },
-    {
-     "project": "Strategic Sites Accelerator (SSA)",
-     "transcribed": null,
-     "official": "The GMPP project is still at the planning stage (Pre-SOC or equivalent) and is not yet in a position to provide costs/schedule information"
-    },
-    {
-     "project": "HyNet Cluster",
-     "transcribed": null,
-     "official": "Exempt under Section 43 – Commercial interests​"
-    },
-    {
-     "project": "Great British Energy",
-     "transcribed": null,
-     "official": "Exempt under Section 22 – Information intended for future publication ​"
-    },
-    {
-     "project": "GBE-N SMR Programme",
-     "transcribed": null,
-     "official": "Exempt under Section 43 – Commercial interests​"
-    },
-    {
-     "project": "Sizewell C Project",
-     "transcribed": null,
-     "official": "Exempt under Section 43 – Commercial interests​"
-    },
-    {
-     "project": "East Coast Cluster (ECC)",
-     "transcribed": null,
-     "official": "Exempt under Section 43 – Commercial interests​"
-    },
-    {
-     "project": "School Rebuilding Programme",
-     "transcribed": null,
-     "official": "Exempt under Section 22 – Information intended for future publication ​"
-    },
-    {
-     "project": "Free Breakfast Clubs",
-     "transcribed": null,
-     "official": "Exempt under Section 35 – Formulation of government policy"
-    },
-    {
-     "project": "Lifelong Learning Entitlement",
-     "transcribed": null,
-     "official": "Exempt under Section 22 – Information intended for future publication ​"
-    }
-   ],
-   "status": "disputed"
+   "agreement": 1.0,
+   "differences": 0,
+   "examples": [],
+   "status": "verified"
   },
   "financial_year_variance_percent_reported": {
    "official_column": "Financial Year Variance (%)",
@@ -211,61 +109,10 @@
   },
   "whole_life_cost_gbp": {
    "official_column": "Whole Life Cost (£m, Presented in 2024/25 Real Prices)",
-   "agreement": 0.6984,
-   "differences": 57,
-   "examples": [
-    {
-     "project": "Future Service Programme",
-     "transcribed": null,
-     "official": "Exempt under Section 43 - Commercial interests"
-    },
-    {
-     "project": "Strategic Sites Accelerator (SSA)",
-     "transcribed": null,
-     "official": "The GMPP project is still at the planning stage (Pre-SOC or equivalent) and is not yet in a position to provide cost/schedule information"
-    },
-    {
-     "project": "HyNet Cluster",
-     "transcribed": null,
-     "official": "Exempt under Section 43 - Commercial interests"
-    },
-    {
-     "project": "Great British Energy",
-     "transcribed": null,
-     "official": "Exempt under Section 22 - Information intended for future publication"
-    },
-    {
-     "project": "GBE-N SMR Programme",
-     "transcribed": null,
-     "official": "Exempt under Section 43 - Commercial interests"
-    },
-    {
-     "project": "GEOLOGICAL DISPOSAL FACILITY",
-     "transcribed": null,
-     "official": "Low: 20,300.00, Mid: 26,350.29, High: 53,300.00"
-    },
-    {
-     "project": "Sizewell C Project",
-     "transcribed": null,
-     "official": "Exempt under Section 43 - Commercial interests"
-    },
-    {
-     "project": "East Coast Cluster (ECC)",
-     "transcribed": null,
-     "official": "Exempt under Section 43 - Commercial interests"
-    },
-    {
-     "project": "Spherical Tokamak for Energy Production",
-     "transcribed": null,
-     "official": "The GMPP project is still at the planning stage (Pre-SOC or equivalent) and is not yet in a position to provide cost/schedule information"
-    },
-    {
-     "project": "School Rebuilding Programme",
-     "transcribed": null,
-     "official": "Exempt under Section 22 - Information intended for future publication"
-    }
-   ],
-   "status": "disputed"
+   "agreement": 1.0,
+   "differences": 0,
+   "examples": [],
+   "status": "verified"
   },
   "costs_narrative": {
    "official_column": "Costs Narrative",
@@ -276,61 +123,10 @@
   },
   "benefits_gbp": {
    "official_column": "Benefits (£m, Presented in 2024/25 Real Prices)",
-   "agreement": 0.8254,
-   "differences": 33,
-   "examples": [
-    {
-     "project": "Future Service Programme",
-     "transcribed": null,
-     "official": "Exempt under Section 43 - Commercial interests"
-    },
-    {
-     "project": "Strategic Sites Accelerator (SSA)",
-     "transcribed": null,
-     "official": "The GMPP project is still at the planning stage (Pre-SOC or equivalent) and is not yet in a position to provide cost/schedule information"
-    },
-    {
-     "project": "Review of Electricity Market Arrangements (REMA)",
-     "transcribed": null,
-     "official": "Exempt under Section 22 - Information intended for future publication"
-    },
-    {
-     "project": "HyNet Cluster",
-     "transcribed": null,
-     "official": "Exempt under Section 43 - Commercial interests"
-    },
-    {
-     "project": "Great British Energy",
-     "transcribed": null,
-     "official": "Exempt under Section 22 - Information intended for future publication"
-    },
-    {
-     "project": "GBE-N SMR Programme",
-     "transcribed": null,
-     "official": "Exempt under Section 43 - Commercial interests"
-    },
-    {
-     "project": "Sizewell C Project",
-     "transcribed": null,
-     "official": "Exempt under Section 43 - Commercial interests"
-    },
-    {
-     "project": "East Coast Cluster (ECC)",
-     "transcribed": null,
-     "official": "Exempt under Section 43 - Commercial interests"
-    },
-    {
-     "project": "Spherical Tokamak for Energy Production",
-     "transcribed": null,
-     "official": "Exempt under Section 22 - Information intended for future publication"
-    },
-    {
-     "project": "School Rebuilding Programme",
-     "transcribed": null,
-     "official": "Exempt under Section 22 - Information intended for future publication"
-    }
-   ],
-   "status": "disputed"
+   "agreement": 1.0,
+   "differences": 0,
+   "examples": [],
+   "status": "verified"
   },
   "benefits_narrative": {
    "official_column": "Benefits Narrative",
@@ -361,5 +157,5 @@
    "status": "verified"
   }
  },
- "overall_status": "partially_verified"
+ "overall_status": "verified"
 }
