@@ -139,6 +139,9 @@ class ParserTests(unittest.TestCase):
         self.assertEqual(orgs[0]["code"], "RAA")
         self.assertEqual(orgs[0]["type"], "NHS trust")
         self.assertEqual(orgs[0]["values"], {"A02CY01": {"SCI0100A": 100.0, "SCI0125A": -90.0}})
+        older = pd.DataFrame([["Organisation Name", "WorkSheetName", "TableID", "MainCode", "RowNumber", "SubCode", "Value number"],
+                              ["Alpha NHS Trust", "TAC02 SoCI", 1, "A02CY01", 12, "SCI0100A", 7]])
+        self.assertEqual(ot.parse_tac({"All Data": older}, "foundation")[0]["values"], {"A02CY01": {"SCI0100A": 7.0}})
 
 
 if __name__ == "__main__":

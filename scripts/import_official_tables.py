@@ -586,8 +586,9 @@ def tac_labels(book):
 
 def parse_tac(book, kind):
     data = next(v for k, v in book.items() if k.strip().lower() == "all data")
-    head = [str(v).strip().lower() for v in data.iloc[0]]
+    head = [re.sub(r"\s+", "", str(v)).lower() for v in data.iloc[0]]
     col = {h: j for j, h in enumerate(head)}
+    col["total"] = col.get("total", col.get("valuenumber", len(head) - 1))
     plist = next((v for k, v in book.items() if "provider" in k.lower()), None)
     meta = {}
     if plist is not None:
