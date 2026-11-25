@@ -27,7 +27,8 @@ import requests
 GOVUK = "https://www.gov.uk"
 UA = {"User-Agent": "uk-public-money-monitor/1.0 (+https://github.com/scarab0793/uk-public-money-monitor)"}
 OUT = {"hmrc-receipts": Path("data/hmrc/receipts.json"), "pss-tes": Path("data/treasury/pss-expenditure-on-services.json"),
-       "cra": Path("data/treasury/country-regional-analysis.json"), "council-tax": Path("data/local-government/council-tax-england.json")}
+       "cra": Path("data/treasury/country-regional-analysis.json"), "council-tax": Path("data/local-government/council-tax-england.json"),
+       "dwp-benefits": Path("data/welfare/benefit-expenditure-caseloads.json")}
 REPORT = Path("data/official-tables-report.json")
 
 
@@ -394,7 +395,73 @@ def import_council_tax():
     raise RuntimeError("; ".join(errors) or "No Council Tax levels release found")
 
 
-IMPORTERS = {"hmrc-receipts": import_hmrc_receipts, "pss-tes": import_pss, "cra": import_cra, "council-tax": import_council_tax}
+YEAR_COL_RE = re.compile(r"^(\d{4})/(\d{2})$")
+
+
+def parse_dwp_table(df):
+    """DWP layout: row with the table title and 'YYYY/YY' year headers, the next row with the unit and
+    Outturn/Forecast flags, then one row per line item (label in column 1, optional marker in column 2).
+    Rows without any number are section headings for the rows that follow."""
+    hdr = next(i for i in range(min(len(df), 10)) if sum(bool(YEAR_COL_RE.match(str(v).strip())) for v in df.iloc[i]) >= 3)
+    cols = [(j, str(v).strip()) for j, v in enumerate(df.iloc[hdr]) if YEAR_COL_RE.match(str(v).strip())]
+    years = [f"{y[:4]}-{y[5:]}" for _, y in cols]
+    flags = [str(df.iat[hdr + 1, j]).strip().lower() for j, _ in cols]
+    title = " ".join(str(v).strip() for v in df.iloc[hdr, :cols[0][0]] if isinstance(v, str) and not re.match(r"^(autumn|spring) forecast$", v.strip(), re.I)).strip().rstrip(",")
+    unit = " ".join(str(v).strip() for v in df.iloc[hdr + 1, 1:cols[0][0]] if isinstance(v, str) and v.strip() != "Benefit type")
+    rows, section = [], None
+    for i in range(hdr + 2, len(df)):
+        label = df.iat[i, 1]
+        if not isinstance(label, str) or not label.strip():
+            continue
+        label = re.sub(r"\s+", " ", label).strip().rstrip(",")
+        vals = [cell_number(df.iat[i, j]) for j, _ in cols]
+        if all(v is None for v in vals):
+            if re.match(r"^(notes?|source)", label, re.I):
+                break
+            section = label
+            continue
+        marker = df.iat[i, 2] if cols[0][0] > 2 and isinstance(df.iat[i, 2], str) else None
+        rows.append(dict(name=label, marker=marker, section=section, values=vals))
+    return dict(title=title, unit=unit, years=years, forecast=[f.startswith("forecast") for f in flags], rows=rows)
+
+
+def import_dwp_benefits():
+    q = requests.get(GOVUK + "/api/search.json", headers=UA, timeout=60, params={
+        "q": "Benefit expenditure and caseload tables", "count": 40, "fields": "title,link"}).json()
+    hits = [r for r in q.get("results", []) if re.match(r"benefit expenditure and caseload tables \d{4}$", r.get("title", ""), re.I)
+            and r.get("link", "").startswith("/government/publications/")]
+    hits.sort(key=lambda r: r["title"][-4:], reverse=True)
+    errors = []
+    for r in hits[:2]:
+        try:
+            doc = content(r["link"])
+            atts = [a for a in doc["details"].get("attachments") or [] if (a.get("url") or "").lower().endswith(".ods")
+                    and re.search(r"outturn-and-forecast|expenditure-and-caseloads-tables", a["url"], re.I)]
+            if not atts:
+                raise RuntimeError("no outturn and forecast tables attachment")
+            # within a year's collection the autumn forecast supersedes the spring one
+            att = max(atts, key=lambda a: ("autumn" in (a.get("title", "") + a["url"]).lower(), atts.index(a)))
+            book = read_book(att["url"])
+            tables = {k: parse_dwp_table(book[k]) for k in ("Table_1a", "Table_1b", "Table_1c")}
+            names = {x["name"] for x in tables["Table_1a"]["rows"]}
+            if len(tables["Table_1a"]["rows"]) < 30 or not any(n.startswith("State Pension") for n in names) or "nominal" not in tables["Table_1a"]["unit"]:
+                raise RuntimeError(f"Table 1a failed validation ({len(tables['Table_1a']['rows'])} rows, unit {tables['Table_1a']['unit']!r})")
+            notes = [" ".join(str(v).strip() for v in row if isinstance(v, str) and v.strip()) for row in book["Notes"].itertuples(index=False)] if "Notes" in book else []
+            notes = [n for n in notes if n][:120]
+            return dict(
+                dataset=f"{r['title']}: {att.get('title', '').strip()}", publisher="Department for Work and Pensions", page=GOVUK + r["link"],
+                attachment=att["url"], release_updated_at=doc.get("public_updated_at"), tables=tables, notes=notes,
+                caveats=["Great Britain DWP benefit expenditure; Northern Ireland social security is paid by the NI Executive and is not included in these tables.",
+                         "Benefits devolved to Scotland are counted by DWP only until the Scottish Government took them over.",
+                         "Years marked as forecast are DWP projections at the time of the fiscal event, not spending.",
+                         "Real-terms figures are in the price base stated in the table heading; never add them to nominal figures."])
+        except Exception as exc:
+            errors.append(f"{r['link']}: {exc}")
+    raise RuntimeError("; ".join(errors) or "No benefit expenditure tables found")
+
+
+IMPORTERS = {"hmrc-receipts": import_hmrc_receipts, "pss-tes": import_pss, "cra": import_cra, "council-tax": import_council_tax,
+             "dwp-benefits": import_dwp_benefits}
 
 
 def main(names):

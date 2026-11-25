@@ -86,6 +86,28 @@ class ParserTests(unittest.TestCase):
         self.assertEqual(t["years"]["2025-26"][0]["values"]["Health"], 3382.0)
         self.assertEqual(t["years"]["2025-26"][1]["level"], "nation")
 
+    def test_dwp_table_years_flags_sections_and_zero_kept(self):
+        df = pd.DataFrame([
+            ["Contents page", "Information", N, N, N, N],
+            ["Autumn Forecast", "Table 1a: Expenditure by benefit,", N, "2024/25", "2025/26", "2026/27"],
+            ["2026", "£ million, nominal terms", "Benefit type", "Outturn", "Outturn", "Forecast"],
+            [N, N, N, N, N, N],
+            [N, "Attendance Allowance", "(NC / NIR)", 7000.5, 7400, 7900],
+            [N, "Working age", N, N, N, N],
+            [N, "Universal Credit", "(IR)", 0, "..", 90000],
+            [N, "Notes", N, N, N, N],
+            [N, "Should not appear", N, 1, 2, 3],
+        ])
+        t = ot.parse_dwp_table(df)
+        self.assertEqual(t["years"], ["2024-25", "2025-26", "2026-27"])
+        self.assertEqual(t["forecast"], [False, False, True])
+        self.assertEqual(t["unit"], "£ million, nominal terms")
+        self.assertEqual(t["title"], "Table 1a: Expenditure by benefit")
+        self.assertEqual([r["name"] for r in t["rows"]], ["Attendance Allowance", "Universal Credit"])
+        self.assertEqual(t["rows"][1]["section"], "Working age")
+        self.assertEqual(t["rows"][1]["values"], [0.0, None, 90000.0])
+        self.assertEqual(t["rows"][0]["marker"], "(NC / NIR)")
+
 
 if __name__ == "__main__":
     unittest.main()
