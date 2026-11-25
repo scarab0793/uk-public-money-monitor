@@ -136,5 +136,40 @@
       el('details', null, el('summary', { text: 'What these figures mean' }), ...d.caveats.map(c => el('p', { class: 'small', text: c }))));
     render();
   }
-  receipts(); tes();
+  // ---------------- Country and Regional Analysis ----------------
+  async function regions() {
+    const box = document.getElementById('cra-body'); if (!box) return;
+    let d;
+    try { const r = await fetch('./data/treasury/country-regional-analysis.json', { cache: 'no-store' }); if (!r.ok) throw 0; d = await r.json(); } catch (e) { box.textContent = 'Regional spending data is not available yet.'; return; }
+    const T = d.tables, measures = [['A.1b', 'Per person, cash'], ['A.2b', 'Per person, real terms'], ['A.1a', 'Total, cash'], ['A.2a', 'Total, real terms']].filter(m => T[m[0]]);
+    const mSel = el('select', { id: 'cra-measure' }, ...measures.map(([k, l]) => el('option', { value: k, text: l })));
+    const years = T['A.1b'].rows[0].blocks[0].map(v => v[0]).reverse();
+    const ySel = el('select', { id: 'cra-year' }, ...years.map(y => el('option', { value: y, text: y })));
+    const out = el('div');
+    function render() {
+      const t = T[mSel.value], y = ySel.value, perHead = /per head/i.test(t.units[0] || '') || /b$/.test(mSel.value);
+      const val = r => (r.blocks[0].find(v => v[0] === y) || [])[2];
+      const idx = r => r.blocks[1] ? (r.blocks[1].find(v => v[0] === y) || [])[2] : null;
+      const fmt = v => v == null ? 'Not available' : perHead ? '£' + Math.round(v).toLocaleString('en-GB') + ' per person' : '£' + (v / 1000).toLocaleString('en-GB', { maximumFractionDigits: 1 }) + 'bn';
+      const uk = t.rows.find(r => /^uk identifiable/i.test(r.area));
+      const groups = [['Countries of the UK', t.rows.filter(r => r.level === 'nation')], ['English regions', t.rows.filter(r => r.level === 'english_region')]];
+      out.replaceChildren(el('p', { class: 'small', text: t.title.replace(/\s+/g, ' ') + (uk ? ' · UK identifiable: ' + fmt(val(uk)) : '') }));
+      for (const [title, rows] of groups) {
+        const max = Math.max(...rows.map(r => val(r) || 0));
+        out.append(el('h3', { text: title }));
+        for (const r of rows.slice().sort((a, b) => (val(b) || 0) - (val(a) || 0))) {
+          const i = idx(r);
+          out.append(el('div', { class: 'barrow' }, el('span', { class: 'barlabel', text: r.area.replace(/^Total /, '') }), el('span', { class: 'bar', style: 'width:' + Math.max(1, (val(r) || 0) / max * 100) + '%' }),
+            el('span', { class: 'barval', text: fmt(val(r)) + (i != null && perHead ? ' · index ' + Math.round(i) : '') })));
+        }
+      }
+    }
+    mSel.onchange = render; ySel.onchange = render;
+    box.replaceChildren(
+      el('p', { class: 'small', text: 'Source: ' }, ext(d.page, 'HM Treasury ' + d.dataset), document.createTextNode(' · release ' + new Date(d.release_updated_at).toLocaleDateString('en-GB') + ' · '), ext(d.attachment, 'Download the official tables')),
+      el('div', { class: 'filters' }, el('div', null, el('label', { for: 'cra-measure', text: 'Measure' }), mSel), el('div', null, el('label', { for: 'cra-year', text: 'Financial year' }), ySel)),
+      out, el('details', null, el('summary', { text: 'What these figures mean' }), ...d.caveats.map(c => el('p', { class: 'small', text: c })), el('p', { class: 'small', text: 'Index: UK identifiable spending per person = 100.' })));
+    render();
+  }
+  receipts(); tes(); regions();
 })();
