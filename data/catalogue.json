@@ -212,7 +212,7 @@
    "module": "Government operations (pay, grants, property)",
    "status": "planned",
    "reason": "Senior salaries, grants (360Giving / Government Grants Information System) and the property estate are published by different bodies on different schedules and are being assessed source by source.",
-   "source": "https://www.gov.uk/government/collections/government-grants-statistics"
+   "source": "https://www.gov.uk/government/collections/government-grants-data-and-statistics"
   },
   {
    "module": "Council spending in Scotland, Wales and Northern Ireland",
