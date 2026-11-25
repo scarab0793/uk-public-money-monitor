@@ -3,7 +3,7 @@ Usage: python explore_govuk.py <govuk path> [attachment-substring ...]"""
 import io, sys, json, requests, pandas as pd
 path = sys.argv[1]; wanted = [w.lower() for w in sys.argv[2:]]
 if path.startswith("search:"):
-    q = requests.get("https://www.gov.uk/api/search.json", params={"q": path[7:], "count": 15, "order": "-public_timestamp", "fields": "title,link,public_timestamp,format"}, timeout=60).json()
+    q = requests.get("https://www.gov.uk/api/search.json", params={"q": path[7:], "count": 15, "fields": "title,link,public_timestamp,format"}, timeout=60).json()
     for r in q.get("results", []):
         print("HIT", r.get("public_timestamp", "")[:10], r.get("format"), r.get("title"), "|", r.get("link"))
     path = next((r["link"] for r in q.get("results", []) if r.get("link", "").startswith("/government/statistics/")), None)
