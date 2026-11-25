@@ -33,7 +33,7 @@ for a in docs:
         print(raw[:3000].decode("utf-8", "replace")); continue
     book = pd.ExcelFile(io.BytesIO(raw), engine=engine_override or ("odf" if url.lower().endswith(".ods") else None))
     for s in book.sheet_names:
-        if full and s in full:
+        if full and s.replace(" ", "_") in full:
             df = book.parse(s, header=None)
             print("--- FULL SHEET", s, df.shape)
             for i in range(len(df)):
