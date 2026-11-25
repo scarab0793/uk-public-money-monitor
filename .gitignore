@@ -1,0 +1,4 @@
+__pycache__/
+.pytest_cache/
+raw-procurement/
+data/procurement.staging/
