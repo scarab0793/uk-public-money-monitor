@@ -115,6 +115,22 @@
    "limitations": "England only; bills before discounts and support; historical years not yet loaded."
   },
   {
+   "id": "la-outturn",
+   "module": "Council spending by service (England)",
+   "anchor": "council-spending",
+   "publisher": "Ministry of Housing, Communities and Local Government",
+   "source": "https://www.gov.uk/government/collections/local-authority-revenue-expenditure-and-financing",
+   "file": "data/local-government/revenue-outturn-england.json",
+   "stamp": "retrieved_at",
+   "refresh": "Checked daily; MHCLG publishes outturn annually",
+   "workflow": "refresh-official-tables.yml",
+   "unit": "GBP thousand, nominal",
+   "basis": "Revenue outturn (actual day-to-day spending)",
+   "verification": "verified",
+   "licence": "Open Government Licence v3.0",
+   "limitations": "England only; latest five years. Councils that missed the deadline have no figures for that year. Capital spending is not included. Every row is checked for net cost = spending − income."
+  },
+  {
    "id": "ons",
    "module": "ONS public finances",
    "anchor": "ons-monthly",
@@ -193,16 +209,16 @@
    "source": "https://www.england.nhs.uk/financial-accounting-and-reporting/"
   },
   {
-   "module": "Local authority spending (England, Scotland, Wales, Northern Ireland)",
-   "status": "planned",
-   "reason": "Council Tax levels for England are live. Local authority revenue outturn and the devolved equivalents are separate releases and are being added one by one.",
-   "source": "https://www.gov.uk/government/collections/local-authority-revenue-expenditure-and-financing"
-  },
-  {
    "module": "Government operations (pay, grants, property)",
    "status": "planned",
    "reason": "Senior salaries, grants (360Giving / Government Grants Information System) and the property estate are published by different bodies on different schedules and are being assessed source by source.",
    "source": "https://www.gov.uk/government/collections/government-grants-statistics"
+  },
+  {
+   "module": "Council spending in Scotland, Wales and Northern Ireland",
+   "status": "planned",
+   "reason": "English council revenue outturn is live. The devolved governments publish their own local government finance statistics in different formats; they are being added one by one.",
+   "source": "https://www.gov.scot/collections/local-government-finance-statistics/"
   }
  ]
 }

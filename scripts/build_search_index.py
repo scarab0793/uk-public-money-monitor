@@ -85,6 +85,12 @@ def main():
             if r["level"] in ("nation", "english_region"):
                 v = r["blocks"][0][-1]
                 add("Nation or region", r["area"].replace("Total ", ""), "Identifiable public spending", "#regional-spending", v[2] * 1e6 if v[2] else None, v[0])
+    lo = load("local-government/revenue-outturn-england.json")
+    if lo:
+        fy = max(lo["years"])
+        for a in lo["years"][fy]["authorities"]:
+            v = (a["values"].get("Total Service Expenditure") or [None, None, None])[2]
+            add("Council spending", a["name"], f"Net cost of services {fy} · {a.get('cls') or ''}", f"#council-spending/{a['ecode']}", v * 1000 if v else None, fy)
     wf = load("welfare/benefit-expenditure-caseloads.json")
     if wf:
         t = wf["tables"]["Table_1a"]
