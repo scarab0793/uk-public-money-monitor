@@ -16,7 +16,7 @@
     a.href = '#'; a.className = 'small csv-link'; a.textContent = 'Download this table as shown (CSV; full data under Sources)';
     a.addEventListener('click', e => {
       e.preventDefault();
-      const blob = new Blob(['﻿' + csv(table) + '\r\n'], { type: 'text/csv;charset=utf-8' });
+      const blob = new Blob(['\ufeff' + csv(table) + '\r\n'], { type: 'text/csv;charset=utf-8' });
       const url = URL.createObjectURL(blob), dl = document.createElement('a');
       dl.href = url; dl.download = name(table) + '.csv'; document.body.append(dl); dl.click(); dl.remove();
       setTimeout(() => URL.revokeObjectURL(url), 1000);
