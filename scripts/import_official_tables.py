@@ -26,7 +26,8 @@ import requests
 
 GOVUK = "https://www.gov.uk"
 UA = {"User-Agent": "uk-public-money-monitor/1.0 (+https://github.com/scarab0793/uk-public-money-monitor)"}
-OUT = {"hmrc-receipts": Path("data/hmrc/receipts.json"), "pss-tes": Path("data/treasury/pss-expenditure-on-services.json")}
+OUT = {"hmrc-receipts": Path("data/hmrc/receipts.json"), "pss-tes": Path("data/treasury/pss-expenditure-on-services.json"),
+       "cra": Path("data/treasury/country-regional-analysis.json")}
 REPORT = Path("data/official-tables-report.json")
 
 
@@ -217,7 +218,101 @@ def import_pss():
     raise RuntimeError("; ".join(errors) or "No Public Spending Statistics release found")
 
 
-IMPORTERS = {"hmrc-receipts": import_hmrc_receipts, "pss-tes": import_pss}
+ENGLISH_REGIONS = {"north east", "north west", "yorkshire and the humber", "east midlands", "west midlands", "east", "london", "south east", "south west"}
+NATIONS = {"england", "scotland", "wales", "northern ireland"}
+
+
+def area_level(label):
+    low = re.sub(r"\s*\(\d+\)", "", label).strip().lower()
+    if low in ENGLISH_REGIONS:
+        return "english_region"
+    if low in NATIONS:
+        return "nation"
+    if low.startswith("total ") and low[6:] in NATIONS:
+        return "nation"
+    if "identifiable" in low or low.startswith(("uk", "united kingdom", "total")) or "outside" in low or "non-identifiable" in low:
+        return "total_or_other"
+    return "other"
+
+
+def parse_cra_table(df):
+    """CRA layout: title row, unit row(s), a row of 'YYYY-YY\noutturn' headers in one or two blocks, then one row per area."""
+    title = str(df.iat[0, 0]).strip()
+    hdr = None
+    for i in range(min(len(df), 12)):
+        if sum(bool(re.match(r"\d{4}-\d{2}", str(v).strip())) for v in df.iloc[i, 1:].tolist()) >= 3:
+            hdr = i
+            break
+    if hdr is None:
+        raise RuntimeError("No year header in " + title[:40])
+    heads = [str(v).strip() for v in df.iloc[hdr, 1:].tolist()]
+    units = []
+    for j in range(1, df.shape[1]):
+        u = next((str(df.iat[i, j]).strip() for i in range(hdr - 1, 0, -1) if isinstance(df.iat[i, j], str) and not df.iat[i, j].startswith("Accredited")), None)
+        units.append(u)
+    blocks, current, seen = [], None, set()
+    for j, h in enumerate(heads):
+        m = re.match(r"(\d{4}-\d{2})\s*(\w*)", h)
+        if not m:
+            continue
+        if current is None or m.group(1) in seen:
+            current = dict(unit=units[j] or (blocks[-1]["unit"] if blocks else None), cols=[])
+            blocks.append(current)
+            seen = set()
+        if units[j] and not current["cols"]:
+            current["unit"] = units[j]
+        seen.add(m.group(1))
+        current["cols"].append((j + 1, m.group(1), m.group(2) or None))
+    # a unit label usually sits above the last column of its block
+    for b in blocks:
+        last = b["cols"][-1][0] - 1
+        if units[last]:
+            b["unit"] = units[last]
+    rows = []
+    for i in range(hdr + 1, len(df)):
+        label = df.iat[i, 0]
+        if not isinstance(label, str) or not label.strip():
+            continue
+        vals = [[[y, k, cell_number(df.iat[i, c])] for c, y, k in b["cols"]] for b in blocks]
+        if not any(v[2] is not None for blk in vals for v in blk):
+            continue
+        label = label.strip()
+        rows.append(dict(area=re.sub(r"\s*\(\d+\)", "", label), label=label, level=area_level(label), blocks=vals))
+    return dict(title=title, units=[b["unit"] for b in blocks], rows=rows)
+
+
+def find_latest(query, title_re):
+    q = requests.get(GOVUK + "/api/search.json", headers=UA, timeout=60, params={
+        "q": query, "filter_organisations": "hm-treasury", "order": "-public_timestamp", "count": 20, "fields": "title,link"}).json()
+    for r in q.get("results", []):
+        if re.match(title_re, r.get("title", ""), re.I) and r.get("link", "").startswith("/government/statistics/"):
+            yield r["link"]
+
+
+def import_cra():
+    errors = []
+    for link in find_latest("Country and regional analysis", r"country and regional analysis:? \d{4}$"):
+        try:
+            doc = content(link)
+            att = attachment(doc, r"A tables|Chapter_A")
+            book = read_book(att["url"])
+            tables = {k: parse_cra_table(book[k]) for k in ("A.1a", "A.1b", "A.2a", "A.2b") if k in book}
+            if "A.1b" not in tables or len([r for r in tables["A.1b"]["rows"] if r["level"] == "english_region"]) != 9:
+                raise RuntimeError("Table A.1b failed validation")
+            return dict(
+                dataset="Country and Regional Analysis: identifiable public spending by country and region",
+                publisher="HM Treasury", page=GOVUK + link, attachment=att["url"], release_updated_at=doc.get("public_updated_at"),
+                caveats=["Identifiable expenditure only: spending that can be attributed to a region (for example defence and debt interest are largely non-identifiable).",
+                         "English regions add up to England, and the four nations to the UK identifiable total; do not add regional and national rows together.",
+                         "Per head figures use mid-year population estimates. Real-terms tables use the price base stated in their titles.",
+                         "Spending is attributed by where the benefit is received ('who benefits'), not where the money is paid out."],
+                tables=tables)
+        except Exception as exc:
+            errors.append(f"{link}: {exc}")
+    raise RuntimeError("; ".join(errors) or "No Country and Regional Analysis release found")
+
+
+IMPORTERS = {"hmrc-receipts": import_hmrc_receipts, "pss-tes": import_pss, "cra": import_cra}
 
 
 def main(names):

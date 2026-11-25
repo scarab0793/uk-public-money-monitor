@@ -49,6 +49,23 @@ class ParserTests(unittest.TestCase):
         self.assertEqual(t["rows"][0]["values"][0], ["2020-21", "outturn", 1.0])
         self.assertEqual([r["name"] for r in t["rows"]][::4], ["General public services", "Total Managed Expenditure"])
 
+    def test_cra_two_unit_blocks(self):
+        df = pd.DataFrame([
+            ["Table A.1b Total UK identifiable expenditure on services by country and region", N, N, N, N, N, N],
+            [N, N, N, "£ per head", N, N, "Index (UK identifiable expenditure = 100)"],
+            [N, "Accredited Official Statistics", N, N, "Accredited Official Statistics", N, N],
+            [N, "2023-24\noutturn", "2024-25\noutturn", "2025-26\noutturn", "2023-24\noutturn", "2024-25\noutturn", "2025-26\noutturn"],
+            ["North East", 13605, 14241, 14908, 105, 105, 104],
+            ["England", 12598, 13133, 13902, 97, 97, 97],
+            ["UK identifiable expenditure", 13000, 13600, 14284, 100, 100, 100],
+            ["(1) note", N, N, N, N, N, N],
+        ])
+        t = ot.parse_cra_table(df)
+        self.assertEqual(t["units"], ["£ per head", "Index (UK identifiable expenditure = 100)"])
+        self.assertEqual([r["level"] for r in t["rows"]], ["english_region", "nation", "total_or_other"])
+        self.assertEqual(t["rows"][0]["blocks"][0][-1], ["2025-26", "outturn", 14908.0])
+        self.assertEqual(t["rows"][0]["blocks"][1][0], ["2023-24", "outturn", 105.0])
+
 
 if __name__ == "__main__":
     unittest.main()
