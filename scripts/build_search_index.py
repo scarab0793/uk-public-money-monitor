@@ -99,6 +99,13 @@ def main():
             inc = (s.get("SCI0100A") or 0) + (s.get("SCI0110A") or 0)
             add("NHS trust", p["name"], " · ".join(x for x in (p.get("sector"), p.get("region"), "operating income") if x),
                 f"#nhs-trusts/{quote(p.get('code') or p['name'], safe='')}", inc * 1000 if inc else None, fy)
+    gr = load("grants/government-grants.json")
+    if gr:
+        fy = gr["financial_year"]
+        for code, title, funder, managed, value, method, cofog in gr["schemes"]["rows"]:
+            add("Grant scheme", title[:140], f"{funder} · {method or 'grant'}", f"#grants/schemes/{quote(title[:60], safe='')}", value or None, fy)
+        for key, name, coh, chc, total, n, funders, schemes in gr["recipients"]["rows"]:
+            add("Grant recipient", name, f"{n} award(s) from {', '.join(funders[:2])}" + (f" · company {coh}" if coh else ""), f"#grants/recipients/{quote(coh or name, safe='')}", total or None, fy)
     wf = load("welfare/benefit-expenditure-caseloads.json")
     if wf:
         t = wf["tables"]["Table_1a"]

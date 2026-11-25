@@ -115,6 +115,22 @@
    "limitations": "England only; NHS trusts and foundation trusts, not ICBs or NHS England itself. Group basis and before consolidation adjustments, so trusts cannot be added together into an NHS total. Every trust is checked for operating income minus expenses = operating result."
   },
   {
+   "id": "grants",
+   "module": "Government grants",
+   "anchor": "grants",
+   "publisher": "Cabinet Office (Government Grants Information System)",
+   "source": "https://www.gov.uk/government/collections/government-grants-data-and-statistics",
+   "file": "data/grants/government-grants.json",
+   "stamp": "retrieved_at",
+   "refresh": "Checked daily; published once a year",
+   "workflow": "refresh-official-tables.yml",
+   "unit": "GBP (department totals published in £ million)",
+   "basis": "Grant spending in the year (departments, schemes); award values for individual awards",
+   "verification": "verified",
+   "licence": "Open Government Licence v3.0",
+   "limitations": "UK government departments only, not devolved governments. Award amounts can cover several years. Recipients are grouped only by published identifiers; those under £100,000 are counted in totals but not listed."
+  },
+  {
    "id": "council-tax",
    "module": "Council Tax bills in England",
    "anchor": "council-tax",
@@ -219,12 +235,6 @@
    "source": "https://www.gov.uk/government/statistics/defence-departmental-resources-2025"
   },
   {
-   "module": "Government operations (pay, grants, property)",
-   "status": "planned",
-   "reason": "Senior salaries, grants (360Giving / Government Grants Information System) and the property estate are published by different bodies on different schedules and are being assessed source by source.",
-   "source": "https://www.gov.uk/government/collections/government-grants-data-and-statistics"
-  },
-  {
    "module": "Council spending in Scotland, Wales and Northern Ireland",
    "status": "planned",
    "reason": "English council revenue outturn is live. The devolved governments publish their own local government finance statistics in different formats; they are being added one by one.",
@@ -235,6 +245,12 @@
    "status": "planned",
    "reason": "English NHS trust accounts are live, and health spending by nation is under Regions. Integrated care board accounts and the devolved health services' accounts are published separately and are being assessed.",
    "source": "https://www.england.nhs.uk/publications/annual-report/"
+  },
+  {
+   "module": "Government pay and property",
+   "status": "planned",
+   "reason": "Grants are live. Senior civil service salaries and the government property estate are published by different bodies in different formats and are being assessed.",
+   "source": "https://www.gov.uk/government/collections/senior-salaries-in-government"
   }
  ]
 }

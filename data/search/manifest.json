@@ -68,6 +68,18 @@
    "bytes": 18349
   },
   {
+   "type": "Grant scheme",
+   "file": "grant-scheme.json",
+   "count": 1699,
+   "bytes": 216007
+  },
+  {
+   "type": "Grant recipient",
+   "file": "grant-recipient.json",
+   "count": 9549,
+   "bytes": 1158443
+  },
+  {
    "type": "Benefit",
    "file": "benefit.json",
    "count": 30,
