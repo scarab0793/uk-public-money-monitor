@@ -22,5 +22,10 @@
       t.append(tr);
     }
     wrap.append(t); box.replaceChildren(wrap);
+    if (cat.gaps && cat.gaps.length) {
+      const g = el('div'); g.append(el('h3', 'Not covered yet, and why'));
+      for (const x of cat.gaps) { const p = el('p'); p.append(el('strong', x.module + ' (' + x.status + '): '), document.createTextNode(x.reason + ' ')); const a = el('a', 'Source'); a.href = x.source; a.target = '_blank'; a.rel = 'noopener noreferrer'; p.append(a); g.append(p); }
+      box.append(g);
+    }
   }).catch(() => { box.textContent = 'Source catalogue unavailable.'; });
 })();

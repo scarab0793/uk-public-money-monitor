@@ -178,5 +178,31 @@
    "licence": "Open Government Licence v3.0",
    "limitations": "ODA includes in-donor refugee costs and core multilateral contributions; it is not all money sent abroad. Military aid is not ODA."
   }
+ ],
+ "gaps": [
+  {
+   "module": "Military aid",
+   "status": "not yet published on this site",
+   "reason": "No official machine-readable series of UK military aid exists. The Ministry of Defence publishes the net additional cost of operations by operation (Defence departmental resources, worksheet 6), but the operation names in the published spreadsheet are not machine-readable, so the figures cannot yet be attributed automatically. Pledges and announcements are not spending and are not shown.",
+   "source": "https://www.gov.uk/government/statistics/defence-departmental-resources-2025"
+  },
+  {
+   "module": "NHS spending by trust and organisation",
+   "status": "planned",
+   "reason": "Health spending by function and by nation is shown under Spending and Regions. Organisation-level NHS accounts (trust accounts consolidation) and monthly spend over £25,000 files are published per organisation in varying formats and are being assessed.",
+   "source": "https://www.england.nhs.uk/financial-accounting-and-reporting/"
+  },
+  {
+   "module": "Local authority spending (England, Scotland, Wales, Northern Ireland)",
+   "status": "planned",
+   "reason": "Council Tax levels for England are live. Local authority revenue outturn and the devolved equivalents are separate releases and are being added one by one.",
+   "source": "https://www.gov.uk/government/collections/local-authority-revenue-expenditure-and-financing"
+  },
+  {
+   "module": "Government operations (pay, grants, property)",
+   "status": "planned",
+   "reason": "Senior salaries, grants (360Giving / Government Grants Information System) and the property estate are published by different bodies on different schedules and are being assessed source by source.",
+   "source": "https://www.gov.uk/government/collections/government-grants-statistics"
+  }
  ]
 }
