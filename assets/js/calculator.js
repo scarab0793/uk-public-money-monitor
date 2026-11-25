@@ -2,11 +2,11 @@
 // plus a proportional breakdown of the result by HM Treasury spending function.
 (function () {
   'use strict';
-  const out = document.getElementById('out'), salary = document.getElementById('salary'), nation = document.getElementById('calc-nation');
+  const out = document.getElementById('out'), salary = document.getElementById('salary'), nation = document.getElementById('calc-nation'), yearSel = document.getElementById('calc-year');
   if (!out || !salary || !nation) return;
   const money = x => new Intl.NumberFormat('en-GB', { style: 'currency', currency: 'GBP', maximumFractionDigits: 2 }).format(x);
   const el = (tag, props, ...kids) => { const e = document.createElement(tag); if (props) for (const [k, v] of Object.entries(props)) { if (v == null) continue; if (k === 'class') e.className = v; else if (k === 'text') e.textContent = v; else e.setAttribute(k, v); } for (const k of kids) if (k != null) e.append(k); return e; };
-  let R = null, tes = null;
+  let ALL = null, R = null, tes = null;
   function tax(gross) {
     const pa = R.personal_allowance, allowance = gross > pa.taper_starts ? Math.max(0, pa.amount - (gross - pa.taper_starts) * pa.taper_rate) : pa.amount;
     const taxable = Math.max(0, gross - allowance), bands = R.income_tax[nation.value].bands;
@@ -42,7 +42,8 @@
   }
   window.calculate = render;
   salary.addEventListener('input', render); nation.addEventListener('change', render);
-  fetch('./data/tax/income-tax-2025-26.json', { cache: 'no-store' }).then(r => r.json()).then(j => { R = j; render(); }).catch(() => { out.textContent = 'Tax rates are unavailable.'; });
+  if (yearSel) yearSel.addEventListener('change', () => { R = ALL.years[yearSel.value]; render(); });
+  fetch('./data/tax/income-tax-rates.json', { cache: 'no-store' }).then(r => r.json()).then(j => { ALL = j; const ys = Object.keys(j.years).sort().reverse(); if (yearSel) { yearSel.replaceChildren(...ys.map(y => Object.assign(document.createElement('option'), { value: y, textContent: y.replace('-', ' to 20') }))); } R = j.years[ys[0]]; render(); }).catch(() => { out.textContent = 'Tax rates are unavailable.'; });
   fetch('./data/treasury/pss-expenditure-on-services.json', { cache: 'no-store' }).then(r => r.json()).then(d => {
     const t = d.tables.Table_9, total = t.rows.find(r => r.level === 'total');
     const i = total.values.map(v => v[1]).lastIndexOf('outturn'); if (i < 0) return;

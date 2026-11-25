@@ -1,0 +1,159 @@
+{
+ "generated_at": "2026-11-25T18:45:00Z",
+ "verified_at": "2026-11-25",
+ "notice": "Rates and thresholds checked against the GOV.UK pages linked for each year on 25 November 2026. Bands are taxable income after the Personal Allowance, derived from the published bands for a standard \u00a312,570 allowance.",
+ "years": {
+  "2026-27": {
+   "personal_allowance": {
+    "amount": 12570,
+    "taper_starts": 100000,
+    "taper_rate": 0.5,
+    "source": "https://www.gov.uk/income-tax-rates"
+   },
+   "income_tax": {
+    "rUK": {
+     "label": "England, Wales and Northern Ireland",
+     "source": "https://www.gov.uk/income-tax-rates",
+     "bands": [
+      {
+       "name": "Basic rate",
+       "rate": 0.2,
+       "upto": 37700
+      },
+      {
+       "name": "Higher rate",
+       "rate": 0.4,
+       "upto": 125140
+      },
+      {
+       "name": "Additional rate",
+       "rate": 0.45,
+       "upto": null
+      }
+     ]
+    },
+    "scotland": {
+     "label": "Scotland",
+     "source": "https://www.gov.uk/scottish-income-tax",
+     "bands": [
+      {
+       "name": "Starter rate",
+       "rate": 0.19,
+       "upto": 3967
+      },
+      {
+       "name": "Basic rate",
+       "rate": 0.2,
+       "upto": 16956
+      },
+      {
+       "name": "Intermediate rate",
+       "rate": 0.21,
+       "upto": 31092
+      },
+      {
+       "name": "Higher rate",
+       "rate": 0.42,
+       "upto": 62430
+      },
+      {
+       "name": "Advanced rate",
+       "rate": 0.45,
+       "upto": 125140
+      },
+      {
+       "name": "Top rate",
+       "rate": 0.48,
+       "upto": null
+      }
+     ]
+    }
+   },
+   "employee_ni": {
+    "label": "Employee Class 1 National Insurance",
+    "source": "https://www.gov.uk/guidance/rates-and-thresholds-for-employers-2026-to-2027",
+    "primary_threshold": 12570,
+    "upper_earnings_limit": 50270,
+    "main_rate": 0.08,
+    "upper_rate": 0.02
+   },
+   "tax_year": "2026-27"
+  },
+  "2025-26": {
+   "personal_allowance": {
+    "amount": 12570,
+    "taper_starts": 100000,
+    "taper_rate": 0.5,
+    "source": "https://www.gov.uk/income-tax-rates"
+   },
+   "income_tax": {
+    "rUK": {
+     "label": "England, Wales and Northern Ireland",
+     "source": "https://www.gov.uk/income-tax-rates/previous-tax-years",
+     "bands": [
+      {
+       "name": "Basic rate",
+       "rate": 0.2,
+       "upto": 37700
+      },
+      {
+       "name": "Higher rate",
+       "rate": 0.4,
+       "upto": 125140
+      },
+      {
+       "name": "Additional rate",
+       "rate": 0.45,
+       "upto": null
+      }
+     ]
+    },
+    "scotland": {
+     "label": "Scotland",
+     "source": "https://www.gov.uk/scottish-income-tax/2025-to-2026-tax-year",
+     "bands": [
+      {
+       "name": "Starter rate",
+       "rate": 0.19,
+       "upto": 2827
+      },
+      {
+       "name": "Basic rate",
+       "rate": 0.2,
+       "upto": 14921
+      },
+      {
+       "name": "Intermediate rate",
+       "rate": 0.21,
+       "upto": 31092
+      },
+      {
+       "name": "Higher rate",
+       "rate": 0.42,
+       "upto": 62430
+      },
+      {
+       "name": "Advanced rate",
+       "rate": 0.45,
+       "upto": 125140
+      },
+      {
+       "name": "Top rate",
+       "rate": 0.48,
+       "upto": null
+      }
+     ]
+    }
+   },
+   "employee_ni": {
+    "label": "Employee Class 1 National Insurance",
+    "source": "https://www.gov.uk/guidance/rates-and-thresholds-for-employers-2025-to-2026",
+    "primary_threshold": 12570,
+    "upper_earnings_limit": 50270,
+    "main_rate": 0.08,
+    "upper_rate": 0.02
+   },
+   "tax_year": "2025-26"
+  }
+ }
+}
