@@ -19,6 +19,7 @@ on:
       - 'scripts/import_procurement.py'
       - 'scripts/build_procurement.py'
       - 'scripts/procurement_store.py'
+      - 'scripts/git_publish.sh'
       - '.github/workflows/procurement.yml'
 permissions:
   contents: write
@@ -48,21 +49,9 @@ jobs:
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
       - name: Import (${{ env.MODE }})
         run: |
-          cat > /tmp/checkpoint.sh <<'SH'
-          set -x
-          git status --short | head -20
-          git add data/procurement/import-*.json
-          git diff --cached --quiet && exit 0
-          git commit -q -m "data: procurement import checkpoint"
-          for i in 1 2 3 4; do git pull -q --rebase --autostash -X theirs origin main && git push -q origin HEAD:main && exit 0; sleep $((i*10)); done
-          SH
-          python -u scripts/import_procurement.py --mode "$MODE" --budget-minutes "$BUDGET" --commit-cmd "bash /tmp/checkpoint.sh"
+          python -u scripts/import_procurement.py --mode "$MODE" --budget-minutes "$BUDGET" --commit-cmd "bash scripts/git_publish.sh 'data: procurement import checkpoint' data/procurement/import-state.json data/procurement/import-log.json"
       - name: Build published database
         run: python -u scripts/build_procurement.py
       - name: Publish
         run: |
-          git add -A data/procurement
-          if git diff --cached --quiet; then echo "No changes"; exit 0; fi
-          git commit -q -m "data: refresh procurement database ($MODE)"
-          for i in 1 2 3 4; do git pull -q --rebase --autostash -X theirs origin main && git push -q origin HEAD:main && exit 0; sleep $((i*10)); done
-          exit 1
+          bash scripts/git_publish.sh "data: refresh procurement database ($MODE)" data/procurement
