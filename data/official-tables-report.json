@@ -1,0 +1,13 @@
+{
+ "hmrc-receipts": {
+  "checked_at": "2026-11-25T17:17:02Z",
+  "error": "Receipts tables failed validation: columns=[] monthly=0 annual=0",
+  "status": "failed_kept_previous"
+ },
+ "pss-tes": {
+  "attachment": "https://assets.publishing.service.gov.uk/media/6af4752ba4004bdbe54e5500/PSS_Nov_2026_TES.xlsx",
+  "checked_at": "2026-11-25T17:17:02Z",
+  "release_updated_at": "2026-11-18T09:30:01+00:00",
+  "status": "updated"
+ }
+}
