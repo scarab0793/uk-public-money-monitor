@@ -99,6 +99,22 @@
    "limitations": "Great Britain only: Northern Ireland social security is paid by the NI Executive. Benefits devolved to Scotland leave these tables once transferred. Tax credits and Child Benefit (HMRC) are not DWP benefits. Every year's benefit lines are checked to add up to the published total."
   },
   {
+   "id": "nhs-trusts",
+   "module": "NHS trust accounts (England)",
+   "anchor": "nhs-trusts",
+   "publisher": "NHS England",
+   "source": "https://www.england.nhs.uk/financial-accounting-and-reporting/nhs-providers-tac-data-publications/",
+   "file": "data/nhs/trust-accounts.json",
+   "stamp": "retrieved_at",
+   "refresh": "Checked daily; NHS England publishes once a year. Its web page refuses automated requests, so links to a new year's files are added to data/nhs/tac-sources.json when published",
+   "workflow": "refresh-official-tables.yml",
+   "unit": "GBP thousand, nominal",
+   "basis": "Audited annual accounts (income, expenses, surplus or deficit)",
+   "verification": "verified",
+   "licence": "Open Government Licence v3.0",
+   "limitations": "England only; NHS trusts and foundation trusts, not ICBs or NHS England itself. Group basis and before consolidation adjustments, so trusts cannot be added together into an NHS total. Every trust is checked for operating income minus expenses = operating result."
+  },
+  {
    "id": "council-tax",
    "module": "Council Tax bills in England",
    "anchor": "council-tax",
@@ -203,12 +219,6 @@
    "source": "https://www.gov.uk/government/statistics/defence-departmental-resources-2025"
   },
   {
-   "module": "NHS spending by trust and organisation",
-   "status": "planned",
-   "reason": "Health spending by function and by nation is shown under Spending and Regions. Organisation-level NHS accounts (trust accounts consolidation) and monthly spend over £25,000 files are published per organisation in varying formats and are being assessed.",
-   "source": "https://www.england.nhs.uk/financial-accounting-and-reporting/"
-  },
-  {
    "module": "Government operations (pay, grants, property)",
    "status": "planned",
    "reason": "Senior salaries, grants (360Giving / Government Grants Information System) and the property estate are published by different bodies on different schedules and are being assessed source by source.",
@@ -219,6 +229,12 @@
    "status": "planned",
    "reason": "English council revenue outturn is live. The devolved governments publish their own local government finance statistics in different formats; they are being added one by one.",
    "source": "https://www.gov.scot/collections/local-government-finance-statistics/"
+  },
+  {
+   "module": "NHS commissioners and NHS spending in Scotland, Wales and Northern Ireland",
+   "status": "planned",
+   "reason": "English NHS trust accounts are live, and health spending by nation is under Regions. Integrated care board accounts and the devolved health services' accounts are published separately and are being assessed.",
+   "source": "https://www.england.nhs.uk/publications/annual-report/"
   }
  ]
 }

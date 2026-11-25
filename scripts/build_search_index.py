@@ -91,6 +91,14 @@ def main():
         for a in lo["years"][fy]["authorities"]:
             v = (a["values"].get("Total Service Expenditure") or [None, None, None])[2]
             add("Council spending", a["name"], f"Net cost of services {fy} · {a.get('cls') or ''}", f"#council-spending/{a['ecode']}", v * 1000 if v else None, fy)
+    nh = load("nhs/trust-accounts.json")
+    if nh:
+        fy = max(nh["years"])
+        for p in nh["years"][fy]["providers"]:
+            s = p["values"].get("A02CY01", {})
+            inc = (s.get("SCI0100A") or 0) + (s.get("SCI0110A") or 0)
+            add("NHS trust", p["name"], " · ".join(x for x in (p.get("sector"), p.get("region"), "operating income") if x),
+                f"#nhs-trusts/{quote(p.get('code') or p['name'], safe='')}", inc * 1000 if inc else None, fy)
     wf = load("welfare/benefit-expenditure-caseloads.json")
     if wf:
         t = wf["tables"]["Table_1a"]
