@@ -25,7 +25,7 @@
    "partial_days": [
     "2026-11-25"
    ],
-   "releases_listed": 2754,
+   "releases_listed": 2767,
    "window_basis": "last-updated date"
   }
  },
@@ -34,123 +34,123 @@
   "contracts-finder": {
    "days": {
     "2026-11-18": {
-     "fetched_at": "2026-11-25T17:11:01Z",
+     "fetched_at": "2026-11-25T19:50:23Z",
      "pages": 2,
      "releases": 131,
      "status": "complete",
      "window_end": "2026-11-19T00:00:00Z"
     },
     "2026-11-19": {
-     "fetched_at": "2026-11-25T17:11:05Z",
+     "fetched_at": "2026-11-25T19:50:27Z",
      "pages": 2,
      "releases": 125,
      "status": "complete",
      "window_end": "2026-11-20T00:00:00Z"
     },
     "2026-11-20": {
-     "fetched_at": "2026-11-25T17:11:08Z",
+     "fetched_at": "2026-11-25T19:50:30Z",
      "pages": 2,
      "releases": 111,
      "status": "complete",
      "window_end": "2026-11-21T00:00:00Z"
     },
     "2026-11-21": {
-     "fetched_at": "2026-11-25T17:11:11Z",
+     "fetched_at": "2026-11-25T19:50:33Z",
      "pages": 1,
      "releases": 0,
      "status": "complete",
      "window_end": "2026-11-22T00:00:00Z"
     },
     "2026-11-22": {
-     "fetched_at": "2026-11-25T17:11:12Z",
+     "fetched_at": "2026-11-25T19:50:33Z",
      "pages": 1,
      "releases": 2,
      "status": "complete",
      "window_end": "2026-11-23T00:00:00Z"
     },
     "2026-11-23": {
-     "fetched_at": "2026-11-25T17:11:12Z",
+     "fetched_at": "2026-11-25T19:50:34Z",
      "pages": 1,
      "releases": 59,
      "status": "complete",
      "window_end": "2026-11-24T00:00:00Z"
     },
     "2026-11-24": {
-     "fetched_at": "2026-11-25T17:11:12Z",
+     "fetched_at": "2026-11-25T19:50:34Z",
      "pages": 1,
      "releases": 0,
      "status": "complete",
      "window_end": "2026-11-25T00:00:00Z"
     },
     "2026-11-25": {
-     "fetched_at": "2026-11-25T17:11:12Z",
+     "fetched_at": "2026-11-25T19:50:34Z",
      "pages": 1,
      "releases": 0,
      "status": "partial",
-     "window_end": "2026-11-25T17:11:12Z"
+     "window_end": "2026-11-25T19:50:34Z"
     }
    }
   },
   "find-a-tender": {
    "days": {
     "2026-11-18": {
-     "fetched_at": "2026-11-25T17:11:13Z",
+     "fetched_at": "2026-11-25T19:50:35Z",
      "pages": 5,
      "releases": 416,
      "status": "complete",
      "window_end": "2026-11-19T00:00:00Z"
     },
     "2026-11-19": {
-     "fetched_at": "2026-11-25T17:11:23Z",
+     "fetched_at": "2026-11-25T19:50:45Z",
      "pages": 6,
      "releases": 504,
      "status": "complete",
      "window_end": "2026-11-20T00:00:00Z"
     },
     "2026-11-20": {
-     "fetched_at": "2026-11-25T17:11:35Z",
+     "fetched_at": "2026-11-25T19:50:57Z",
      "pages": 4,
      "releases": 353,
      "status": "complete",
      "window_end": "2026-11-21T00:00:00Z"
     },
     "2026-11-21": {
-     "fetched_at": "2026-11-25T17:13:42Z",
+     "fetched_at": "2026-11-25T19:51:04Z",
      "pages": 1,
      "releases": 9,
      "status": "complete",
      "window_end": "2026-11-22T00:00:00Z"
     },
     "2026-11-22": {
-     "fetched_at": "2026-11-25T17:13:42Z",
+     "fetched_at": "2026-11-25T19:51:04Z",
      "pages": 1,
      "releases": 4,
      "status": "complete",
      "window_end": "2026-11-23T00:00:00Z"
     },
     "2026-11-23": {
-     "fetched_at": "2026-11-25T17:13:43Z",
+     "fetched_at": "2026-11-25T19:51:05Z",
      "pages": 5,
      "releases": 461,
      "status": "complete",
      "window_end": "2026-11-24T00:00:00Z"
     },
     "2026-11-24": {
-     "fetched_at": "2026-11-25T17:13:52Z",
+     "fetched_at": "2026-11-25T19:53:14Z",
      "pages": 6,
      "releases": 516,
      "status": "complete",
      "window_end": "2026-11-25T00:00:00Z"
     },
     "2026-11-25": {
-     "fetched_at": "2026-11-25T17:14:04Z",
-     "pages": 5,
-     "releases": 491,
+     "fetched_at": "2026-11-25T19:53:26Z",
+     "pages": 6,
+     "releases": 504,
      "status": "partial",
-     "window_end": "2026-11-25T17:14:04Z"
+     "window_end": "2026-11-25T19:53:26Z"
     }
    }
   }
  },
- "updated_at": "2026-11-25T17:14:19Z"
+ "updated_at": "2026-11-25T19:53:43Z"
 }
