@@ -5,7 +5,8 @@
     "rows": 34,
     "columns": 3,
     "file": "data/fcdo/oda-2024-sheet-0.csv",
-    "source": "https://assets.publishing.service.gov.uk/media/68d677144e830dd22fa1ceb2/Data-underlying-SID-2017-2024.ods"
+    "source": "https://assets.publishing.service.gov.uk/media/68d677144e830dd22fa1ceb2/Data-underlying-SID-2017-2024.ods",
+    "page": "https://www.gov.uk/government/statistics/statistics-on-international-development-final-uk-oda-spend-2024"
   },
   {
     "year": 2024,
@@ -13,7 +14,8 @@
     "rows": 70562,
     "columns": 26,
     "file": "data/fcdo/oda-2024-sheet-1.csv",
-    "source": "https://assets.publishing.service.gov.uk/media/68d677144e830dd22fa1ceb2/Data-underlying-SID-2017-2024.ods"
+    "source": "https://assets.publishing.service.gov.uk/media/68d677144e830dd22fa1ceb2/Data-underlying-SID-2017-2024.ods",
+    "page": "https://www.gov.uk/government/statistics/statistics-on-international-development-final-uk-oda-spend-2024"
   },
   {
     "year": 2025,
@@ -21,7 +23,8 @@
     "rows": 1,
     "columns": 1,
     "file": "data/fcdo/oda-2025-sheet-0.csv",
-    "source": "https://assets.publishing.service.gov.uk/media/6adf3a94d798ae11e9bc5cd4/data-underlying-SID-2017-2025.ods"
+    "source": "https://assets.publishing.service.gov.uk/media/6adf3a94d798ae11e9bc5cd4/data-underlying-SID-2017-2025.ods",
+    "page": "https://www.gov.uk/government/statistics/statistics-on-international-development-final-uk-oda-spend-2025"
   },
   {
     "year": 2025,
@@ -29,7 +32,8 @@
     "rows": 33,
     "columns": 3,
     "file": "data/fcdo/oda-2025-sheet-1.csv",
-    "source": "https://assets.publishing.service.gov.uk/media/6adf3a94d798ae11e9bc5cd4/data-underlying-SID-2017-2025.ods"
+    "source": "https://assets.publishing.service.gov.uk/media/6adf3a94d798ae11e9bc5cd4/data-underlying-SID-2017-2025.ods",
+    "page": "https://www.gov.uk/government/statistics/statistics-on-international-development-final-uk-oda-spend-2025"
   },
   {
     "year": 2025,
@@ -37,6 +41,7 @@
     "rows": 77540,
     "columns": 28,
     "file": "data/fcdo/oda-2025-sheet-2.csv",
-    "source": "https://assets.publishing.service.gov.uk/media/6adf3a94d798ae11e9bc5cd4/data-underlying-SID-2017-2025.ods"
+    "source": "https://assets.publishing.service.gov.uk/media/6adf3a94d798ae11e9bc5cd4/data-underlying-SID-2017-2025.ods",
+    "page": "https://www.gov.uk/government/statistics/statistics-on-international-development-final-uk-oda-spend-2025"
   }
 ]
