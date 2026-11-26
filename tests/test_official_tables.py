@@ -3,7 +3,10 @@ import sys
 import unittest
 from pathlib import Path
 
-import pandas as pd
+try:
+    import pandas as pd
+except ImportError:  # the ONS and projects workflows run all tests without pandas; refresh-official-tables.yml installs it
+    raise unittest.SkipTest("pandas is not installed")
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "scripts"))
 import import_official_tables as ot  # noqa: E402
