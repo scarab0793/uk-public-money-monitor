@@ -1,0 +1,70 @@
+name: Build and deploy site
+# Builds the published procurement database from the raw archive (procurement-raw release)
+# and the site-wide search index, then deploys the static site to GitHub Pages.
+# If any build or validation step fails, nothing is deployed and the last good site stays live.
+on:
+  push:
+    branches: [main]
+  workflow_run:
+    workflows:
+      - "Procurement data (Contracts Finder + Find a Tender)"
+      - "Refresh HMRC receipts and Treasury spending tables"
+      - "Import FCDO underlying data"
+      - "Import official NISTA major projects"
+      - "Normalize FCDO data"
+      - "Refresh ONS public finances"
+    types: [completed]
+  workflow_dispatch:
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+concurrency:
+  group: pages
+  cancel-in-progress: false
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 40
+    env:
+      GH_TOKEN: ${{ github.token }}
+      LIVE: https://scarab0793.github.io/uk-public-money-monitor
+    steps:
+      - uses: actions/checkout@v4
+        with: {ref: main}
+      - uses: actions/setup-python@v5
+        with: {python-version: '3.12'}
+      - run: pip install requests
+      - name: Download raw procurement archive
+        run: |
+          mkdir -p raw-procurement
+          gh release download procurement-raw --repo "$GITHUB_REPOSITORY" --pattern '*.ndjson.gz' --dir raw-procurement --clobber
+          ls raw-procurement | wc -l
+      - name: Previous published summary (for the shrink check)
+        run: |
+          mkdir -p data/procurement
+          if [ ! -f data/procurement/summary.json ]; then
+            curl -fsSL "$LIVE/data/procurement/summary.json" -o data/procurement/summary.json || rm -f data/procurement/summary.json
+          fi
+      - name: Build procurement database
+        run: python -u scripts/build_procurement.py --raw-dir raw-procurement
+      - name: Build search index
+        run: python -u scripts/build_search_index.py
+      - name: Assemble site
+        run: |
+          mkdir _site
+          rsync -a --exclude '.git' --exclude '.github' --exclude '.pytest_cache' --exclude '_site' \
+            --exclude 'raw-procurement' --exclude 'scripts' --exclude 'tests' --exclude '*.staging' ./ _site/
+          touch _site/.nojekyll
+          du -sh _site
+      - uses: actions/upload-pages-artifact@v3
+        with: {path: _site}
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4
