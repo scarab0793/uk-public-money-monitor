@@ -1,5 +1,42 @@
 [
  {
+  "finished_at": "2026-11-26T17:03:35Z",
+  "mode": "backfill",
+  "requests": 1201,
+  "sources": {
+   "contracts-finder": {
+    "changed": 0,
+    "days_complete": 214,
+    "days_failed": 0,
+    "days_partial": 0,
+    "errors": [],
+    "new": 25812,
+    "pages": 387,
+    "quarantined": 0,
+    "releases_fetched": 25815,
+    "unchanged": 0
+   },
+   "find-a-tender": {
+    "changed": 0,
+    "days_complete": 210,
+    "days_failed": 4,
+    "days_partial": 0,
+    "errors": [
+     "2026-04-13: Pagination loop detected",
+     "2026-03-31: Pagination loop detected",
+     "2025-12-12: Pagination loop detected",
+     "2025-12-10: Pagination loop detected"
+    ],
+    "new": 61790,
+    "pages": 752,
+    "quarantined": 0,
+    "releases_fetched": 61800,
+    "unchanged": 0
+   }
+  },
+  "started_at": "2026-11-26T14:31:17Z"
+ },
+ {
   "finished_at": "2026-11-26T05:42:58Z",
   "mode": "backfill",
   "requests": 1351,
