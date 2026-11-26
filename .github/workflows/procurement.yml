@@ -50,8 +50,8 @@ jobs:
       - name: Import (${{ env.MODE }})
         run: |
           python -u scripts/import_procurement.py --mode "$MODE" --budget-minutes "$BUDGET" --commit-cmd "bash scripts/git_publish.sh 'data: procurement import checkpoint' data/procurement/import-state.json data/procurement/import-log.json"
-      - name: Build published database
-        run: python -u scripts/build_procurement.py
-      - name: Publish
+      - name: Publish import state
+        # The published database (data/procurement/notices, suppliers, buyers, summary.json) is built
+        # from the raw archive by pages.yml when this workflow completes; only the import state is kept in git.
         run: |
-          bash scripts/git_publish.sh "data: refresh procurement database ($MODE)" data/procurement
+          bash scripts/git_publish.sh "data: procurement import state ($MODE)" data/procurement/import-state.json data/procurement/import-log.json

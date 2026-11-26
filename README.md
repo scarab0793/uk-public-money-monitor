@@ -36,16 +36,16 @@ Every figure comes from an official publisher and links back to it. Data is refr
 
 | Workflow | What it does |
 | --- | --- |
-| `procurement.yml` | Contracts Finder and Find a Tender import into monthly raw partitions (stored as assets of the `procurement-raw` release), then builds the published database |
+| `procurement.yml` | Contracts Finder and Find a Tender import into monthly raw partitions (stored as assets of the `procurement-raw` release); only the import state is committed |
 | `refresh-official-tables.yml` | HMRC, Treasury, DWP, NHS, MHCLG and grants tables (`scripts/import_official_tables.py`) |
 | `import-fcdo.yml`, `normalize-fcdo.yml` | ODA data |
 | `import-nista.yml` | major projects, including verification of the 2025-26 records |
-| `build-search-index.yml` | site-wide search index (`data/search/`) after any data workflow |
+| `pages.yml` | builds the procurement database (`data/procurement/notices`, `suppliers`, `buyers`, `summary.json`) from the raw archive and the site-wide search index (`data/search/`), then deploys the site to GitHub Pages. Runs on every push and after every data workflow; if a build or validation fails nothing is deployed and the previous site stays live |
 | `explore-sources.yml` | diagnostic: lists a publication's attachments and previews spreadsheets |
 
 Tests: `python -m unittest tests.test_procurement tests.test_official_tables`
 
-The site is static (`index.html` plus `assets/js/`). To run it locally, serve the repository root, for example `python3 -m http.server`, and open http://localhost:8000.
+The site is static (`index.html` plus `assets/js/`). The procurement database and search index are generated, not committed. To run it locally: `gh release download procurement-raw --pattern '*.ndjson.gz' --dir raw-procurement`, `python scripts/build_procurement.py`, `python scripts/build_search_index.py`, then serve the repository root (`python3 -m http.server`) and open http://localhost:8000.
 
 ## Known gaps
 

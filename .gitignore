@@ -2,3 +2,10 @@ __pycache__/
 .pytest_cache/
 raw-procurement/
 data/procurement.staging/
+# Generated at deploy time by .github/workflows/pages.yml
+data/procurement/summary.json
+data/procurement/notices/
+data/procurement/suppliers/
+data/procurement/buyers/
+data/search/
+_site/
