@@ -90,7 +90,14 @@ def main():
         fy = max(lo["years"])
         for a in lo["years"][fy]["authorities"]:
             v = (a["values"].get("Total Service Expenditure") or [None, None, None])[2]
-            add("Council spending", a["name"], f"Net cost of services {fy} · {a.get('cls') or ''}", f"#council-spending/{a['ecode']}", v * 1000 if v else None, fy)
+            add("Council spending", a["name"], f"Net cost of services {fy} · {a.get('cls') or ''}", f"#council-spending/{a['ecode']}", v * 1000 if v is not None else None, fy)
+    lw = load("local-government/revenue-outturn-wales.json")
+    if lw:
+        fy, tot = lw["years"][-1], lw["services"][-1]
+        for a in lw["authorities"]:
+            if a["group"] != "total":
+                v = (a["values"].get(fy) or {}).get(tot)
+                add("Council spending", a["name"], f"Wales · revenue expenditure {fy} · {a['group']}", f"#council-spending/wales/{quote(a['name'])}", v * 1000 if v is not None else None, fy)
     nh = load("nhs/trust-accounts.json")
     if nh:
         fy = max(nh["years"])

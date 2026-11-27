@@ -16,7 +16,8 @@ Every figure comes from an official publisher and links back to it. Data is refr
 | NHS trust and foundation trust accounts | NHS England TAC data | `data/nhs/trust-accounts.json` | daily check |
 | Government grants: departments, schemes, recipients, awards | Cabinet Office Government Grants Register | `data/grants/government-grants.json` | daily check |
 | Council Tax bills by band | MHCLG | `data/local-government/council-tax-england.json` | daily check |
-| Council spending by service | MHCLG revenue outturn (RSX) | `data/local-government/revenue-outturn-england.json` | daily check |
+| Council spending by service, England | MHCLG revenue outturn (RSX) | `data/local-government/revenue-outturn-england.json` | daily check |
+| Council spending by service, Wales | Welsh Government revenue outturn (StatsWales API) | `data/local-government/revenue-outturn-wales.json` | daily check |
 | Overseas development assistance | FCDO / Statistics on International Development | `data/fcdo-normalized/` | weekly |
 | Government major projects | NISTA annual reports (2025-26 verified against the official CSV) | `data/gmpp-*.json`, `data/nista-*.json` | weekly check |
 | ONS public sector finances | ONS | `data/ons-*.json` | daily |
@@ -49,7 +50,7 @@ The site is static (`index.html` plus `assets/js/`). The procurement database an
 
 ## Known gaps
 
-See "Not covered yet, and why" on the Sources section, or `gaps` in `data/catalogue.json`. In short: military aid has no official machine-readable series; NHS commissioners and the devolved health services, council spending outside England, and government pay and property are next.
+See "Not covered yet, and why" on the Sources section, or `gaps` in `data/catalogue.json`. In short: military aid has no official machine-readable series; NHS commissioners and the devolved health services, council spending in Scotland and Northern Ireland, and government pay and property are next.
 
 The NHS England page that lists the trust accounts files refuses automated requests, so the file links for each new year are added to `data/nhs/tac-sources.json` when NHS England publishes them.
 

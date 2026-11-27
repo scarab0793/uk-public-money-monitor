@@ -31,7 +31,8 @@ OUT = {"hmrc-receipts": Path("data/hmrc/receipts.json"), "pss-tes": Path("data/t
        "dwp-benefits": Path("data/welfare/benefit-expenditure-caseloads.json"),
        "la-outturn": Path("data/local-government/revenue-outturn-england.json"),
        "nhs-trust-accounts": Path("data/nhs/trust-accounts.json"),
-       "grants": Path("data/grants/government-grants.json")}
+       "grants": Path("data/grants/government-grants.json"),
+       "wales-la-outturn": Path("data/local-government/revenue-outturn-wales.json")}
 REPORT = Path("data/official-tables-report.json")
 
 
@@ -775,9 +776,81 @@ def import_grants():
                          "Covers UK government departments' grants as reported to the Government Grants Information System; devolved governments' grants are not included."])
 
 
+STATSWALES_API = "https://api.stats.gov.wales/v1/"
+WALES_LA_OUTTURN = "213aeb99-18eb-42c9-b00e-e4b716e82cdf"  # Revenue outturn expenditure by authority and service
+
+
+def statswales(dataset_id):
+    """Metadata and the full CSV of one dataset from the StatsWales API."""
+    meta = requests.get(STATSWALES_API + dataset_id, headers=UA, timeout=60)
+    meta.raise_for_status()
+    r = requests.get(STATSWALES_API + dataset_id + "/download/csv", headers=UA, timeout=180)
+    r.raise_for_status()
+    import csv
+    rows = list(csv.DictReader(io.StringIO(r.content.decode("utf-8-sig"))))
+    return meta.json(), rows
+
+
+WALES_GROUPS = [("Total", "total"), ("NPA", "National park authority"), ("Police", "Police"), ("Fire", "Fire and rescue authority")]
+
+
+def parse_wales_outturn(rows):
+    """StatsWales revenue outturn CSV (long format) -> per-authority, per-year service values in £ thousand.
+    Blank cells stay None.  Checks that the services add up to the published 'Revenue expenditure' line."""
+    years, services, auth = set(), [], {}
+    for r in rows:
+        if r.get("Data description") != "£ thousand":
+            continue
+        name, fy, svc = r["Authority"].strip(), r["Year"].strip(), r["Service"].strip()
+        v = r["Data values"].strip()
+        years.add(fy)
+        if svc not in services:
+            services.append(svc)
+        a = auth.setdefault(name, {"name": name, "values": {}})
+        a["values"].setdefault(fy, {})[svc] = float(v) if v not in ("", "..", ".", "*") else None
+    total = "Revenue expenditure"
+    if total not in services:
+        raise RuntimeError("StatsWales outturn has no 'Revenue expenditure' total")
+    services.remove(total)
+    services.append(total)
+    failures = 0
+    for a in auth.values():
+        n = a["name"]
+        a["group"] = next((g for key, g in WALES_GROUPS if key in n), "Unitary authority")
+        for fy, vals in a["values"].items():
+            t = vals.get(total)
+            parts = [vals.get(sv) for sv in services[:-1]]
+            if t is not None and all(x is not None for x in parts) and abs(sum(parts) - t) > 1:
+                failures += 1
+    return dict(years=sorted(years), services=services, authorities=sorted(auth.values(), key=lambda a: (a["group"] != "Unitary authority", a["group"], a["name"])),
+                identity_failures=failures)
+
+
+def import_wales_la_outturn():
+    meta, rows = statswales(WALES_LA_OUTTURN)
+    rev = meta.get("published_revision") or {}
+    en = next((m for m in rev.get("metadata", []) if m.get("language") == "en-GB"), {})
+    t = parse_wales_outturn(rows)
+    unitary = [a for a in t["authorities"] if a["group"] == "Unitary authority"]
+    if len(unitary) != 22 or len(t["years"]) < 5 or t["identity_failures"]:
+        raise RuntimeError(f"Wales outturn failed validation ({len(unitary)} unitary authorities, {len(t['years'])} years, {t['identity_failures']} identity failures)")
+    page = next((l["url"] for l in rev.get("related_links", []) if "outturn" in l.get("url", "")), "https://www.gov.wales/local-authority-revenue-and-capital-outturn-expenditure")
+    return dict(publisher="Welsh Government (StatsWales)", dataset=en.get("title", "Revenue outturn expenditure by authority and service"),
+                page=page, statswales="https://stats.gov.wales/en-GB/" + WALES_LA_OUTTURN,
+                attachment=STATSWALES_API + WALES_LA_OUTTURN + "/download/csv", release_updated_at=rev.get("publish_at"),
+                unit="£ thousand", caveats=[
+                    "Revenue outturn: what Welsh local authorities actually spent on day-to-day services in the financial year, in £ thousand, nominal, as published by the Welsh Government.",
+                    en.get("summary", "").strip(),
+                    "The Welsh and English returns define their service lines and totals differently, so a Welsh figure is not directly comparable with an English council's figure.",
+                    "Police, fire and national park authorities are separate bodies; the Wales total is the Welsh Government's published total, not a sum calculated here.",
+                    "Capital spending is not included. Blank cells in the source are shown as not available, never as zero."],
+                **t)
+
+
 IMPORTERS = {"hmrc-receipts": import_hmrc_receipts, "pss-tes": import_pss, "cra": import_cra, "council-tax": import_council_tax,
              "dwp-benefits": import_dwp_benefits, "la-outturn": import_la_outturn,
-             "nhs-trust-accounts": import_nhs_trust_accounts, "grants": import_grants}
+             "nhs-trust-accounts": import_nhs_trust_accounts, "grants": import_grants,
+             "wales-la-outturn": import_wales_la_outturn}
 
 
 def main(names):

@@ -161,5 +161,23 @@ class ParserTests(unittest.TestCase):
         self.assertIsNone(ot.grant_id(float("nan"), 8))
 
 
+    def test_wales_outturn_keeps_blanks_and_checks_total(self):
+        def row(v, fy, svc, auth, unit="£ thousand"):
+            return {"Data values": v, "Data description": unit, "Year": fy, "Service": svc, "Authority": auth, "Notes": ""}
+        rows = [row("10", "2025-26", "Education", "Cardiff"), row("5", "2025-26", "Libraries, culture, heritage, sport and recreation", "Cardiff"),
+                row("15", "2025-26", "Revenue expenditure", "Cardiff"), row("999", "2025-26", "Education", "Cardiff", "£ per head"),
+                row("", "2025-26", "Education", "Gwent Police"), row("7", "2025-26", "Revenue expenditure", "Gwent Police"),
+                row("25", "2025-26", "Revenue expenditure", "Total Wales")]
+        t = ot.parse_wales_outturn(rows)
+        self.assertEqual(t["services"][-1], "Revenue expenditure")
+        a = {x["name"]: x for x in t["authorities"]}
+        self.assertEqual(a["Cardiff"]["values"]["2025-26"]["Education"], 10.0)
+        self.assertIsNone(a["Gwent Police"]["values"]["2025-26"]["Education"])
+        self.assertEqual(a["Gwent Police"]["group"], "Police")
+        self.assertEqual(a["Total Wales"]["group"], "total")
+        self.assertEqual(t["identity_failures"], 0)
+        rows[2] = row("17", "2025-26", "Revenue expenditure", "Cardiff")
+        self.assertEqual(ot.parse_wales_outturn(rows)["identity_failures"], 1)
+
 if __name__ == "__main__":
     unittest.main()

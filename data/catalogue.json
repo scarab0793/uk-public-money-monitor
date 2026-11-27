@@ -163,6 +163,22 @@
    "limitations": "England only; latest five years. Councils that missed the deadline have no figures for that year. Capital spending is not included. Every row is checked for net cost = spending − income."
   },
   {
+   "id": "wales-la-outturn",
+   "module": "Council spending by service (Wales)",
+   "anchor": "council-spending-wales",
+   "publisher": "Welsh Government (StatsWales)",
+   "source": "https://stats.gov.wales/en-GB/213aeb99-18eb-42c9-b00e-e4b716e82cdf",
+   "file": "data/local-government/revenue-outturn-wales.json",
+   "stamp": "retrieved_at",
+   "refresh": "Checked daily; the Welsh Government publishes outturn annually (October)",
+   "workflow": "refresh-official-tables.yml",
+   "unit": "GBP thousand, nominal",
+   "basis": "Revenue outturn (actual day-to-day spending)",
+   "verification": "verified",
+   "licence": "Open Government Licence v3.0",
+   "limitations": "From 2001-02. Service lines follow the Welsh return and are not directly comparable with England. Capital spending is not included. Every authority and year is checked: the services add up to the published revenue expenditure total."
+  },
+  {
    "id": "ons",
    "module": "ONS public finances",
    "anchor": "ons-monthly",
@@ -235,9 +251,9 @@
    "source": "https://www.gov.uk/government/statistics/defence-departmental-resources-2025"
   },
   {
-   "module": "Council spending in Scotland, Wales and Northern Ireland",
-   "status": "planned",
-   "reason": "English council revenue outturn is live. The devolved governments publish their own local government finance statistics in different formats; they are being added one by one.",
+   "module": "Council spending in Scotland and Northern Ireland",
+   "status": "not yet published on this site",
+   "reason": "England and Wales are live. The Scottish Government publishes council spending in its Local Financial Returns workbooks, but gov.scot refuses automated downloads (it answers with an empty challenge page), so the figures cannot be refreshed and verified automatically. Northern Ireland's councils provide a narrower set of services and no consolidated, machine-readable outturn series by council has been found.",
    "source": "https://www.gov.scot/collections/local-government-finance-statistics/"
   },
   {
