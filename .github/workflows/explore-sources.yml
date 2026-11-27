@@ -2,7 +2,7 @@ name: Explore official sources (diagnostic)
 on:
   workflow_dispatch:
     inputs:
-      path: {description: GOV.UK path, required: true}
+      path: {description: "GOV.UK path, search:<q>, url:<file>, page:<url> (list links) or get:<url> (raw)", required: true}
       match: {description: attachment substrings (space separated), default: ''}
 permissions:
   contents: read

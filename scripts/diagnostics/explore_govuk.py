@@ -11,6 +11,21 @@ if path.startswith("search:"):
     path = next((r["link"] for r in q.get("results", []) if r.get("link", "").startswith(("/government/statistics/", "/government/publications/"))), None)
     if not path:
         sys.exit(0)
+if path.startswith(("page:", "get:")):
+    # page:<url> lists the links on any HTML page; get:<url> prints the start of any response (JSON APIs, CSV)
+    import re, html
+    from urllib.parse import urljoin
+    url = path.split(":", 1)[1]
+    r = requests.get(url, timeout=90, headers={"User-Agent": "uk-public-money-monitor (+https://github.com/scarab0793/uk-public-money-monitor)"})
+    print("STATUS", r.status_code, r.headers.get("content-type"), len(r.content))
+    if path.startswith("get:"):
+        print(r.text[:12000]); sys.exit(0)
+    for href, text in re.findall(r'<a[^>]+href="([^"]+)"[^>]*>(.*?)</a>', r.text, re.S):
+        t = html.unescape(re.sub(r"<[^>]+>|\s+", " ", text)).strip()
+        h = urljoin(url, html.unescape(href))
+        if not wanted or any(w in (h + t).lower() for w in wanted):
+            print("LINK", t[:120], "|", h)
+    sys.exit(0)
 if path.startswith("url:"):
     d = {"title": "direct", "details": {"attachments": [{"title": "direct", "url": path[4:]}]}}
 else:
