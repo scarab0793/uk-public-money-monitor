@@ -888,20 +888,23 @@ def parse_wales_programme(rows):
         raise RuntimeError("Programme budget data has no Total category")
     children = {c for parts in WALES_PB_PARTS.values() for c in parts} | set(WALES_PB_OF_WHICH)
     top = [c for c in cats if c != "Total" and c not in children]
-    failures, checked = [], 0
+    failures, part_issues, checked = [], [], 0
     for org, ys in orgs.items():
         for fy, cs in ys.items():
             for com, v in cs.items():
-                checks = [("Total", top)] + list(WALES_PB_PARTS.items())
-                for parent, parts in checks:
+                for parent, parts in [("Total", top)] + list(WALES_PB_PARTS.items()):
                     vals = [v.get(p) for p in parts]
                     if v.get(parent) is None or any(x is None for x in vals):
                         continue
                     checked += 1
                     if abs(sum(vals) - v[parent]) > 5:
-                        failures.append(f"{org} {fy} {com} {parent}: {sum(vals):.0f} vs {v[parent]:.0f}")
+                        issue = dict(organisation=org, year=fy, commissioner=com, category=parent, parts_sum=round(sum(vals), 1), published=round(v[parent], 1))
+                        (failures if parent == "Total" else part_issues).append(issue)
+    # The conditions must always add up to the total.  A breakdown that does not add up to its parent
+    # (2015-16 endocrine problems, for example) is a fault in the source: it is kept and flagged, not hidden.
     return dict(categories=cats, top_level=top, parts=WALES_PB_PARTS, of_which=WALES_PB_OF_WHICH, commissioners=comms,
-                years=sorted(years), organisations=orgs, checks=checked, identity_failures=failures[:20], identity_failure_count=len(failures))
+                years=sorted(years), organisations=orgs, checks=checked, identity_failures=failures[:20], identity_failure_count=len(failures),
+                breakdown_issues=part_issues)
 
 
 def import_wales_nhs_programme():
@@ -909,15 +912,15 @@ def import_wales_nhs_programme():
     rev = meta.get("published_revision") or {}
     en = next((m for m in rev.get("metadata", []) if m.get("language") == "en-GB"), {})
     t = parse_wales_programme(rows)
-    if "Wales" not in t["organisations"] or len(t["years"]) < 5 or t["checks"] < 100 or t["identity_failure_count"]:
-        raise RuntimeError(f"Wales programme budgets failed validation ({len(t['years'])} years, {t['checks']} checks, {t['identity_failure_count']} failures: {t['identity_failures'][:3]})")
+    if "Wales" not in t["organisations"] or len(t["years"]) < 5 or t["checks"] < 100 or t["identity_failure_count"] or len(t["breakdown_issues"]) > t["checks"] * 0.02:
+        raise RuntimeError(f"Wales programme budgets failed validation ({len(t['years'])} years, {t['checks']} checks, {t['identity_failure_count']} total failures, {len(t['breakdown_issues'])} breakdown issues: {(t['identity_failures'] or t['breakdown_issues'])[:3]})")
     page = next((l["url"] for l in rev.get("related_links", []) if l.get("url")), "https://www.gov.wales/nhs-expenditure-programme-budgets")
     return dict(publisher="Welsh Government (StatsWales)", dataset=en.get("title"), page=page, statswales="https://stats.gov.wales/en-GB/" + WALES_NHS_PROGRAMME,
                 attachment=STATSWALES_API + WALES_NHS_PROGRAMME + "/download/csv", release_updated_at=rev.get("publish_at"), unit="£ thousand",
                 caveats=[en.get("summary", "").strip(),
                          "Programme budgeting assigns NHS spending to the health condition it treats, as estimated by each health board from its own costing data; it is an analysis of spending, not a separate budget.",
                          "Figures are £ thousand, nominal (not adjusted for inflation). Health boards were reorganised in 2019 (Abertawe Bro Morgannwg became Swansea Bay, Cwm Taf became Cwm Taf Morgannwg), so their series break.",
-                         "Breakdowns such as Diabetes under Endocrine problems are parts of the line above and are never added to it. Every year is checked: the conditions add up to the published total.",
+                         "Breakdowns such as Diabetes under Endocrine problems are parts of the line above and are never added to it. Every year is checked: the conditions add up to the published total. Where a published breakdown does not add up to its line, the table says so; the figures are shown as published.",
                          "This series covers the NHS in Wales only."],
                 **t)
 

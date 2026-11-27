@@ -190,7 +190,9 @@ class ParserTests(unittest.TestCase):
         self.assertEqual(t["identity_failure_count"], 0)
         self.assertEqual(t["checks"], 2)
         rows[0] = row("40", "Mental health problems")
-        self.assertEqual(ot.parse_wales_programme(rows)["identity_failure_count"], 2)
+        t = ot.parse_wales_programme(rows)
+        self.assertEqual(t["identity_failure_count"], 1)  # conditions no longer add up to the total
+        self.assertEqual(t["breakdown_issues"][0]["category"], "Mental health problems")
 
 if __name__ == "__main__":
     unittest.main()

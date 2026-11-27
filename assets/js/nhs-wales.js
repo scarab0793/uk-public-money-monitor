@@ -41,8 +41,9 @@
       const c = cSel.value, parts = d.parts[c] || Object.keys(d.of_which).filter(x => d.of_which[x] === c);
       const t = el('table', { class: 'proc-table' }, el('caption', { text: c + ' · ' + (oSel.value === 'Wales' ? 'All of Wales' : oSel.value) + ' · £, nominal' }),
         el('tr', null, el('th', { text: 'Year' }), el('th', { text: c }), ...parts.map(p => el('th', { text: (d.of_which[p] ? 'of which ' : '') + p }))));
-      for (const y of d.years) { const v = vals(oSel.value, y); if (!Object.keys(v).length) continue; t.append(el('tr', null, el('td', { text: y }), el('td', { text: k(v[c]) }), ...parts.map(p => el('td', { text: k(v[p]) })))); }
-      trend.replaceChildren(el('div', { class: 'table-wrap' }, t));
+      const issues = (d.breakdown_issues || []).filter(i => i.organisation === oSel.value && i.category === c && i.commissioner === COM);
+      for (const y of d.years) { const v = vals(oSel.value, y); if (!Object.keys(v).length) continue; const bad = issues.some(i => i.year === y); t.append(el('tr', null, el('td', { text: y + (bad ? ' *' : '') }), el('td', { text: k(v[c]) }), ...parts.map(p => el('td', { text: k(v[p]) })))); }
+      trend.replaceChildren(el('div', { class: 'table-wrap' }, t), issues.length ? el('p', { class: 'small', text: '* In ' + issues.map(i => i.year).join(', ') + ' the published breakdown adds up to ' + k(issues[0].parts_sum) + (issues.length > 1 ? ' (first year shown)' : '') + ', not the published ' + k(issues[0].published) + '. The figures are shown as published by the Welsh Government.' }) : null);
     }
     oSel.onchange = () => { fillYears(); render(); }; ySel.onchange = render; cSel.onchange = renderTrend;
     box.replaceChildren(
