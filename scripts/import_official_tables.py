@@ -32,7 +32,8 @@ OUT = {"hmrc-receipts": Path("data/hmrc/receipts.json"), "pss-tes": Path("data/t
        "la-outturn": Path("data/local-government/revenue-outturn-england.json"),
        "nhs-trust-accounts": Path("data/nhs/trust-accounts.json"),
        "grants": Path("data/grants/government-grants.json"),
-       "wales-la-outturn": Path("data/local-government/revenue-outturn-wales.json")}
+       "wales-la-outturn": Path("data/local-government/revenue-outturn-wales.json"),
+       "wales-nhs-programme": Path("data/nhs/wales-programme-budgets.json")}
 REPORT = Path("data/official-tables-report.json")
 
 
@@ -856,10 +857,74 @@ def import_wales_la_outturn():
                 **t)
 
 
+WALES_NHS_PROGRAMME = "2f4e637b-4622-4ad0-b2a3-15901c41147e"  # NHS expenditure by programme budget category, organisation and commissioner
+# Programme categories that the source breaks down further; the parts must add up to the parent.
+WALES_PB_PARTS = {
+    "Endocrine, nutritional & metabolic problems": ["Diabetes", "Other endocrine, nutritional and metabolic problems"],
+    "Mental health problems": ["General mental illness", "Elderly mental illness", "Child & adolescent mental health services", "Other mental health problems"],
+    "Circulation problems": ["Coronary Heart Disease", "Cerebrovascular disease", "Other problems of circulation"],
+    "Genito Urinary system disorders (exc infertility)": ["Genital tract problems", "Renal problems", "Sexually transmitted infections", "Other problems of the genito urinary system"],
+    "Other": ["General medical services", "Open access", "Continuing care", "Other PHW functions", "Other expenditure"],
+}
+WALES_PB_OF_WHICH = {"Chronic renal failure": "Renal problems"}  # shown as 'of which', not checked
+
+
+def parse_wales_programme(rows):
+    """StatsWales programme budget CSV -> {org: {year: {commissioner: {category: £000}}}} with hierarchy checks."""
+    cats, orgs, years, comms = [], {}, set(), []
+    for r in rows:
+        if r.get("Data description") != "Expenditure (£000)":
+            continue
+        org, fy, cat, com = (r[k].strip() for k in ("Organisation", "Year", "Programme category", "Commissioner"))
+        v = r["Data values"].strip()
+        if cat not in cats:
+            cats.append(cat)
+        if com not in comms:
+            comms.append(com)
+        years.add(fy)
+        orgs.setdefault(org, {}).setdefault(fy, {}).setdefault(com, {})[cat] = float(v) if v not in ("", "..", ".", "*") else None
+    if "Total" not in cats:
+        raise RuntimeError("Programme budget data has no Total category")
+    children = {c for parts in WALES_PB_PARTS.values() for c in parts} | set(WALES_PB_OF_WHICH)
+    top = [c for c in cats if c != "Total" and c not in children]
+    failures, checked = [], 0
+    for org, ys in orgs.items():
+        for fy, cs in ys.items():
+            for com, v in cs.items():
+                checks = [("Total", top)] + list(WALES_PB_PARTS.items())
+                for parent, parts in checks:
+                    vals = [v.get(p) for p in parts]
+                    if v.get(parent) is None or any(x is None for x in vals):
+                        continue
+                    checked += 1
+                    if abs(sum(vals) - v[parent]) > 5:
+                        failures.append(f"{org} {fy} {com} {parent}: {sum(vals):.0f} vs {v[parent]:.0f}")
+    return dict(categories=cats, top_level=top, parts=WALES_PB_PARTS, of_which=WALES_PB_OF_WHICH, commissioners=comms,
+                years=sorted(years), organisations=orgs, checks=checked, identity_failures=failures[:20], identity_failure_count=len(failures))
+
+
+def import_wales_nhs_programme():
+    meta, rows = statswales(WALES_NHS_PROGRAMME)
+    rev = meta.get("published_revision") or {}
+    en = next((m for m in rev.get("metadata", []) if m.get("language") == "en-GB"), {})
+    t = parse_wales_programme(rows)
+    if "Wales" not in t["organisations"] or len(t["years"]) < 5 or t["checks"] < 100 or t["identity_failure_count"]:
+        raise RuntimeError(f"Wales programme budgets failed validation ({len(t['years'])} years, {t['checks']} checks, {t['identity_failure_count']} failures: {t['identity_failures'][:3]})")
+    page = next((l["url"] for l in rev.get("related_links", []) if l.get("url")), "https://www.gov.wales/nhs-expenditure-programme-budgets")
+    return dict(publisher="Welsh Government (StatsWales)", dataset=en.get("title"), page=page, statswales="https://stats.gov.wales/en-GB/" + WALES_NHS_PROGRAMME,
+                attachment=STATSWALES_API + WALES_NHS_PROGRAMME + "/download/csv", release_updated_at=rev.get("publish_at"), unit="£ thousand",
+                caveats=[en.get("summary", "").strip(),
+                         "Programme budgeting assigns NHS spending to the health condition it treats, as estimated by each health board from its own costing data; it is an analysis of spending, not a separate budget.",
+                         "Figures are £ thousand, nominal (not adjusted for inflation). Health boards were reorganised in 2019 (Abertawe Bro Morgannwg became Swansea Bay, Cwm Taf became Cwm Taf Morgannwg), so their series break.",
+                         "Breakdowns such as Diabetes under Endocrine problems are parts of the line above and are never added to it. Every year is checked: the conditions add up to the published total.",
+                         "This series covers the NHS in Wales only."],
+                **t)
+
+
 IMPORTERS = {"hmrc-receipts": import_hmrc_receipts, "pss-tes": import_pss, "cra": import_cra, "council-tax": import_council_tax,
              "dwp-benefits": import_dwp_benefits, "la-outturn": import_la_outturn,
              "nhs-trust-accounts": import_nhs_trust_accounts, "grants": import_grants,
-             "wales-la-outturn": import_wales_la_outturn}
+             "wales-la-outturn": import_wales_la_outturn, "wales-nhs-programme": import_wales_nhs_programme}
 
 
 def main(names):

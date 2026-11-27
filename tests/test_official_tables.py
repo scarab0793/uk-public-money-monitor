@@ -179,5 +179,18 @@ class ParserTests(unittest.TestCase):
         rows[2] = row("17", "2025-26", "Revenue expenditure", "Cardiff")
         self.assertEqual(ot.parse_wales_outturn(rows)["identity_failures"], 1)
 
+    def test_wales_programme_budget_hierarchy(self):
+        def row(v, cat, com="LHB and PHW total", org="Wales", fy="2023-24", unit="Expenditure (£000)"):
+            return {"Data values": v, "Data description": unit, "Organisation": org, "Year": fy, "Programme category": cat, "Commissioner": com, "Notes": "Total"}
+        rows = [row("30", "Mental health problems"), row("10", "General mental illness"), row("10", "Elderly mental illness"),
+                row("5", "Child & adolescent mental health services"), row("5", "Other mental health problems"),
+                row("70", "Cancers & tumours"), row("100", "Total"), row("9", "Total", unit="Per cent of total")]
+        t = ot.parse_wales_programme(rows)
+        self.assertEqual(t["top_level"], ["Mental health problems", "Cancers & tumours"])
+        self.assertEqual(t["identity_failure_count"], 0)
+        self.assertEqual(t["checks"], 2)
+        rows[0] = row("40", "Mental health problems")
+        self.assertEqual(ot.parse_wales_programme(rows)["identity_failure_count"], 2)
+
 if __name__ == "__main__":
     unittest.main()

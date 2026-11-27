@@ -14,6 +14,7 @@ Every figure comes from an official publisher and links back to it. Data is refr
 | Spending by nation and English region | HM Treasury Country and Regional Analysis | `data/treasury/country-regional-analysis.json` | daily check |
 | Benefit spending and caseloads, 1948-49 to forecast | DWP benefit expenditure and caseload tables | `data/welfare/benefit-expenditure-caseloads.json` | daily check |
 | NHS trust and foundation trust accounts | NHS England TAC data | `data/nhs/trust-accounts.json` | daily check |
+| NHS Wales spending by health condition | Welsh Government programme budgets (StatsWales API) | `data/nhs/wales-programme-budgets.json` | daily check |
 | Government grants: departments, schemes, recipients, awards | Cabinet Office Government Grants Register | `data/grants/government-grants.json` | daily check |
 | Council Tax bills by band | MHCLG | `data/local-government/council-tax-england.json` | daily check |
 | Council spending by service, England | MHCLG revenue outturn (RSX) | `data/local-government/revenue-outturn-england.json` | daily check |

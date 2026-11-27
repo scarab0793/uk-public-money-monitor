@@ -115,6 +115,22 @@
    "limitations": "England only; NHS trusts and foundation trusts, not ICBs or NHS England itself. Group basis and before consolidation adjustments, so trusts cannot be added together into an NHS total. Every trust is checked for operating income minus expenses = operating result."
   },
   {
+   "id": "wales-nhs-programme",
+   "module": "NHS Wales spending by health condition",
+   "anchor": "nhs-wales",
+   "publisher": "Welsh Government (StatsWales)",
+   "source": "https://stats.gov.wales/en-GB/2f4e637b-4622-4ad0-b2a3-15901c41147e",
+   "file": "data/nhs/wales-programme-budgets.json",
+   "stamp": "retrieved_at",
+   "refresh": "Checked daily; published annually",
+   "workflow": "refresh-official-tables.yml",
+   "unit": "GBP thousand, nominal",
+   "basis": "Programme budgets (NHS expenditure analysed by condition)",
+   "verification": "verified",
+   "licence": "Open Government Licence v3.0",
+   "limitations": "Wales only; local health boards and Public Health Wales. Health boards were reorganised in 2019, so their series break. Every year is checked: conditions add up to the total and broken-down conditions add up to their parts."
+  },
+  {
    "id": "grants",
    "module": "Government grants",
    "anchor": "grants",
