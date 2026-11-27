@@ -1,62 +1,68 @@
 {
  "council-tax": {
   "attachment": "https://assets.publishing.service.gov.uk/media/69de1fa63e81003ae0422508/Tables_1-9_2026-27.ods",
-  "checked_at": "2026-11-27T21:57:42Z",
+  "checked_at": "2026-11-27T22:01:06Z",
   "release_updated_at": "2026-03-25T09:30:00+00:00",
   "status": "unchanged"
  },
  "cra": {
   "attachment": "https://assets.publishing.service.gov.uk/media/6afb14bb9be17c68c69ca90c/CRA_2026_Chapter_A_tables_.xlsx",
-  "checked_at": "2026-11-27T21:57:42Z",
+  "checked_at": "2026-11-27T22:01:06Z",
   "release_updated_at": "2026-11-18T09:30:02+00:00",
   "status": "unchanged"
  },
  "dwp-benefits": {
   "attachment": "https://assets.publishing.service.gov.uk/media/6b0061d507e86cba56db977a/Benefit-Expenditure-and-Caseloads-Tables-Autumn-2026..ods",
-  "checked_at": "2026-11-27T21:57:42Z",
+  "checked_at": "2026-11-27T22:01:06Z",
   "release_updated_at": "2026-11-24T12:30:07+00:00",
   "status": "unchanged"
  },
  "grants": {
   "attachment": "https://assets.publishing.service.gov.uk/media/69beccae7e02b81c0d1c75cf/2026-03-23_Government_Grants_Register_2024_to_2025.ods",
-  "checked_at": "2026-11-27T21:57:42Z",
+  "checked_at": "2026-11-27T22:01:06Z",
   "release_updated_at": "2026-03-24T09:30:04+00:00",
   "status": "unchanged"
  },
  "hmrc-receipts": {
   "attachment": "https://assets.publishing.service.gov.uk/media/6af706889be17c68c69ca800/NS_Table.ods",
-  "checked_at": "2026-11-27T21:57:42Z",
+  "checked_at": "2026-11-27T22:01:06Z",
   "release_updated_at": "2026-11-20T07:00:02+00:00",
   "status": "unchanged"
  },
  "la-outturn": {
   "attachment": "https://assets.publishing.service.gov.uk/media/6ab26f73997a4b2950cced10/RSX_LA_Data_2025-26_data_by_LA.ods",
-  "checked_at": "2026-11-27T21:57:42Z",
+  "checked_at": "2026-11-27T22:01:06Z",
   "release_updated_at": "2026-09-17T09:30:00+01:00",
   "status": "unchanged"
  },
  "nhs-trust-accounts": {
   "attachment": "https://www.england.nhs.uk/wp-content/uploads/2026/04/TAC-data-published-in-NHS-trusts-accounts-for-2024-25.xlsx",
-  "checked_at": "2026-11-27T21:57:42Z",
+  "checked_at": "2026-11-27T22:01:06Z",
   "release_updated_at": null,
   "status": "unchanged"
  },
  "pss-tes": {
   "attachment": "https://assets.publishing.service.gov.uk/media/6af4752ba4004bdbe54e5500/PSS_Nov_2026_TES.xlsx",
-  "checked_at": "2026-11-27T21:57:42Z",
+  "checked_at": "2026-11-27T22:01:06Z",
   "release_updated_at": "2026-11-18T09:30:01+00:00",
   "status": "unchanged"
  },
+ "scotland-gp-payments": {
+  "attachment": "https://www.opendata.nhs.scot/dataset/11c09588-61d6-4d45-be68-0a98fd061003/resource/db3455ae-913e-4110-8439-d6a49164f7d9/download/gppayments2024-25.csv",
+  "checked_at": "2026-11-27T22:01:06Z",
+  "release_updated_at": "2025-11-04T10:16:25.096036",
+  "status": "updated"
+ },
  "wales-la-outturn": {
   "attachment": "https://api.stats.gov.wales/v1/213aeb99-18eb-42c9-b00e-e4b716e82cdf/download/csv",
-  "checked_at": "2026-11-27T21:57:42Z",
+  "checked_at": "2026-11-27T22:01:06Z",
   "release_updated_at": "2026-10-21T08:30:00.000Z",
   "status": "unchanged"
  },
  "wales-nhs-programme": {
   "attachment": "https://api.stats.gov.wales/v1/2f4e637b-4622-4ad0-b2a3-15901c41147e/download/csv",
-  "checked_at": "2026-11-27T21:57:42Z",
+  "checked_at": "2026-11-27T22:01:06Z",
   "release_updated_at": "2025-10-21T08:30:00.000Z",
-  "status": "updated"
+  "status": "unchanged"
  }
 }
