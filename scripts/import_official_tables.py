@@ -863,10 +863,11 @@ WALES_PB_PARTS = {
     "Endocrine, nutritional & metabolic problems": ["Diabetes", "Other endocrine, nutritional and metabolic problems"],
     "Mental health problems": ["General mental illness", "Elderly mental illness", "Child & adolescent mental health services", "Other mental health problems"],
     "Circulation problems": ["Coronary Heart Disease", "Cerebrovascular disease", "Other problems of circulation"],
-    "Genito Urinary system disorders (exc infertility)": ["Genital tract problems", "Renal problems", "Sexually transmitted infections", "Other problems of the genito urinary system"],
+    "Genito Urinary system disorders (exc infertility)": ["Genital tract problems", "Renal problems", "Chronic renal failure", "Sexually transmitted infections",
+                                                          "Other problems of the genito urinary system"],
     "Other": ["General medical services", "Open access", "Continuing care", "Other PHW functions", "Other expenditure"],
 }
-WALES_PB_OF_WHICH = {"Chronic renal failure": "Renal problems"}  # shown as 'of which', not checked
+WALES_PB_OF_WHICH = {}  # categories shown as 'of which' without an additivity check (none at present)
 
 
 def parse_wales_programme(rows):
