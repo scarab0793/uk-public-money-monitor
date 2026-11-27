@@ -33,7 +33,8 @@ OUT = {"hmrc-receipts": Path("data/hmrc/receipts.json"), "pss-tes": Path("data/t
        "nhs-trust-accounts": Path("data/nhs/trust-accounts.json"),
        "grants": Path("data/grants/government-grants.json"),
        "wales-la-outturn": Path("data/local-government/revenue-outturn-wales.json"),
-       "wales-nhs-programme": Path("data/nhs/wales-programme-budgets.json")}
+       "wales-nhs-programme": Path("data/nhs/wales-programme-budgets.json"),
+       "scotland-gp-payments": Path("data/nhs/scotland-gp-payments.json")}
 REPORT = Path("data/official-tables-report.json")
 
 
@@ -925,10 +926,107 @@ def import_wales_nhs_programme():
                 **t)
 
 
+PHS_CKAN = "https://www.opendata.nhs.scot/api/3/action/"
+GP_PAY_SKIP = {"_id", "FinancialYear", "HB", "PracticeCode", "PracticeType", "PracticeListSize", "TotalPayments", "DispensingDoctorPayments"}
+
+
+def ckan(action, **params):
+    r = requests.get(PHS_CKAN + action, params=params, headers=UA, timeout=120)
+    r.raise_for_status()
+    j = r.json()
+    if not j.get("success"):
+        raise RuntimeError(f"{action} failed")
+    return j["result"]
+
+
+def ckan_records(resource_id):
+    res = ckan("datastore_search", resource_id=resource_id, limit=32000)
+    if res["total"] > len(res["records"]):
+        raise RuntimeError(f"resource {resource_id} has more than {len(res['records'])} rows")
+    return res["fields"], res["records"]
+
+
+def gp_value(rec, field):
+    """A payment cell: flagged cells (z not applicable, : not available, c confidential) and blanks are None."""
+    if str(rec.get(field + "QF") or "").strip():
+        return None
+    v = rec.get(field)
+    if v is None or str(v).strip() == "":
+        return None
+    try:
+        return float(v)
+    except ValueError:
+        return None
+
+
+def parse_gp_payments(fields, records):
+    comps = [f["id"] for f in fields if f["id"] not in GP_PAY_SKIP and not f["id"].endswith("QF")]
+    out, failures = {}, []
+    for rec in records:
+        code = str(int(float(rec["PracticeCode"])))
+        vals = {c: gp_value(rec, c) for c in comps}
+        total = gp_value(rec, "TotalPayments")
+        known = [v for v in vals.values() if v is not None]
+        if total is not None and known and abs(sum(known) - total) > 2:
+            failures.append(code)
+        out[code] = dict(hb=rec.get("HB"), type=rec.get("PracticeType"), list_size=gp_value(rec, "PracticeListSize"), total=total,
+                         dispensing=gp_value(rec, "DispensingDoctorPayments"), components=vals)
+    return comps, out, failures
+
+
+def import_scotland_gp_payments():
+    pkg = ckan("package_show", id="nhsscotland-payments-to-general-practice")
+    res = []
+    for r in pkg["resources"]:
+        m = re.match(r"GP Payments (\d{4})/(\d{2})$", r.get("name", "").strip())
+        if m:
+            res.append((f"{m.group(1)}-{m.group(2)}", r))
+    res = sorted(res, reverse=True)[:6]
+    if not res:
+        raise RuntimeError("No GP payments resources found")
+    names = {}
+    lists = ckan("package_show", id="gp-practice-contact-details-and-list-sizes")["resources"]
+    for r in lists[:24][::-1]:  # newest last, so the current name wins; older lists name practices that have since closed
+        try:
+            for rec in ckan_records(r["id"])[1]:
+                names[str(int(float(rec["PracticeCode"])))] = rec.get("GPPracticeName", "").strip()
+        except Exception:
+            continue
+    hb = {r["HB"]: r["HBName"] for r in ckan_records("652ff726-e676-4a20-abda-435b98dd7bdc")[1]}
+    years, components, practices, issues = [], None, {}, {}
+    for fy, r in sorted(res):
+        fields, recs = ckan_records(r["id"])
+        comps, rows, failures = parse_gp_payments(fields, recs)
+        if len(rows) < 700 or len(failures) > len(rows) * 0.01:
+            raise RuntimeError(f"GP payments {fy} failed validation ({len(rows)} practices, {len(failures)} whose payments do not add up)")
+        years.append(fy)
+        components = comps
+        issues[fy] = failures
+        for code, v in rows.items():
+            p = practices.setdefault(code, dict(code=code, name=names.get(code), years={}))
+            p["hb"] = hb.get(v["hb"], v["hb"])
+            p["type"] = v["type"]
+            p["years"][fy] = dict(total=v["total"], list_size=v["list_size"], dispensing=v["dispensing"])
+            if fy == res[0][0]:
+                p["components"] = [v["components"].get(c) for c in comps]
+    latest = res[0][1]
+    return dict(publisher="Public Health Scotland and NSS Practitioner Services", dataset=pkg.get("title"),
+                page="https://www.opendata.nhs.scot/dataset/nhsscotland-payments-to-general-practice",
+                attachment=latest.get("url"), release_updated_at=latest.get("last_modified"), unit="£",
+                caveats=[(pkg.get("notes") or "").strip(),
+                         "Payments are what NHS Scotland paid to each general practice in the financial year, in pounds, nominal. They pay for the practice's staff, premises and running costs as well as the GPs; they are not GP earnings.",
+                         "Dispensing doctor payments are published separately and are not part of the total.",
+                         "Cells the source marks as not applicable, not available or confidential are shown as not available, never as zero. Every practice is checked: its payment types add up to its published total.",
+                         "Practice names come from the Public Health Scotland list of practices; a practice that has since closed or merged may show its code only."],
+                years=years, components=components, hb_names=sorted(set(hb.values())), identity_failures=issues,
+                practices=sorted(practices.values(), key=lambda p: int(p["code"])))
+
+
 IMPORTERS = {"hmrc-receipts": import_hmrc_receipts, "pss-tes": import_pss, "cra": import_cra, "council-tax": import_council_tax,
              "dwp-benefits": import_dwp_benefits, "la-outturn": import_la_outturn,
              "nhs-trust-accounts": import_nhs_trust_accounts, "grants": import_grants,
-             "wales-la-outturn": import_wales_la_outturn, "wales-nhs-programme": import_wales_nhs_programme}
+             "wales-la-outturn": import_wales_la_outturn, "wales-nhs-programme": import_wales_nhs_programme,
+             "scotland-gp-payments": import_scotland_gp_payments}
 
 
 def main(names):

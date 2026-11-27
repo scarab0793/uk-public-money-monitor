@@ -194,5 +194,18 @@ class ParserTests(unittest.TestCase):
         self.assertEqual(t["identity_failure_count"], 1)  # conditions no longer add up to the total
         self.assertEqual(t["breakdown_issues"][0]["category"], "Mental health problems")
 
+    def test_scotland_gp_payments_flags_and_identity(self):
+        fields = [{"id": x} for x in ["_id", "FinancialYear", "HB", "PracticeCode", "PracticeType", "PracticeListSize", "PracticeListSizeQF", "GlobalSum",
+                                       "Premises", "PremisesQF", "Seniority", "SeniorityQF", "TotalPayments", "DispensingDoctorPayments", "DispensingDoctorPaymentsQF"]]
+        good = {"PracticeCode": 10002, "HB": "S08000030", "PracticeType": "GMS", "PracticeListSize": "8250", "PracticeListSizeQF": " ", "GlobalSum": 100,
+                "Premises": "50", "PremisesQF": " ", "Seniority": " ", "SeniorityQF": ":", "TotalPayments": 150, "DispensingDoctorPayments": " ", "DispensingDoctorPaymentsQF": "z"}
+        bad = dict(good, PracticeCode=10017, TotalPayments=999)
+        comps, rows, failures = ot.parse_gp_payments(fields, [good, bad])
+        self.assertEqual(comps, ["GlobalSum", "Premises", "Seniority"])
+        self.assertIsNone(rows["10002"]["components"]["Seniority"])
+        self.assertIsNone(rows["10002"]["dispensing"])
+        self.assertEqual(rows["10002"]["list_size"], 8250.0)
+        self.assertEqual(failures, ["10017"])
+
 if __name__ == "__main__":
     unittest.main()
