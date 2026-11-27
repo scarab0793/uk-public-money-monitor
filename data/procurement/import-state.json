@@ -1,20 +1,20 @@
 {
  "coverage": {
   "contracts-finder": {
-   "complete_days": 532,
-   "earliest_complete": "2025-06-13",
+   "complete_days": 559,
+   "earliest_complete": "2025-05-17",
    "endpoint": "https://www.contractsfinder.service.gov.uk/Published/Notices/OCDS/Search",
    "failed_days": [],
    "floor": "2019-01-01",
    "label": "Contracts Finder",
    "latest_complete": "2026-11-26",
    "partial_days": [],
-   "releases_listed": 61460,
+   "releases_listed": 64800,
    "window_basis": "publication date"
   },
   "find-a-tender": {
-   "complete_days": 523,
-   "earliest_complete": "2025-06-18",
+   "complete_days": 550,
+   "earliest_complete": "2025-05-22",
    "endpoint": "https://www.find-tender.service.gov.uk/api/1.0/ocdsReleasePackages",
    "failed_days": [
     "2025-12-10",
@@ -26,7 +26,7 @@
    "label": "Find a Tender",
    "latest_complete": "2026-11-26",
    "partial_days": [],
-   "releases_listed": 161328,
+   "releases_listed": 169943,
    "window_basis": "last-updated date"
   }
  },
@@ -34,6 +34,195 @@
  "sources": {
   "contracts-finder": {
    "days": {
+    "2025-05-17": {
+     "fetched_at": "2026-11-27T02:26:52Z",
+     "pages": 1,
+     "releases": 1,
+     "status": "complete",
+     "window_end": "2025-05-18T00:00:00Z"
+    },
+    "2025-05-18": {
+     "fetched_at": "2026-11-27T02:24:10Z",
+     "pages": 1,
+     "releases": 2,
+     "status": "complete",
+     "window_end": "2025-05-19T00:00:00Z"
+    },
+    "2025-05-19": {
+     "fetched_at": "2026-11-27T02:24:06Z",
+     "pages": 2,
+     "releases": 179,
+     "status": "complete",
+     "window_end": "2025-05-20T00:00:00Z"
+    },
+    "2025-05-20": {
+     "fetched_at": "2026-11-27T02:23:58Z",
+     "pages": 3,
+     "releases": 234,
+     "status": "complete",
+     "window_end": "2025-05-21T00:00:00Z"
+    },
+    "2025-05-21": {
+     "fetched_at": "2026-11-27T02:23:54Z",
+     "pages": 2,
+     "releases": 164,
+     "status": "complete",
+     "window_end": "2025-05-22T00:00:00Z"
+    },
+    "2025-05-22": {
+     "fetched_at": "2026-11-27T02:23:44Z",
+     "pages": 2,
+     "releases": 200,
+     "status": "complete",
+     "window_end": "2025-05-23T00:00:00Z"
+    },
+    "2025-05-23": {
+     "fetched_at": "2026-11-27T02:23:33Z",
+     "pages": 2,
+     "releases": 159,
+     "status": "complete",
+     "window_end": "2025-05-24T00:00:00Z"
+    },
+    "2025-05-24": {
+     "fetched_at": "2026-11-27T02:21:25Z",
+     "pages": 1,
+     "releases": 2,
+     "status": "complete",
+     "window_end": "2025-05-25T00:00:00Z"
+    },
+    "2025-05-25": {
+     "fetched_at": "2026-11-27T02:21:16Z",
+     "pages": 1,
+     "releases": 1,
+     "status": "complete",
+     "window_end": "2025-05-26T00:00:00Z"
+    },
+    "2025-05-26": {
+     "fetched_at": "2026-11-27T02:21:16Z",
+     "pages": 1,
+     "releases": 6,
+     "status": "complete",
+     "window_end": "2025-05-27T00:00:00Z"
+    },
+    "2025-05-27": {
+     "fetched_at": "2026-11-27T02:21:12Z",
+     "pages": 2,
+     "releases": 159,
+     "status": "complete",
+     "window_end": "2025-05-28T00:00:00Z"
+    },
+    "2025-05-28": {
+     "fetched_at": "2026-11-27T02:20:59Z",
+     "pages": 3,
+     "releases": 245,
+     "status": "complete",
+     "window_end": "2025-05-29T00:00:00Z"
+    },
+    "2025-05-29": {
+     "fetched_at": "2026-11-27T02:20:48Z",
+     "pages": 2,
+     "releases": 190,
+     "status": "complete",
+     "window_end": "2025-05-30T00:00:00Z"
+    },
+    "2025-05-30": {
+     "fetched_at": "2026-11-27T02:18:37Z",
+     "pages": 2,
+     "releases": 180,
+     "status": "complete",
+     "window_end": "2025-05-31T00:00:00Z"
+    },
+    "2025-05-31": {
+     "fetched_at": "2026-11-27T02:18:29Z",
+     "pages": 1,
+     "releases": 2,
+     "status": "complete",
+     "window_end": "2025-06-01T00:00:00Z"
+    },
+    "2025-06-01": {
+     "fetched_at": "2026-11-27T02:18:21Z",
+     "pages": 1,
+     "releases": 3,
+     "status": "complete",
+     "window_end": "2025-06-02T00:00:00Z"
+    },
+    "2025-06-02": {
+     "fetched_at": "2026-11-27T02:18:17Z",
+     "pages": 2,
+     "releases": 163,
+     "status": "complete",
+     "window_end": "2025-06-03T00:00:00Z"
+    },
+    "2025-06-03": {
+     "fetched_at": "2026-11-27T02:16:11Z",
+     "pages": 3,
+     "releases": 206,
+     "status": "complete",
+     "window_end": "2025-06-04T00:00:00Z"
+    },
+    "2025-06-04": {
+     "fetched_at": "2026-11-27T02:15:58Z",
+     "pages": 3,
+     "releases": 222,
+     "status": "complete",
+     "window_end": "2025-06-05T00:00:00Z"
+    },
+    "2025-06-05": {
+     "fetched_at": "2026-11-27T02:15:49Z",
+     "pages": 2,
+     "releases": 159,
+     "status": "complete",
+     "window_end": "2025-06-06T00:00:00Z"
+    },
+    "2025-06-06": {
+     "fetched_at": "2026-11-27T02:15:36Z",
+     "pages": 3,
+     "releases": 202,
+     "status": "complete",
+     "window_end": "2025-06-07T00:00:00Z"
+    },
+    "2025-06-07": {
+     "fetched_at": "2026-11-27T02:15:28Z",
+     "pages": 1,
+     "releases": 2,
+     "status": "complete",
+     "window_end": "2025-06-08T00:00:00Z"
+    },
+    "2025-06-08": {
+     "fetched_at": "2026-11-27T02:13:20Z",
+     "pages": 1,
+     "releases": 0,
+     "status": "complete",
+     "window_end": "2025-06-09T00:00:00Z"
+    },
+    "2025-06-09": {
+     "fetched_at": "2026-11-27T02:13:19Z",
+     "pages": 1,
+     "releases": 100,
+     "status": "complete",
+     "window_end": "2025-06-10T00:00:00Z"
+    },
+    "2025-06-10": {
+     "fetched_at": "2026-11-27T02:13:15Z",
+     "pages": 2,
+     "releases": 184,
+     "status": "complete",
+     "window_end": "2025-06-11T00:00:00Z"
+    },
+    "2025-06-11": {
+     "fetched_at": "2026-11-27T02:13:05Z",
+     "pages": 2,
+     "releases": 192,
+     "status": "complete",
+     "window_end": "2025-06-12T00:00:00Z"
+    },
+    "2025-06-12": {
+     "fetched_at": "2026-11-27T02:12:54Z",
+     "pages": 2,
+     "releases": 183,
+     "status": "complete",
+     "window_end": "2025-06-13T00:00:00Z"
+    },
     "2025-06-13": {
      "fetched_at": "2026-11-27T02:10:35Z",
      "pages": 2,
@@ -3762,6 +3951,195 @@
   },
   "find-a-tender": {
    "days": {
+    "2025-05-22": {
+     "fetched_at": "2026-11-27T02:26:52Z",
+     "pages": 11,
+     "releases": 1026,
+     "status": "complete",
+     "window_end": "2025-05-23T00:00:00Z"
+    },
+    "2025-05-23": {
+     "fetched_at": "2026-11-27T02:24:11Z",
+     "pages": 18,
+     "releases": 1778,
+     "status": "complete",
+     "window_end": "2025-05-24T00:00:00Z"
+    },
+    "2025-05-24": {
+     "fetched_at": "2026-11-27T02:24:09Z",
+     "pages": 1,
+     "releases": 96,
+     "status": "complete",
+     "window_end": "2025-05-25T00:00:00Z"
+    },
+    "2025-05-25": {
+     "fetched_at": "2026-11-27T02:24:03Z",
+     "pages": 2,
+     "releases": 102,
+     "status": "complete",
+     "window_end": "2025-05-26T00:00:00Z"
+    },
+    "2025-05-26": {
+     "fetched_at": "2026-11-27T02:23:57Z",
+     "pages": 1,
+     "releases": 85,
+     "status": "complete",
+     "window_end": "2025-05-27T00:00:00Z"
+    },
+    "2025-05-27": {
+     "fetched_at": "2026-11-27T02:23:47Z",
+     "pages": 4,
+     "releases": 359,
+     "status": "complete",
+     "window_end": "2025-05-28T00:00:00Z"
+    },
+    "2025-05-28": {
+     "fetched_at": "2026-11-27T02:23:36Z",
+     "pages": 4,
+     "releases": 387,
+     "status": "complete",
+     "window_end": "2025-05-29T00:00:00Z"
+    },
+    "2025-05-29": {
+     "fetched_at": "2026-11-27T02:21:25Z",
+     "pages": 4,
+     "releases": 328,
+     "status": "complete",
+     "window_end": "2025-05-30T00:00:00Z"
+    },
+    "2025-05-30": {
+     "fetched_at": "2026-11-27T02:21:17Z",
+     "pages": 4,
+     "releases": 334,
+     "status": "complete",
+     "window_end": "2025-05-31T00:00:00Z"
+    },
+    "2025-05-31": {
+     "fetched_at": "2026-11-27T02:21:16Z",
+     "pages": 1,
+     "releases": 0,
+     "status": "complete",
+     "window_end": "2025-06-01T00:00:00Z"
+    },
+    "2025-06-01": {
+     "fetched_at": "2026-11-27T02:21:15Z",
+     "pages": 1,
+     "releases": 3,
+     "status": "complete",
+     "window_end": "2025-06-02T00:00:00Z"
+    },
+    "2025-06-02": {
+     "fetched_at": "2026-11-27T02:21:05Z",
+     "pages": 4,
+     "releases": 370,
+     "status": "complete",
+     "window_end": "2025-06-03T00:00:00Z"
+    },
+    "2025-06-03": {
+     "fetched_at": "2026-11-27T02:20:51Z",
+     "pages": 4,
+     "releases": 324,
+     "status": "complete",
+     "window_end": "2025-06-04T00:00:00Z"
+    },
+    "2025-06-04": {
+     "fetched_at": "2026-11-27T02:18:40Z",
+     "pages": 4,
+     "releases": 395,
+     "status": "complete",
+     "window_end": "2025-06-05T00:00:00Z"
+    },
+    "2025-06-05": {
+     "fetched_at": "2026-11-27T02:18:29Z",
+     "pages": 4,
+     "releases": 353,
+     "status": "complete",
+     "window_end": "2025-06-06T00:00:00Z"
+    },
+    "2025-06-06": {
+     "fetched_at": "2026-11-27T02:18:21Z",
+     "pages": 4,
+     "releases": 331,
+     "status": "complete",
+     "window_end": "2025-06-07T00:00:00Z"
+    },
+    "2025-06-07": {
+     "fetched_at": "2026-11-27T02:18:20Z",
+     "pages": 1,
+     "releases": 4,
+     "status": "complete",
+     "window_end": "2025-06-08T00:00:00Z"
+    },
+    "2025-06-08": {
+     "fetched_at": "2026-11-27T02:18:17Z",
+     "pages": 1,
+     "releases": 4,
+     "status": "complete",
+     "window_end": "2025-06-09T00:00:00Z"
+    },
+    "2025-06-09": {
+     "fetched_at": "2026-11-27T02:16:04Z",
+     "pages": 4,
+     "releases": 344,
+     "status": "complete",
+     "window_end": "2025-06-10T00:00:00Z"
+    },
+    "2025-06-10": {
+     "fetched_at": "2026-11-27T02:15:53Z",
+     "pages": 3,
+     "releases": 274,
+     "status": "complete",
+     "window_end": "2025-06-11T00:00:00Z"
+    },
+    "2025-06-11": {
+     "fetched_at": "2026-11-27T02:15:42Z",
+     "pages": 4,
+     "releases": 326,
+     "status": "complete",
+     "window_end": "2025-06-12T00:00:00Z"
+    },
+    "2025-06-12": {
+     "fetched_at": "2026-11-27T02:15:28Z",
+     "pages": 4,
+     "releases": 392,
+     "status": "complete",
+     "window_end": "2025-06-13T00:00:00Z"
+    },
+    "2025-06-13": {
+     "fetched_at": "2026-11-27T02:13:20Z",
+     "pages": 4,
+     "releases": 319,
+     "status": "complete",
+     "window_end": "2025-06-14T00:00:00Z"
+    },
+    "2025-06-14": {
+     "fetched_at": "2026-11-27T02:13:19Z",
+     "pages": 1,
+     "releases": 3,
+     "status": "complete",
+     "window_end": "2025-06-15T00:00:00Z"
+    },
+    "2025-06-15": {
+     "fetched_at": "2026-11-27T02:13:19Z",
+     "pages": 1,
+     "releases": 3,
+     "status": "complete",
+     "window_end": "2025-06-16T00:00:00Z"
+    },
+    "2025-06-16": {
+     "fetched_at": "2026-11-27T02:13:08Z",
+     "pages": 4,
+     "releases": 339,
+     "status": "complete",
+     "window_end": "2025-06-17T00:00:00Z"
+    },
+    "2025-06-17": {
+     "fetched_at": "2026-11-27T02:12:57Z",
+     "pages": 4,
+     "releases": 336,
+     "status": "complete",
+     "window_end": "2025-06-18T00:00:00Z"
+    },
     "2025-06-18": {
      "fetched_at": "2026-11-27T02:12:39Z",
      "pages": 4,
@@ -7446,5 +7824,5 @@
    }
   }
  },
- "updated_at": "2026-11-27T02:12:52Z"
+ "updated_at": "2026-11-27T02:29:22Z"
 }
