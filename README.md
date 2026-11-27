@@ -57,6 +57,14 @@ See "Not covered yet, and why" on the Sources section, or `gaps` in `data/catalo
 
 The NHS England page that lists the trust accounts files refuses automated requests, so the file links for each new year are added to `data/nhs/tac-sources.json` when NHS England publishes them.
 
+## Source access notes
+
+- GOV.UK publications are found through the GOV.UK Content and Search APIs; files come from assets.publishing.service.gov.uk.
+- Welsh data comes from the StatsWales API (`https://api.stats.gov.wales/v1/<dataset id>/download/csv`), which needs no key.
+- Scottish NHS data comes from the Public Health Scotland open data portal (CKAN API at `https://www.opendata.nhs.scot/api/3/action/`).
+- gov.scot and england.nhs.uk refuse automated requests from GitHub Actions (they answer with an empty HTTP 202 challenge). The NHS England trust accounts links are therefore kept by hand in `data/nhs/tac-sources.json`, and Scottish council finance is listed as a gap.
+- `explore-sources.yml` (manual only) previews any publication: a GOV.UK path, `search:<words>`, `url:<file>`, `page:<url>` (lists links) or `get:<url>` (raw response).
+
 ## Licence
 
 Data is reused under the Open Government Licence v3.0 from the publishers named above.
