@@ -193,6 +193,20 @@ class Importer:
         return self.report.setdefault(source, dict(days_complete=0, days_partial=0, days_failed=0, pages=0, releases_fetched=0,
                                                    new=0, changed=0, unchanged=0, quarantined=0, errors=[]))
 
+    def fetch_split(self, source, start, end, min_window=dt.timedelta(hours=1)):
+        """Fetch a window; if the source's cursor pagination loops (Find a Tender does this on some busy days),
+        fetch the two halves separately, down to one hour.  Releases that appear in both halves are merged later
+        by (ocid, release id), so overlaps never double count."""
+        try:
+            return self.fetcher.fetch_window(source, start, end)
+        except SourceError as exc:
+            if "loop" not in str(exc).lower() or end - start <= min_window:
+                raise
+        mid = start + (end - start) / 2
+        r1, p1 = self.fetch_split(source, start, mid, min_window)
+        r2, p2 = self.fetch_split(source, mid, end, min_window)
+        return r1 + r2, p1 + p2
+
     def fetch_day(self, source: str, day: dt.date):
         rep = self.source_report(source)
         start = dt.datetime.combine(day, dt.time(), dt.timezone.utc)
@@ -202,7 +216,7 @@ class Importer:
             end = min(end, utcnow().replace(microsecond=0))
         fetched_at = iso(utcnow())
         try:
-            releases, pages = self.fetcher.fetch_window(source, start, end)
+            releases, pages = self.fetch_split(source, start, end)
         except Exception as exc:
             rep["days_failed"] += 1
             rep["errors"].append(f"{day}: {exc}")

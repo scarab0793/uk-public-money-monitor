@@ -111,6 +111,21 @@ class ImporterTests(unittest.TestCase):
             self.assertFalse(imp.fetch_day("find-a-tender", dt.date(2026, 11, 20)))
             self.assertIn("loop", imp.report["find-a-tender"]["errors"][0].lower())
 
+    def test_pagination_loop_on_a_whole_day_is_fetched_in_halves(self):
+        class LoopOnLongWindows(FakeSession):
+            def get(self, url, params=None, timeout=None):
+                self.calls.append((url, params))
+                if params:
+                    frm, to = (dt.datetime.fromisoformat(next(v for k, v in params.items() if k.endswith(x)).replace("Z", "")) for x in ("From", "To"))
+                    if to - frm > dt.timedelta(hours=12):
+                        return FakeResponse({"releases": [release("o", "r0", "2026-11-20T00:00:00Z")], "links": {"next": "https://www.find-tender.service.gov.uk/loop"}})
+                    return FakeResponse({"releases": [release("o", "r-" + frm.strftime("%H"), frm.strftime("%Y-%m-%dT%H:%M:%SZ"))]})
+                return FakeResponse({"releases": [release("o", "r0", "2026-11-20T00:00:00Z")], "links": {"next": "https://www.find-tender.service.gov.uk/loop"}})
+        with tempfile.TemporaryDirectory() as tmp:
+            imp = make_importer(tmp, LoopOnLongWindows({}))
+            self.assertTrue(imp.fetch_day("find-a-tender", dt.date(2026, 11, 20)))
+            self.assertEqual(imp.state["sources"]["find-a-tender"]["days"]["2026-11-20"]["releases"], 2)
+
     def test_daily_window_overlaps_and_backfill_order(self):
         state = ip.empty_state()
         state["sources"]["find-a-tender"]["days"] = {"2026-11-22": {"status": "complete"}, "2026-11-10": {"status": "failed"}}
