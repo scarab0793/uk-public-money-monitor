@@ -34,7 +34,8 @@ OUT = {"hmrc-receipts": Path("data/hmrc/receipts.json"), "pss-tes": Path("data/t
        "grants": Path("data/grants/government-grants.json"),
        "wales-la-outturn": Path("data/local-government/revenue-outturn-wales.json"),
        "wales-nhs-programme": Path("data/nhs/wales-programme-budgets.json"),
-       "scotland-gp-payments": Path("data/nhs/scotland-gp-payments.json")}
+       "scotland-gp-payments": Path("data/nhs/scotland-gp-payments.json"),
+       "civil-service-pay": Path("data/government/civil-service-pay.json")}
 REPORT = Path("data/official-tables-report.json")
 
 
@@ -1022,11 +1023,84 @@ def import_scotland_gp_payments():
                 practices=sorted(practices.values(), key=lambda p: int(p["code"])))
 
 
+def cs_level(header):
+    h = re.sub(r"\s+", " ", str(header)).strip()
+    m = re.search(r"working at (.+?) level", h)
+    if m:
+        return m.group(1)
+    if "unreported grade" in h:
+        return "Unreported grade"
+    return "All civil servants"
+
+
+def parse_cs_org_table(df):
+    """Civil Service Statistics department tables: header row starting 'Civil Service parent department',
+    then one row per organisation, with '<department> Overall' rows and a final 'Overall Civil Service' row.
+    [c] (suppressed) and [n] (not applicable) become None."""
+    hdr = next(i for i in range(min(len(df), 15)) if str(df.iat[i, 0]).strip() == "Civil Service parent department")
+    cols = [re.sub(r"\s+", " ", str(v)).strip() for v in df.iloc[hdr, 2:].tolist()]
+    rows = []
+    for i in range(hdr + 1, len(df)):
+        dept, org = df.iat[i, 0], df.iat[i, 1]
+        if not isinstance(dept, str) or not isinstance(org, str) or not dept.strip():
+            continue
+        rows.append(dict(department=dept.strip(), organisation=org.strip(), overall=org.strip().endswith("Overall") or org.strip() == "Overall Civil Service",
+                         values=[cell_number(v) for v in df.iloc[i, 2:2 + len(cols)].tolist()]))
+    return cols, rows
+
+
+def import_civil_service_pay():
+    q = requests.get(GOVUK + "/api/search.json", headers=UA, timeout=60, params={
+        "q": "Civil Service statistics", "filter_organisations": "cabinet-office", "count": 30, "fields": "title,link,public_timestamp"}).json()
+    hits = sorted((r for r in q.get("results", []) if re.fullmatch(r"Civil Service statistics:? \d{4}", r.get("title", "").strip(), re.I)
+                   and r.get("link", "").startswith("/government/statistics/")), key=lambda r: r["title"], reverse=True)
+    if not hits:
+        hits = [{"title": "Civil Service statistics: 2026", "link": "/government/statistics/civil-service-statistics-2026"}]
+    doc = content(hits[0]["link"])
+    att = attachment(doc, r"Statistical tables")
+    book = read_book(att["url"])
+    sheet = lambda n: next(v for k, v in book.items() if k.strip().lower() == n)
+    year = re.search(r"(\d{4})", hits[0]["title"]).group(1)
+    hc_cols, hc = parse_cs_org_table(sheet("table_20"))
+    pay_cols, pay = parse_cs_org_table(sheet("table_25"))
+    _, top = parse_cs_org_table(sheet("table_b"))
+    levels = [cs_level(c) for c in hc_cols]
+    if [cs_level(c) for c in pay_cols] != levels or len(hc) < 100:
+        raise RuntimeError(f"Civil Service tables have unexpected layout ({len(hc)} organisations)")
+    # Checks: each organisation's grades cannot exceed its total (suppressed cells are unknown), and the
+    # department 'Overall' totals add up to the Civil Service total within the rounding to the nearest five.
+    over = [r for r in hc if r["overall"] and r["organisation"] != "Overall Civil Service"]
+    cs_total = next(r for r in hc if r["organisation"] == "Overall Civil Service")["values"][-1]
+    dept_sum = sum(r["values"][-1] or 0 for r in over)
+    bad = [r["organisation"] for r in hc if r["values"][-1] is not None and sum(v or 0 for v in r["values"][:-1]) > r["values"][-1] + 5 * len(levels)]
+    if bad or abs(dept_sum - cs_total) > 5 * len(over):
+        raise RuntimeError(f"Civil Service headcount failed checks ({len(bad)} organisations over their total; departments {dept_sum} vs {cs_total})")
+    pay_by = {(r["department"], r["organisation"]): r["values"] for r in pay}
+    top_by = {(r["department"], r["organisation"]): r["values"] for r in top}
+    orgs = []
+    for r in hc:
+        key = (r["department"], r["organisation"])
+        t = top_by.get(key) or [None, None, None]
+        orgs.append(dict(department=r["department"], organisation=r["organisation"], overall=r["overall"], headcount=r["values"],
+                         median_salary=pay_by.get(key), highest_earner=t[0], pay_ratio=t[2]))
+    e9 = sheet("table_e9")
+    h = next(i for i in range(10) if str(e9.iat[i, 0]).strip() == "Year")
+    series_cols = [re.sub(r"\s+", " ", str(v)).strip() for v in e9.iloc[h, 1:].tolist()]
+    series = [[str(int(e9.iat[i, 0]))] + [cell_number(v) for v in e9.iloc[i, 1:].tolist()] for i in range(h + 1, len(e9)) if cell_number(e9.iat[i, 0])]
+    return dict(publisher="Cabinet Office", dataset=hits[0]["title"], page=GOVUK + hits[0]["link"], attachment=att["url"], release_updated_at=doc.get("public_updated_at"),
+                as_at=f"31 March {year}", levels=levels, organisations=orgs, salary_series=dict(columns=series_cols, rows=series), unit="£ a year; headcount",
+                caveats=["Civil servants only, as at 31 March. Armed forces, NHS, teachers, police, local government and the devolved public bodies outside the Civil Service are not included (the Scottish and Welsh Governments' own civil servants are).",
+                         "Salaries are gross annual salaries (full-time equivalent for part-time staff), excluding overtime, bonuses and employer pension contributions. They are pay rates, not total pay bills.",
+                         "Headcounts are rounded to the nearest five. [c] cells, suppressed to protect individuals, are shown as not available, never as zero.",
+                         "The highest earner is the mid-point of a £5,000 pay band, as published; no individual is named.",
+                         "A department 'Overall' row includes its agencies; the rows above it are its parts and must not be added to it."])
+
+
 IMPORTERS = {"hmrc-receipts": import_hmrc_receipts, "pss-tes": import_pss, "cra": import_cra, "council-tax": import_council_tax,
              "dwp-benefits": import_dwp_benefits, "la-outturn": import_la_outturn,
              "nhs-trust-accounts": import_nhs_trust_accounts, "grants": import_grants,
              "wales-la-outturn": import_wales_la_outturn, "wales-nhs-programme": import_wales_nhs_programme,
-             "scotland-gp-payments": import_scotland_gp_payments}
+             "scotland-gp-payments": import_scotland_gp_payments, "civil-service-pay": import_civil_service_pay}
 
 
 def main(names):

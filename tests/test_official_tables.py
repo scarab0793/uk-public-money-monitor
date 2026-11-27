@@ -207,5 +207,19 @@ class ParserTests(unittest.TestCase):
         self.assertEqual(rows["10002"]["list_size"], 8250.0)
         self.assertEqual(failures, ["10017"])
 
+    def test_civil_service_department_table(self):
+        df = pd.DataFrame([
+            ["Table 20: Civil Service employment", N, N, N],
+            ["Civil Service parent department", "Civil Service organisation", "Headcount of all civil servants working at Senior Civil Service level", "Total headcount of all civil servants"],
+            ["Welsh Government", "Welsh Revenue Authority", "[c]", 125],
+            ["Welsh Government", "Welsh Government Overall", 200, 6220],
+            ["Overall Civil Service", "Overall Civil Service", 7770, 557825],
+        ])
+        cols, rows = ot.parse_cs_org_table(df)
+        self.assertEqual([ot.cs_level(c) for c in cols], ["Senior Civil Service", "All civil servants"])
+        self.assertIsNone(rows[0]["values"][0])
+        self.assertFalse(rows[0]["overall"])
+        self.assertTrue(rows[1]["overall"] and rows[2]["overall"])
+
 if __name__ == "__main__":
     unittest.main()
