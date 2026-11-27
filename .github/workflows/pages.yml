@@ -13,9 +13,6 @@ on:
       - "Import official NISTA major projects"
       - "Normalize FCDO data"
       - "Refresh ONS public finances"
-      # Until the Pages source is switched to "GitHub Actions", the legacy branch build still runs on every
-      # push and replaces this deployment; redeploy straight after it so generated data is restored.
-      - "pages-build-deployment"
     types: [completed]
   workflow_dispatch:
 permissions:
