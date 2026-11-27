@@ -163,6 +163,22 @@
    "limitations": "UK government departments only, not devolved governments. Award amounts can cover several years. Recipients are grouped only by published identifiers; those under £100,000 are counted in totals but not listed."
   },
   {
+   "id": "civil-service-pay",
+   "module": "Civil Service pay and staff by department",
+   "anchor": "civil-service-pay",
+   "publisher": "Cabinet Office",
+   "source": "https://www.gov.uk/government/statistics/civil-service-statistics-2026",
+   "file": "data/government/civil-service-pay.json",
+   "stamp": "retrieved_at",
+   "refresh": "Checked daily; published annually (as at 31 March)",
+   "workflow": "refresh-official-tables.yml",
+   "unit": "GBP a year (salary rates); headcount",
+   "basis": "Salary rates and staff numbers at a date (not pay bills)",
+   "verification": "verified",
+   "licence": "Open Government Licence v3.0",
+   "limitations": "Civil servants only (not armed forces, NHS, teachers, police or local government). Salaries exclude overtime, bonuses and pensions. Headcounts are rounded to five and small cells are suppressed. Checked: grades never exceed their total, and departments add up to the Civil Service total."
+  },
+  {
    "id": "council-tax",
    "module": "Council Tax bills in England",
    "anchor": "council-tax",
@@ -295,10 +311,10 @@
    "source": "https://www.england.nhs.uk/publications/annual-report/"
   },
   {
-   "module": "Government pay and property",
+   "module": "Government property, and pay outside the Civil Service",
    "status": "planned",
-   "reason": "Grants are live. Civil service pay statistics, senior salaries and the government property estate are published by different bodies in different formats and are being assessed.",
-   "source": "https://www.gov.uk/government/statistics/civil-service-statistics-2026"
+   "reason": "Civil Service pay and staff numbers by department are live, and grants are too. The government property estate is published as an annual report and as property records that are not yet machine-readable with values, and pay for the wider public sector (NHS, schools, armed forces, police) comes from separate pay review body and workforce statistics that are being assessed.",
+   "source": "https://www.gov.uk/government/collections/state-of-the-estate"
   }
  ]
 }

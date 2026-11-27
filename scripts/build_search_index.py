@@ -98,6 +98,14 @@ def main():
             if a["group"] != "total":
                 v = (a["values"].get(fy) or {}).get(tot)
                 add("Council spending", a["name"], f"Wales · revenue expenditure {fy} · {a['group']}", f"#council-spending/wales/{quote(a['name'])}", v * 1000 if v is not None else None, fy)
+    cp = load("government/civil-service-pay.json")
+    if cp:
+        for o in cp["organisations"]:
+            if o["organisation"] != "Overall Civil Service":
+                n = o["department"] if o["overall"] else o["organisation"]
+                med = (o.get("median_salary") or [None])[-1]
+                add("Civil Service organisation", n, f"{o['department']} · {int(o['headcount'][-1] or 0):,} civil servants · median salary" if o["headcount"][-1] is not None else f"{o['department']} · median salary",
+                    f"#civil-service-pay/{quote(o['department'])}", med, cp["as_at"])
     sg = load("nhs/scotland-gp-payments.json")
     if sg:
         fy = sg["years"][-1]

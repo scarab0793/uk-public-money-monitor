@@ -17,6 +17,7 @@ Every figure comes from an official publisher and links back to it. Data is refr
 | NHS Scotland payments to GP practices | Public Health Scotland open data (CKAN API) | `data/nhs/scotland-gp-payments.json` | daily check |
 | NHS Wales spending by health condition | Welsh Government programme budgets (StatsWales API) | `data/nhs/wales-programme-budgets.json` | daily check |
 | Government grants: departments, schemes, recipients, awards | Cabinet Office Government Grants Register | `data/grants/government-grants.json` | daily check |
+| Civil Service pay and staff by department | Cabinet Office Civil Service Statistics | `data/government/civil-service-pay.json` | daily check |
 | Council Tax bills by band | MHCLG | `data/local-government/council-tax-england.json` | daily check |
 | Council spending by service, England | MHCLG revenue outturn (RSX) | `data/local-government/revenue-outturn-england.json` | daily check |
 | Council spending by service, Wales | Welsh Government revenue outturn (StatsWales API) | `data/local-government/revenue-outturn-wales.json` | daily check |
@@ -52,7 +53,7 @@ The site is static (`index.html` plus `assets/js/`). The procurement database an
 
 ## Known gaps
 
-See "Not covered yet, and why" on the Sources section, or `gaps` in `data/catalogue.json`. In short: military aid has no official machine-readable series; NHS commissioners and the devolved health services, council spending in Scotland and Northern Ireland, and government pay and property are next.
+See "Not covered yet, and why" on the Sources section, or `gaps` in `data/catalogue.json`. In short: military aid has no official machine-readable series; NHS commissioners and the devolved health services, council spending in Scotland and Northern Ireland, government property and pay outside the Civil Service are next.
 
 The NHS England page that lists the trust accounts files refuses automated requests, so the file links for each new year are added to `data/nhs/tac-sources.json` when NHS England publishes them.
 
