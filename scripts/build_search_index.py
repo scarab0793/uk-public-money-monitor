@@ -98,6 +98,12 @@ def main():
             if a["group"] != "total":
                 v = (a["values"].get(fy) or {}).get(tot)
                 add("Council spending", a["name"], f"Wales · revenue expenditure {fy} · {a['group']}", f"#council-spending/wales/{quote(a['name'])}", v * 1000 if v is not None else None, fy)
+    sg = load("nhs/scotland-gp-payments.json")
+    if sg:
+        fy = sg["years"][-1]
+        for pr in sg["practices"]:
+            if pr.get("name") and fy in pr["years"]:
+                add("GP practice", pr["name"], f"Scotland · {pr.get('hb') or ''} · NHS payments {fy}", f"#scotland-gp/{pr['code']}", pr["years"][fy]["total"], fy)
     nh = load("nhs/trust-accounts.json")
     if nh:
         fy = max(nh["years"])

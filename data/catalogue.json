@@ -131,6 +131,22 @@
    "limitations": "Wales only; local health boards and Public Health Wales. Health boards were reorganised in 2019, so their series break. Every year is checked: conditions add up to the total and broken-down conditions add up to their parts."
   },
   {
+   "id": "scotland-gp-payments",
+   "module": "NHS Scotland payments to GP practices",
+   "anchor": "scotland-gp",
+   "publisher": "Public Health Scotland and NSS Practitioner Services",
+   "source": "https://www.opendata.nhs.scot/dataset/nhsscotland-payments-to-general-practice",
+   "file": "data/nhs/scotland-gp-payments.json",
+   "stamp": "retrieved_at",
+   "refresh": "Checked daily; published every November",
+   "workflow": "refresh-official-tables.yml",
+   "unit": "GBP, nominal",
+   "basis": "Payments made (actual)",
+   "verification": "verified",
+   "licence": "Open Government Licence v3.0",
+   "limitations": "Scotland only; latest six years. Payments cover practice staff, premises and running costs, not GP earnings. Dispensing doctor payments are separate. Practices are matched to names by their official practice code; every practice is checked for payment types adding up to its total."
+  },
+  {
    "id": "grants",
    "module": "Government grants",
    "anchor": "grants",
@@ -273,9 +289,9 @@
    "source": "https://www.gov.scot/collections/local-government-finance-statistics/"
   },
   {
-   "module": "NHS commissioners and NHS spending in Scotland, Wales and Northern Ireland",
+   "module": "NHS commissioners in England, and the wider NHS in Scotland and Northern Ireland",
    "status": "planned",
-   "reason": "English NHS trust accounts are live, and health spending by nation is under Regions. Integrated care board accounts and the devolved health services' accounts are published separately and are being assessed.",
+   "reason": "English NHS trust accounts, NHS Wales spending by condition and NHS Scotland payments to GP practices are live, and health spending by nation is under Regions. Integrated care board accounts are published as one PDF per board; NHS England's own pages refuse automated requests, and the Scottish Government's site does too, so these cannot yet be refreshed automatically. Northern Ireland's health trust accounts are published as PDF reports only.",
    "source": "https://www.england.nhs.uk/publications/annual-report/"
   },
   {
