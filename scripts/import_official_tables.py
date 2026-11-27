@@ -149,12 +149,21 @@ def import_hmrc_receipts():
 
 
 def find_latest_pss():
-    q = requests.get(GOVUK + "/api/search.json", headers=UA, timeout=60, params={
-        "q": "Public Spending Statistics release", "filter_organisations": "hm-treasury", "order": "-public_timestamp",
-        "count": 20, "fields": "title,link,public_timestamp"}).json()
-    for r in q.get("results", []):
-        if re.match(r"public spending statistics release", r.get("title", ""), re.I) and r.get("link", "").startswith("/government/statistics/"):
-            yield r["link"]
+    """Newest Public Spending Statistics releases first.  The organisation filter on the GOV.UK search API
+    sometimes returns nothing, so an unfiltered query is tried as well and the hits are sorted here."""
+    hits = {}
+    for extra in ({"filter_organisations": "hm-treasury", "order": "-public_timestamp"}, {}):
+        try:
+            q = requests.get(GOVUK + "/api/search.json", headers=UA, timeout=60, params={
+                "q": "Public Spending Statistics release", "count": 40, "fields": "title,link,public_timestamp", **extra}).json()
+        except (requests.RequestException, ValueError):
+            continue
+        for r in q.get("results", []):
+            if re.match(r"public spending statistics release", r.get("title", ""), re.I) and r.get("link", "").startswith("/government/statistics/"):
+                hits[r["link"]] = r.get("public_timestamp", "")
+        if hits:
+            break
+    yield from sorted(hits, key=hits.get, reverse=True)[:6]
 
 
 def parse_tes(df):
