@@ -1,20 +1,20 @@
 {
  "coverage": {
   "contracts-finder": {
-   "complete_days": 644,
-   "earliest_complete": "2025-02-21",
+   "complete_days": 648,
+   "earliest_complete": "2025-02-17",
    "endpoint": "https://www.contractsfinder.service.gov.uk/Published/Notices/OCDS/Search",
    "failed_days": [],
    "floor": "2019-01-01",
    "label": "Contracts Finder",
    "latest_complete": "2026-11-26",
    "partial_days": [],
-   "releases_listed": 80665,
+   "releases_listed": 82707,
    "window_basis": "publication date"
   },
   "find-a-tender": {
-   "complete_days": 635,
-   "earliest_complete": "2025-02-26",
+   "complete_days": 639,
+   "earliest_complete": "2025-02-22",
    "endpoint": "https://www.find-tender.service.gov.uk/api/1.0/ocdsReleasePackages",
    "failed_days": [
     "2025-12-10",
@@ -26,7 +26,7 @@
    "label": "Find a Tender",
    "latest_complete": "2026-11-26",
    "partial_days": [],
-   "releases_listed": 187099,
+   "releases_listed": 187270,
    "window_basis": "last-updated date"
   }
  },
@@ -34,6 +34,34 @@
  "sources": {
   "contracts-finder": {
    "days": {
+    "2025-02-17": {
+     "fetched_at": "2026-11-27T03:21:07Z",
+     "pages": 5,
+     "releases": 414,
+     "status": "complete",
+     "window_end": "2025-02-18T00:00:00Z"
+    },
+    "2025-02-18": {
+     "fetched_at": "2026-11-27T03:20:55Z",
+     "pages": 5,
+     "releases": 472,
+     "status": "complete",
+     "window_end": "2025-02-19T00:00:00Z"
+    },
+    "2025-02-19": {
+     "fetched_at": "2026-11-27T03:18:42Z",
+     "pages": 6,
+     "releases": 519,
+     "status": "complete",
+     "window_end": "2025-02-20T00:00:00Z"
+    },
+    "2025-02-20": {
+     "fetched_at": "2026-11-27T03:18:23Z",
+     "pages": 7,
+     "releases": 637,
+     "status": "complete",
+     "window_end": "2025-02-21T00:00:00Z"
+    },
     "2025-02-21": {
      "fetched_at": "2026-11-27T03:15:43Z",
      "pages": 9,
@@ -4546,6 +4574,34 @@
   },
   "find-a-tender": {
    "days": {
+    "2025-02-22": {
+     "fetched_at": "2026-11-27T03:21:18Z",
+     "pages": 1,
+     "releases": 1,
+     "status": "complete",
+     "window_end": "2025-02-23T00:00:00Z"
+    },
+    "2025-02-23": {
+     "fetched_at": "2026-11-27T03:21:06Z",
+     "pages": 1,
+     "releases": 0,
+     "status": "complete",
+     "window_end": "2025-02-24T00:00:00Z"
+    },
+    "2025-02-24": {
+     "fetched_at": "2026-11-27T03:20:55Z",
+     "pages": 1,
+     "releases": 62,
+     "status": "complete",
+     "window_end": "2025-02-25T00:00:00Z"
+    },
+    "2025-02-25": {
+     "fetched_at": "2026-11-27T03:18:39Z",
+     "pages": 2,
+     "releases": 108,
+     "status": "complete",
+     "window_end": "2025-02-26T00:00:00Z"
+    },
     "2025-02-26": {
      "fetched_at": "2026-11-27T03:18:04Z",
      "pages": 2,
@@ -9014,5 +9070,5 @@
    }
   }
  },
- "updated_at": "2026-11-27T03:18:21Z"
+ "updated_at": "2026-11-27T03:21:25Z"
 }
