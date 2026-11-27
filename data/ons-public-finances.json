@@ -1,14 +1,14 @@
 {
   "publisher": "Office for National Statistics",
   "dataset": "PUSF",
-  "retrieved_at": "2026-11-26T19:49:23.826376+00:00",
+  "retrieved_at": "2026-11-27T19:09:28.649996+00:00",
   "series": {
     "hf6x": {
       "label": "Public sector net debt excluding public sector banks",
       "unit": "% of GDP",
       "source": "https://api.beta.ons.gov.uk/v1/data?uri=%2Feconomy%2Fgovernmentpublicsectorandtaxes%2Fpublicsectorfinance%2Ftimeseries%2Fhf6x%2Fpusf",
       "series_code": "HF6X",
-      "retrieved_at": "2026-11-26T19:49:25.316698+00:00",
+      "retrieved_at": "2026-11-27T19:09:29.545895+00:00",
       "observations": [
         {
           "period": "1993 MAR",
@@ -1633,7 +1633,7 @@
       "unit": "GBP million",
       "source": "https://api.beta.ons.gov.uk/v1/data?uri=%2Feconomy%2Fgovernmentpublicsectorandtaxes%2Fpublicsectorfinance%2Ftimeseries%2Fanbv%2Fpusf",
       "series_code": "ANBV",
-      "retrieved_at": "2026-11-26T19:49:26.456335+00:00",
+      "retrieved_at": "2026-11-27T19:09:30.237762+00:00",
       "observations": [
         {
           "period": "1997 APR",
@@ -3062,7 +3062,7 @@
       "unit": "GBP million",
       "source": "https://api.beta.ons.gov.uk/v1/data?uri=%2Feconomy%2Fgovernmentpublicsectorandtaxes%2Fpublicsectorfinance%2Ftimeseries%2Fanlp%2Fpusf",
       "series_code": "ANLP",
-      "retrieved_at": "2026-11-26T19:49:27.567218+00:00",
+      "retrieved_at": "2026-11-27T19:09:30.920834+00:00",
       "observations": [
         {
           "period": "1997 APR",

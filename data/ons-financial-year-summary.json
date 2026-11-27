@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
   "publisher": "Office for National Statistics",
-  "generated_from": "2026-11-26T19:49:23.826376+00:00",
+  "generated_from": "2026-11-27T19:09:28.649996+00:00",
   "year_definition": "UK financial year: 1 April to 31 March",
   "note": "ANBV/ANLP measure central government CURRENT receipts/expenditure, not total public sector income/spending. Do not subtract them to infer fiscal deficit. HF6X is a debt ratio, not a sum. Incomplete years are flagged.",
   "series": {
