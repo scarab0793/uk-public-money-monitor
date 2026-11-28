@@ -160,7 +160,22 @@ def grid_from_pdf(content):
 
 
 def grid_from_words(pages):
-    """pages: lists of (x0, y0, x1, y1, text).  Returns one grid."""
+    """pages: lists of (x0, y0, x1, y1, text).  Returns one grid.  Some statements lay out each page at a different
+    width; every page's x positions are rescaled so its first and last amount columns line up with the first page's."""
+    def span(words):
+        ends = [x1 for x0, y0, x1, y1, t in words if is_amount(t) and re.search(r"\d", t)]
+        return (min(ends), max(ends)) if len(ends) >= 4 else None
+    ref = next((span(w) for w in pages if span(w)), None)
+    if ref:
+        scaled = []
+        for words in pages:
+            sp = span(words)
+            if sp and sp[1] - sp[0] > 20 and ref[1] - ref[0] > 20 and (abs(sp[0] - ref[0]) > 4 or abs(sp[1] - ref[1]) > 4):
+                k = (ref[1] - ref[0]) / (sp[1] - sp[0])
+                f = lambda x: ref[0] + (x - sp[0]) * k
+                words = [(f(x0), y0, f(x1), y1, t) for x0, y0, x1, y1, t in words]
+            scaled.append(words)
+        pages = scaled
     lines = []  # (page, y, [tokens (x0, x1, text)])
     for pi, words in enumerate(pages):
         rows = {}
@@ -343,7 +358,7 @@ def read_grid(grid, name_col_hint=None):
             seen[h] = seen.get(h, 0) + 1
             if seen[h] > 1:
                 head[j] = f"{h} ({seen[h]})"
-    amount_cols = [j for j, h in enumerate(head) if h and not re.search(r"name|councillor$|^member|ward|division|party|group|role|position|post|\bref\b|reference|\bid\b|\buri\b|uri$|label$|number|\bno\.?$|code|unit|date|period|year|latest", h, re.I)]
+    amount_cols = [j for j, h in enumerate(head) if h and not re.search(r"name|councillor$|^member ?(type|name)$|^members?$|ward|division|party|group|role|position|post|\bref\b|reference|\bid\b|\buri\b|uri$|label$|number|\bno\.?$|code|unit|date|period|year|latest", h, re.I)]
     name_col = name_col_hint if name_col_hint is not None else next(
         (j for j, h in enumerate(head) if re.search(r"name", h, re.I) and not re.search(r"allowance|basic|total", h, re.I)), None)
     if name_col is None:
@@ -515,7 +530,7 @@ def import_council(src):
     s = summarise(parsed)
     if s["total_check"]["mismatches"]:
         raise RuntimeError(f"{len(s['total_check']['mismatches'])} rows do not add up to their total, e.g. {s['total_check']['mismatches'][0]}")
-    year = parsed.get("year") or year
+    year = s.pop("year", None) or year
     if not year:
         raise RuntimeError("could not tell which year the statement covers: " + url)
     return dict(id=src["id"], name=src["name"], type=src["type"], nation=src.get("nation", "England"), year=year,

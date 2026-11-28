@@ -69,7 +69,7 @@ class CouncilAllowanceTests(unittest.TestCase):
         buf = _io.BytesIO()
         c = canvas.Canvas(buf)
         xs = [200, 290, 380, 470]
-        def row(y, name, vals):
+        def row(y, name, vals, xs=xs):
             c.drawString(40, y, name)
             for v, x in zip(vals, xs):
                 if v:
@@ -85,13 +85,15 @@ class CouncilAllowanceTests(unittest.TestCase):
         row(676, "ADEGOKE C", ["£15,776.61", "£8,455.95", "£60.00", "£24,292.56"])
         row(662, "ALLAN P*", ["£1,683.40", "", "", "£1,683.40"])
         c.showPage()
-        row(800, "CARLTON S*", ["£1,683.40", "£2,605.42", "", "£4,288.82"])
-        row(786, "TOTAL", ["£20,826.81", "£12,364.03", "£60.00", "£33,250.84"])
+        narrow = [230, 300, 370, 440]  # the next page is laid out narrower, without a header
+        row(800, "CARLTON S*", ["£1,683.40", "£2,605.42", "", "£4,288.82"], narrow)
+        row(786, "CLARKE J", ["£1,683.40", "", "", "£1,683.40"], narrow)
+        row(772, "TOTAL", ["£22,510.21", "£12,364.03", "£60.00", "£34,934.24"], narrow)
         c.save()
         g = ca.grid_from_pdf(buf.getvalue())[0]
         self.assertEqual(g[0], ["COUNCILLOR", "Basic Allowance", "Special Responsibility Allowance", "Dependents' Carers' Allowance", "TOTAL"])
         s = ca.summarise(ca.read_grid(g))
-        self.assertEqual([x["name"] for x in s["councillors"]], ["ADAIR R*", "ADEGOKE C", "ALLAN P*", "CARLTON S*"])
+        self.assertEqual([x["name"] for x in s["councillors"]], ["ADAIR R*", "ADEGOKE C", "ALLAN P*", "CARLTON S*", "CLARKE J"])
         self.assertEqual(s["total_check"]["mismatches"], [])
         self.assertEqual(s["totals_by_category"]["carers"], 60.0)
 
