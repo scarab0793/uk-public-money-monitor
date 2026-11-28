@@ -1,5 +1,37 @@
 [
  {
+  "finished_at": "2026-11-28T02:48:56Z",
+  "mode": "backfill",
+  "requests": 1676,
+  "sources": {
+   "contracts-finder": {
+    "changed": 0,
+    "days_complete": 305,
+    "days_failed": 0,
+    "days_partial": 0,
+    "errors": [],
+    "new": 31868,
+    "pages": 997,
+    "quarantined": 0,
+    "releases_fetched": 81487,
+    "unchanged": 49616
+   },
+   "find-a-tender": {
+    "changed": 0,
+    "days_complete": 305,
+    "days_failed": 0,
+    "days_partial": 0,
+    "errors": [],
+    "new": 13788,
+    "pages": 612,
+    "quarantined": 0,
+    "releases_fetched": 42163,
+    "unchanged": 19454
+   }
+  },
+  "started_at": "2026-11-28T00:16:39Z"
+ },
+ {
   "finished_at": "2026-11-27T22:27:18Z",
   "mode": "daily",
   "requests": 46,
