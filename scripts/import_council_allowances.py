@@ -28,7 +28,6 @@ import tempfile
 from pathlib import Path
 from urllib.parse import urljoin
 
-import requests
 
 UA = {"User-Agent": "uk-public-money-monitor/1.0 (+https://github.com/scarab0793/uk-public-money-monitor)"}
 REGISTRY = Path("data/representatives/council-sources.json")
@@ -53,6 +52,7 @@ NOT_A_NAME = re.compile(r"^(total|grand total|sub.?total|totals|overall|sum|coun
 
 def get(url, **kw):
     for attempt in range(2):
+        import requests  # imported lazily so the parsers can be tested with the standard library only
         r = requests.get(url, headers=UA, timeout=(15, 60), **kw)
         if r.status_code < 500 and r.status_code != 403 or attempt == 1:
             break

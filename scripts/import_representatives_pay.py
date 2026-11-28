@@ -24,7 +24,6 @@ import sys
 from html.parser import HTMLParser
 from pathlib import Path
 
-import requests
 
 IPSA = "https://www.theipsa.org.uk"
 GOVUK = "https://www.gov.uk"
@@ -38,6 +37,7 @@ SECTIONS = [("office", r"office"), ("staffing", r"staffing"), ("winding_up", r"w
 
 
 def get(url, **kw):
+    import requests  # imported lazily so the parsers can be tested with the standard library only
     r = requests.get(url, headers=UA, timeout=300, **kw)
     r.raise_for_status()
     return r
