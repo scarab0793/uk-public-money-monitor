@@ -1,36 +1,64 @@
 {
- "bristol": {
-  "checked_at": "2026-11-28T11:04:38Z",
-  "error": "20 rows do not add up to their total, e.g. Anthony Dyer: parts 2556512.0 vs total 52935.0",
+ "birmingham": {
+  "checked_at": "2026-11-28T11:09:23Z",
+  "error": "could not read councillors from https://www.birmingham.gov.uk/downloads/file/30357/payment_of_allowances_annual_schedule_2024_to_2025 (0 rows)",
   "status": "failed_kept_previous"
  },
+ "bristol": {
+  "checked_at": "2026-11-28T11:09:23Z",
+  "councillors": 70,
+  "source": "https://www.bristol.gov.uk/files/documents/10849-councillors-statement-of-allowances-paid-2025-2026",
+  "status": "updated",
+  "year": "2025-26"
+ },
  "cambridgeshire": {
-  "checked_at": "2026-11-28T11:04:38Z",
-  "councillors": 98,
+  "checked_at": "2026-11-28T11:09:23Z",
+  "councillors": 99,
   "source": "https://www.cambridgeshire.gov.uk/asset-library/council-members-allowances-2025-2026.xlsx",
   "status": "updated",
   "year": "2025-26"
  },
  "gloucestershire": {
-  "checked_at": "2026-11-28T11:04:38Z",
-  "councillors": 53,
-  "source": "https://gloucestershire.gov.uk/media/ly5h0dtm/councillors-allowances-and-expenses-payments-2024-25.pdf",
+  "checked_at": "2026-11-28T11:09:23Z",
+  "councillors": 86,
+  "source": "https://gloucestershire.gov.uk/media/cwkb3vy3/councillor-allowances-and-expenses-payments-for-2025-26.pdf",
   "status": "updated",
-  "year": "2024-25"
+  "year": "2025-26"
  },
  "nottinghamshire": {
-  "checked_at": "2026-11-28T11:04:38Z",
+  "checked_at": "2026-11-28T11:09:23Z",
   "error": "20 rows do not add up to their total, e.g. ADAIR R*: parts 0 vs total 2986.06",
   "status": "failed_kept_previous"
  },
  "sheffield": {
-  "checked_at": "2026-11-28T11:04:38Z",
-  "error": "5 rows do not add up to their total, e.g. Sue Alston: parts 23468.16 vs total 24319.66",
+  "checked_at": "2026-11-28T11:09:23Z",
+  "error": "403 Client Error: Forbidden for url: https://www.sheffield.gov.uk:443/home/your-city-council/councillors-expenses",
+  "status": "failed_kept_previous"
+ },
+ "staffordshire": {
+  "checked_at": "2026-11-28T11:09:23Z",
+  "councillors": 115,
+  "source": "https://www.staffordshire.gov.uk/council-and-democracy/councillors-and-committees/members-allowances/members-allowances-2025-2026",
+  "status": "updated",
+  "year": "2025-26"
+ },
+ "suffolk": {
+  "checked_at": "2026-11-28T11:09:23Z",
+  "councillors": 87,
+  "source": "https://www.suffolk.gov.uk/asset-library/councillor-assets/Statement-of-Accounts-2025-2026.pdf",
+  "status": "updated",
+  "year": "2025-26"
+ },
+ "surrey": {
+  "checked_at": "2026-11-28T11:09:23Z",
+  "error": "no annual statement link found on https://www.surreycc.gov.uk/council-and-democracy/councillors-and-committees/members-allowances",
   "status": "failed_kept_previous"
  },
  "warwickshire": {
-  "checked_at": "2026-11-28T11:04:38Z",
-  "error": "20 rows do not add up to their total, e.g. Aitkenhead, Mr Robert: parts 0 vs total 10876.97",
-  "status": "failed_kept_previous"
+  "checked_at": "2026-11-28T11:09:23Z",
+  "councillors": 97,
+  "source": "https://api.warwickshire.gov.uk/documents/WCCC-428063900-2219",
+  "status": "updated",
+  "year": "2025-26"
  }
 }
