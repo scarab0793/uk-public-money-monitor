@@ -60,6 +60,47 @@ class CouncilAllowanceTests(unittest.TestCase):
         self.assertEqual(s["councillors"][1]["total"], 21330.0)
         self.assertEqual(s["total"], 74482.92)
 
+    def test_pdf_columns_across_pages(self):
+        try:
+            from reportlab.pdfgen import canvas
+        except ImportError:
+            self.skipTest("reportlab not installed")
+        import io as _io
+        buf = _io.BytesIO()
+        c = canvas.Canvas(buf)
+        xs = [200, 290, 380, 470]
+        def row(y, name, vals):
+            c.drawString(40, y, name)
+            for v, x in zip(vals, xs):
+                if v:
+                    c.drawRightString(x, y, v)
+        c.drawString(40, 800, "Notice is given that in 2025/2026 the following sums were paid under the scheme of allowances")
+        for x, t in [(40, "COUNCILLOR"), (160, "Basic"), (250, "Special"), (340, "Dependents'"), (440, "TOTAL")]:
+            c.drawString(x, 740, t)
+        for x, t in [(160, "Allowance"), (250, "Responsibility"), (340, "Carers'")]:
+            c.drawString(x, 728, t)
+        for x, t in [(250, "Allowance"), (340, "Allowance")]:
+            c.drawString(x, 716, t)
+        row(690, "ADAIR R*", ["£1,683.40", "£1,302.66", "", "£2,986.06"])
+        row(676, "ADEGOKE C", ["£15,776.61", "£8,455.95", "£60.00", "£24,292.56"])
+        row(662, "ALLAN P*", ["£1,683.40", "", "", "£1,683.40"])
+        c.showPage()
+        row(800, "CARLTON S*", ["£1,683.40", "£2,605.42", "", "£4,288.82"])
+        row(786, "TOTAL", ["£20,826.81", "£12,364.03", "£60.00", "£33,250.84"])
+        c.save()
+        g = ca.grid_from_pdf(buf.getvalue())[0]
+        self.assertEqual(g[0], ["COUNCILLOR", "Basic Allowance", "Special Responsibility Allowance", "Dependents' Carers' Allowance", "TOTAL"])
+        s = ca.summarise(ca.read_grid(g))
+        self.assertEqual([x["name"] for x in s["councillors"]], ["ADAIR R*", "ADEGOKE C", "ALLAN P*", "CARLTON S*"])
+        self.assertEqual(s["total_check"]["mismatches"], [])
+        self.assertEqual(s["totals_by_category"]["carers"], 60.0)
+
+    def test_long_format(self):
+        g = [["COUNCILLOR", "TYPE OF PAYMENT", "AMOUNT"]] + [[n, "Members' Basic Allowance", "100"] for n in "ABCDE"] + [["", "Special Responsibility Allowance", "50"]]
+        s = ca.summarise(ca.read_grid(g))
+        self.assertEqual(s["councillors"][-1]["amounts"], {"Members' Basic Allowance": 100.0, "Special Responsibility Allowance": 50.0})
+        self.assertEqual(s["total"], 550.0)
+
 
 if __name__ == "__main__":
     unittest.main()

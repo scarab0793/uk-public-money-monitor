@@ -1,13 +1,3 @@
-https://gloucestershire.gov.uk/council-and-democracy/councillors-and-committees-including-scrutiny/allowances-and-expenses-paid-to-members-of-the-council/
-https://lincolnshire.ckan.io/dataset/members-allowances
-https://www.staffordshire.gov.uk/council-and-democracy/councillors-and-committees/members-allowances/members-allowances-2025-2026
-https://www.westsussex.gov.uk/about-the-council/county-councillors/councillor-allowances-and-expenses
-https://www.surreycc.gov.uk/council-and-democracy/councillors-and-committees/members-allowances/allowances-2021-2022
-https://www.devon.gov.uk/facts-and-figures/the-council-staffing-and-pay-2/
-https://democracy.derbyshire.gov.uk/ecCatDisplay.aspx?bcr=1&sch=doc
-https://www.newcastle.gov.uk/local-government/your-elected-representatives/local-councillors/members-allowances-2025-26
-https://www.bristol.gov.uk/files/documents/10849-councillors-statement-of-allowances-paid-2025-2026
-https://www.cambridgeshire.gov.uk/asset-library/council-members-allowances-2025-2026.xlsx
-https://api.warwickshire.gov.uk/documents/WCCC-428063900-2219
-https://www.nottinghamshire.gov.uk/media/wtofucde/membersallowances202526.pdf
-https://www.suffolk.gov.uk/council-and-democracy/open-data-suffolk/council-data-and-transparency/councillor-allowances
+https://blob.datopian.com/resources/da190149-9ca0-4f1e-809c-e89e234f0637/membersallowances-lWQ0O7-20260930-kF30m1.csv
+https://www.birmingham.gov.uk/downloads/download/910/members_allowances
+https://datamillnorth.org/dataset/councillor-allowances-and-council-tax-summons

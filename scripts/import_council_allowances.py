@@ -37,8 +37,7 @@ REPORT = Path("data/representatives/councils-report.json")
 
 NUM_RE = re.compile(r"^\(?-?£?\s?-?\d[\d,]*(?:\.\d+)?\)?$|^-$|^–$|^£?\s?-$|^nil$", re.I)
 CATEGORIES = [  # (category, pattern on the council's own heading), first match wins
-    ("total", r"^(grand |overall )?totals?\b|\btotal( paid| claimed| amount)?$|^sum\b"),
-    ("basic", r"basic"),
+    ("basic", r"basic|^members?'? allowances?\b(?! scheme)|^allowance$"),
     ("special_responsibility", r"special|\bsra\b|responsib"),
     ("civic", r"chair(man)?'?s? allowance|civic|mayor|vice.?chair"),
     ("carers", r"carer|dependant|dependent|childcare|care allowance"),
@@ -75,8 +74,15 @@ def is_amount(cell):
     return bool(s) and bool(NUM_RE.match(s.replace(" ", "")))
 
 
+TOTAL_WORDS = r"(grand|overall|sum|total|totals|paid|claimed|amount|amounts|allowances?|payments?|expenses|and|of|cost|costs|er|£|annual|for|the|year|\(\d+\)|\W)"
+
+
 def category(label):
-    l = label.lower()
+    """Map a council's own heading to a common category.  'Total', 'Total allowances and expenses', 'Total ER Cost'
+    are totals; 'Total Basic Allowance' is the basic allowance."""
+    l = label.lower().strip()
+    if re.search(r"\btotal|\bsum\b", l) and re.fullmatch(rf"(?:{TOTAL_WORDS}\s*)+", l):
+        return "total"
     return next(c for c, pat in CATEGORIES if re.search(pat, l))
 
 
@@ -134,13 +140,94 @@ def grids_from_html(text):
 
 
 def grid_from_pdf(content):
-    """pdftotext -layout keeps columns aligned.  Column positions are taken from the amounts in the data rows
-    (right-aligned), and the header words above the first data row are attached to the column they sit over."""
+    """Word positions (pdftotext -bbox) are used, so columns line up across pages even where a page has no header.
+    Column positions come from the right edges of the amounts in the data rows; the header words above the first
+    data row are attached to the column whose centre they are nearest."""
     with tempfile.NamedTemporaryFile(suffix=".pdf") as f:
         f.write(content)
         f.flush()
-        text = subprocess.run(["pdftotext", "-layout", f.name, "-"], capture_output=True, text=True, check=True).stdout
-    return grid_from_layout_text(text)
+        xml = subprocess.run(["pdftotext", "-bbox", f.name, "-"], capture_output=True, text=True, check=True).stdout
+    pages = []
+    for page in re.findall(r"<page[^>]*>(.*?)</page>", xml, re.S):
+        words = [(float(a), float(b), float(c), float(d), htmllib.unescape(t)) for a, b, c, d, t in
+                 re.findall(r'<word xMin="([\d.]+)" yMin="([\d.]+)" xMax="([\d.]+)" yMax="([\d.]+)">(.*?)</word>', page)]
+        pages.append(words)
+    return grid_from_words(pages)
+
+
+def grid_from_words(pages):
+    """pages: lists of (x0, y0, x1, y1, text).  Returns one grid."""
+    lines = []  # (page, y, [tokens (x0, x1, text)])
+    for pi, words in enumerate(pages):
+        rows = {}
+        for x0, y0, x1, y1, t in sorted(words, key=lambda w: (round(w[1]), w[0])):
+            key = next((k for k in rows if abs(k - y0) <= 2.5), y0)
+            rows.setdefault(key, []).append((x0, x1, t))
+        for y in sorted(rows):
+            ws = sorted(rows[y])
+            toks = []
+            for x0, x1, t in ws:  # words closer than ~a space apart form one cell
+                if toks and x0 - toks[-1][1] < 4.5 and not (is_amount(t) and is_amount(toks[-1][2])) and not (is_amount(t) != is_amount(toks[-1][2]) and x0 - toks[-1][1] > 2.5):
+                    toks[-1] = (toks[-1][0], x1, toks[-1][2] + " " + t)
+                else:
+                    toks.append((x0, x1, t))
+            lines.append((pi, y, toks))
+    amounts_of = lambda toks: [t for t in toks if is_amount(t[2])]
+    data = [i for i, (_, _, toks) in enumerate(lines) if len(amounts_of(toks)) >= 1 and toks and not is_amount(toks[0][2])
+            and re.match(r"[A-Za-z]", toks[0][2]) and toks[0][0] < min(t[0] for t in amounts_of(toks))]
+    # keep rows that look like the table: at least two amounts, or one amount in an already-known column
+    multi = [i for i in data if len(amounts_of(lines[i][2])) >= 2]
+    if len(multi) < 3:
+        return []
+    ends = sorted(t[1] for i in multi for t in amounts_of(lines[i][2]))
+    cols = []
+    for e in ends:
+        if cols and e - cols[-1][-1] <= 6:
+            cols[-1].append(e)
+        else:
+            cols.append([e])
+    rights = [sorted(c)[len(c) // 2] for c in cols if len(c) >= 2]
+    data = [i for i in data if all(min(abs(r - t[1]) for r in rights) <= 8 for t in amounts_of(lines[i][2]))]
+    first = data[0]
+    first_amount_x = min(t[0] for i in data for t in amounts_of(lines[i][2]))
+    centres = []
+    for r in rights:
+        xs = [(t[0] + t[1]) / 2 for i in data for t in amounts_of(lines[i][2]) if abs(t[1] - r) <= 8]
+        centres.append(sum(xs) / len(xs) if xs else r - 20)
+    # header: lines on the first data row's page, above it, below any earlier paragraph (a gap of > 3 lines' height)
+    pg, y_first, _ = lines[first]
+    head = [l for l in lines[:first] if l[0] == pg and not amounts_of(l[2])]
+    head.reverse()
+    chosen, last_y = [], y_first
+    for l in head:
+        if last_y - l[1] > 40 or len(chosen) >= 6:
+            break
+        if any(len(t[2]) > 45 for t in l[2]):
+            break
+        chosen.append(l)
+        last_y = l[1]
+    chosen.reverse()
+    words, name_words = [[] for _ in rights], []
+    for _, _, toks in chosen:
+        for x0, x1, t in toks:
+            if x1 < first_amount_x - 2:
+                name_words.append(t)
+                continue
+            c = (x0 + x1) / 2
+            k = min(range(len(rights)), key=lambda q: abs(centres[q] - c))
+            if abs(centres[k] - c) <= 45:
+                words[k].append(t)
+    labels = [" ".join(w).strip() for w in words]
+    grid = [[" ".join(name_words).strip() or "Councillor"] + labels]
+    for i in data:
+        toks = lines[i][2]
+        name = " ".join(t[2] for t in toks if t[1] < first_amount_x - 2 and not is_amount(t[2]))
+        row = [name] + [""] * len(rights)
+        for x0, x1, t in amounts_of(toks):
+            k = min(range(len(rights)), key=lambda q: abs(rights[q] - x1))
+            row[k + 1] = t
+        grid.append(row)
+    return [grid]
 
 
 TOKEN_RE = re.compile(r"\S+(?: \S+)*")
@@ -230,9 +317,17 @@ def grids_for(url, content, ctype):
 
 def read_grid(grid, name_col_hint=None):
     """Find the header row (it mentions 'basic'), then read every councillor row under it."""
-    hdr = next((i for i, r in enumerate(grid[:40]) if any(re.search(r"basic", c, re.I) for c in r)), None)
+    nohead = lambda r: not any(is_amount(c) for c in r if c)
+    hdr = next((i for i, r in enumerate(grid[:10]) if nohead(r) and any(re.fullmatch(r"(type of )?(payment|allowance|heading|description)( type)?", c.strip(), re.I) for c in r)), None)
+    if hdr is None:
+        hdr = next((i for i, r in enumerate(grid[:40]) if nohead(r) and any(re.search(r"basic", c, re.I) for c in r)), None)
+    if hdr is None:
+        hdr = next((i for i, r in enumerate(grid[:40]) if nohead(r) and sum(1 for c in r if re.search(r"allowance|mileage|travel|subsistence|responsib", c, re.I)) >= 2), None)
     if hdr is None:
         return None
+    long = read_long(grid, hdr)
+    if long:
+        return long
     head = [re.sub(r"\s+", " ", c).strip() for c in grid[hdr]]
     # a header split over two rows (e.g. 'Special' / 'Responsibility Allowance') is joined
     if hdr + 1 < len(grid) and not any(is_amount(c) for c in grid[hdr + 1] if c) and sum(1 for c in grid[hdr + 1] if c) >= 2:
@@ -244,7 +339,7 @@ def read_grid(grid, name_col_hint=None):
             seen[h] = seen.get(h, 0) + 1
             if seen[h] > 1:
                 head[j] = f"{h} ({seen[h]})"
-    amount_cols = [j for j, h in enumerate(head) if h and not re.search(r"name|councillor$|^member$|ward|division|party|group|role|position|post", h, re.I)]
+    amount_cols = [j for j, h in enumerate(head) if h and not re.search(r"name|councillor$|^member$|ward|division|party|group|role|position|post|\bref\b|reference|\bid\b|number|\bno\.?$|code|unit|date|period", h, re.I)]
     name_col = name_col_hint if name_col_hint is not None else next(
         (j for j, h in enumerate(head) if re.search(r"name|councillor|member", h, re.I) and not re.search(r"allowance|basic|total", h, re.I)), 0)
     extra = {j: h for j, h in enumerate(head) if j != name_col and re.search(r"ward|division|party|group|role|position|post", h, re.I)}
@@ -268,9 +363,49 @@ def read_grid(grid, name_col_hint=None):
     return dict(headings=headings, councillors=rows) if rows else None
 
 
+def read_long(grid, hdr):
+    """'Long' statements list one heading per row: councillor | type of payment | amount (the name is often left
+    blank on the councillor's later rows).  They are turned into one row per councillor."""
+    head = [c.strip().lower() for c in grid[hdr]]
+    if sum(1 for h in head if h) > 5:
+        return None
+    ti = next((j for j, h in enumerate(head) if re.search(r"type|payment|heading|description", h) and not re.search(r"amount|£|total", h)), None)
+    ai = next((j for j, h in enumerate(head) if re.search(r"amount|£|value|paid|total", h)), None)
+    ni = next((j for j, h in enumerate(head) if re.search(r"councillor|name|member", h)), None)
+    if ti is None or ai is None or ni is None or len({ti, ai, ni}) < 3:
+        return None
+    people, order, cur = {}, [], None
+    for r in grid[hdr + 1:]:
+        r = r + [""] * (len(head) - len(r))
+        name = re.sub(r"\s+", " ", r[ni]).strip()
+        if name and not NOT_A_NAME.match(name) and not re.match(r"^(total|grand total)", name, re.I):
+            cur = name
+        elif name:
+            cur = None
+            continue
+        if not cur or not r[ti].strip() or not is_amount(r[ai]):
+            continue
+        if cur not in people:
+            people[cur] = {}
+            order.append(cur)
+        h = re.sub(r"\s+", " ", r[ti]).strip()
+        people[cur][h] = round(people[cur].get(h, 0) + (amount(r[ai]) or 0), 2)
+    if len(order) < 5:
+        return None
+    headings = []
+    for n in order:
+        for h in people[n]:
+            if h not in headings:
+                headings.append(h)
+    return dict(headings=headings, councillors=[dict(name=n, amounts=people[n]) for n in order])
+
+
 def summarise(parsed):
     """Categorise the council's headings, check totals and add each councillor's total."""
-    heads = parsed["headings"]
+    used = {h for c in parsed["councillors"] for h, v in c["amounts"].items() if v}
+    heads = [h for h in parsed["headings"] if h in used]  # headings nobody was paid under are left out
+    for c in parsed["councillors"]:
+        c["amounts"] = {h: v for h, v in c["amounts"].items() if h in used}
     cats = {h: category(h) for h in heads}
     totals = [h for h in heads if cats[h] == "total"]
     # a 'Total' that only adds up allowances (before expenses) is a subtotal; the last total column is the overall one
