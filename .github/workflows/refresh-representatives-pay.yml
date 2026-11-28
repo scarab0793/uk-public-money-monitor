@@ -28,8 +28,15 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          [ -d data/representatives ] && git add data/representatives
-          if git diff --cached --quiet; then echo "No changes"; exit 0; fi
-          git commit -q -m "data: refresh MPs' pay and business costs (IPSA)"
-          for i in 1 2 3 4; do git pull -q --rebase origin "$GITHUB_REF_NAME" && git push -q origin "HEAD:$GITHUB_REF_NAME" && exit 0; sleep $((i*10)); done
+          # Re-apply this run's output files on top of the latest branch tip, so a newer commit is never rebased over.
+          mkdir -p /tmp/out && cp data/representatives/mps-*.json data/representatives/import-report.json /tmp/out/ 2>/dev/null || true
+          for i in 1 2 3 4; do
+            git fetch -q origin "$GITHUB_REF_NAME" && git reset -q --hard FETCH_HEAD
+            cp /tmp/out/* data/representatives/ 2>/dev/null || true
+            git add data/representatives
+            if git diff --cached --quiet; then echo "No changes"; exit 0; fi
+            git commit -q -m "data: refresh MPs' pay and business costs (IPSA)"
+            git push -q origin "HEAD:$GITHUB_REF_NAME" && exit 0
+            sleep $((i*10))
+          done
           exit 1
