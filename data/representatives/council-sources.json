@@ -1,0 +1,11 @@
+{
+ "legal_basis": "Local Authorities (Members' Allowances) (England) Regulations 2003, regulation 15: each council publishes, every year, the total paid to each councillor under each heading of its scheme.",
+ "councils": [
+  {"id": "cambridgeshire", "name": "Cambridgeshire County Council", "type": "county", "landing": "https://www.cambridgeshire.gov.uk/council/county-councillors/councillors-allowances", "link": "Council Members Allowances 20\\d\\d"},
+  {"id": "gloucestershire", "name": "Gloucestershire County Council", "type": "county", "url": "https://gloucestershire.gov.uk/media/ly5h0dtm/councillors-allowances-and-expenses-payments-2024-25.pdf", "year": "2024-25"},
+  {"id": "nottinghamshire", "name": "Nottinghamshire County Council", "type": "county", "landing": "https://www.nottinghamshire.gov.uk/council-and-democracy/councillors/allowances-expenses-conduct", "link": "allowances paid|membersallowances"},
+  {"id": "warwickshire", "name": "Warwickshire County Council", "type": "county", "landing": "https://www.warwickshire.gov.uk/membersallowances", "link": "Members allowances 20\\d\\d", "follow_link": "^Members Allowances 20\\d\\d"},
+  {"id": "bristol", "name": "Bristol City Council", "type": "city", "landing": "https://www.bristol.gov.uk/council/councillors-and-the-lord-mayor/councillors-allowances-and-payments", "link": "Statement of allowances paid"},
+  {"id": "sheffield", "name": "Sheffield City Council", "type": "city", "landing": "https://sheffield.gov.uk/home/your-city-council/councillors-expenses", "link": "allowances and expenses 1 April"}
+ ]
+}
