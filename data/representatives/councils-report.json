@@ -1,0 +1,36 @@
+{
+ "bristol": {
+  "checked_at": "2026-11-28T11:04:38Z",
+  "error": "20 rows do not add up to their total, e.g. Anthony Dyer: parts 2556512.0 vs total 52935.0",
+  "status": "failed_kept_previous"
+ },
+ "cambridgeshire": {
+  "checked_at": "2026-11-28T11:04:38Z",
+  "councillors": 98,
+  "source": "https://www.cambridgeshire.gov.uk/asset-library/council-members-allowances-2025-2026.xlsx",
+  "status": "updated",
+  "year": "2025-26"
+ },
+ "gloucestershire": {
+  "checked_at": "2026-11-28T11:04:38Z",
+  "councillors": 53,
+  "source": "https://gloucestershire.gov.uk/media/ly5h0dtm/councillors-allowances-and-expenses-payments-2024-25.pdf",
+  "status": "updated",
+  "year": "2024-25"
+ },
+ "nottinghamshire": {
+  "checked_at": "2026-11-28T11:04:38Z",
+  "error": "20 rows do not add up to their total, e.g. ADAIR R*: parts 0 vs total 2986.06",
+  "status": "failed_kept_previous"
+ },
+ "sheffield": {
+  "checked_at": "2026-11-28T11:04:38Z",
+  "error": "5 rows do not add up to their total, e.g. Sue Alston: parts 23468.16 vs total 24319.66",
+  "status": "failed_kept_previous"
+ },
+ "warwickshire": {
+  "checked_at": "2026-11-28T11:04:38Z",
+  "error": "20 rows do not add up to their total, e.g. Aitkenhead, Mr Robert: parts 0 vs total 10876.97",
+  "status": "failed_kept_previous"
+ }
+}
