@@ -40,6 +40,7 @@ CATEGORIES = [  # (category, pattern on the council's own heading), first match 
     ("basic", r"basic|^members?'? allowances?\b(?! scheme)"),
     ("special_responsibility", r"special|\bsra\b|responsib"),
     ("civic", r"chair(man)?'?s? allowance|civic|mayor|vice.?chair"),
+    ("employer_costs", r"employer|national insurance|\bni\b|pension"),
     ("carers", r"carer|dependant|dependent|childcare|care allowance"),
     ("travel", r"travel|mileage|car\b|fares|rail|train|bus|taxi|parking|motor|bicycle|transport"),
     ("subsistence", r"subsistence|meal|accommodation|hotel|overnight"),
@@ -372,12 +373,16 @@ def read_grid(grid, name_col_hint=None):
     if mt is not None:
         grid = grid[:hdr + 1] + [r for r in grid[hdr + 1:] if len(r) > mt and not re.search(r"co-?opt", str(r[mt]), re.I)]
     yc = next((j for j, h in enumerate(head) if re.fullmatch(r"financial ?year", h, re.I)), None)
+    pc = next((j for j, h in enumerate(head) if re.fullmatch(r"published ?date", h, re.I)), None)
     file_year = None
     if yc is not None:
         years = {year_of(str(r[yc])) for r in grid[hdr + 1:] if len(r) > yc and year_of(str(r[yc]))}
         if years:
             file_year = max(years)
             grid = grid[:hdr + 1] + [r for r in grid[hdr + 1:] if len(r) > yc and year_of(str(r[yc])) == file_year]
+            if pc is not None:  # the same year published more than once: keep the newest publication
+                newest = max(str(r[pc]) for r in grid[hdr + 1:])
+                grid = grid[:hdr + 1] + [r for r in grid[hdr + 1:] if str(r[pc]) == newest]
     extra = {j: h for j, h in enumerate(head) if j != name_col and re.search(r"ward|division|party|group|role|position|post", h, re.I)}
     rows = []
     for r in grid[hdr + 1:]:
@@ -535,6 +540,11 @@ def import_council(src):
     if not parsed or len(parsed["councillors"]) < src.get("min_councillors", 20):
         raise RuntimeError(f"could not read councillors from {url} ({0 if not parsed else len(parsed['councillors'])} rows)")
     s = summarise(parsed)
+    if r.content[:4] == b"%PDF" and not s["total_check"]["column"]:
+        raise RuntimeError("PDF statement without a total column to check the columns against; not used")
+    names = [c["name"] for c in s["councillors"]]
+    if len(set(names)) < len(names):
+        raise RuntimeError(f"{len(names) - len(set(names))} councillors listed twice")
     if s["total_check"]["mismatches"]:
         raise RuntimeError(f"{len(s['total_check']['mismatches'])} rows do not add up to their total, e.g. {s['total_check']['mismatches'][0]}")
     year = s.pop("year", None) or year

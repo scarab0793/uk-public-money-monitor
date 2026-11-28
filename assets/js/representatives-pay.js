@@ -123,7 +123,7 @@
   box.append(addTab('councillors', 'County and city councillors', pane => {
     pane.append(el('p', { text: 'Loading councillors’ allowances…' }));
     load('councillors.json').then(d => {
-      const CAT = { basic: 'Basic allowance', special_responsibility: 'Special responsibility allowances', civic: 'Chair / civic allowances', travel: 'Travel', subsistence: 'Subsistence', carers: 'Carers’ and dependants’ allowances', ict: 'Phone, broadband and IT', co_opted: 'Co-opted members', other: 'Other headings' };
+      const CAT = { basic: 'Basic allowance', special_responsibility: 'Special responsibility allowances', civic: 'Chair / civic allowances', travel: 'Travel', subsistence: 'Subsistence', carers: 'Carers’ and dependants’ allowances', ict: 'Phone, broadband and IT', co_opted: 'Co-opted members', employer_costs: 'Employer’s National Insurance or pension (a cost to the council, not paid to the councillor)', other: 'Other headings' };
       const typeSel = el('select', { id: 'rp-cl-type' }, el('option', { value: '', text: 'County and city councils' }), el('option', { value: 'county', text: 'County councils' }), el('option', { value: 'city', text: 'City councils' }));
       const out = el('div'), detail = el('div', { class: 'card', hidden: '' });
       function showCouncil(c) {

@@ -89,13 +89,6 @@
    "landing": "https://newcastle.gov.uk/your-council-and-democracy/councillors-and-democracy/councillors/members-allowances",
    "link": "Members Allowances Paid",
    "exclude": "members-allowances-paid$"
-  },
-  {
-   "id": "nottingham",
-   "name": "Nottingham City Council",
-   "type": "city",
-   "landing": "https://www.nottinghamcity.gov.uk/your-council/about-the-council/councillors-and-leadership/nottingham-city-councillors/",
-   "link": "Councillors Register of Payments"
   }
  ],
  "frameworks": [
@@ -132,6 +125,11 @@
   {
    "name": "Worcestershire County Council",
    "reason": "publishes the rates in its scheme, not the amounts paid to each councillor."
+  },
+  {
+   "name": "Nottingham City Council",
+   "reason": "its latest published statement is for 2023-24 and its PDF layout cannot be read reliably.",
+   "source": "https://www.nottinghamcity.gov.uk/your-council/about-the-council/councillors-and-leadership/nottingham-city-councillors/"
   }
  ]
 }
