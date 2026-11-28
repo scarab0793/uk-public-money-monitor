@@ -1,0 +1,35 @@
+name: Refresh MPs' pay and business costs (IPSA)
+on:
+  schedule:
+    - cron: '50 6 * * 1'
+  push:
+    paths:
+      - 'scripts/import_representatives_pay.py'
+      - '.github/workflows/refresh-representatives-pay.yml'
+  workflow_dispatch:
+permissions:
+  contents: write
+concurrency:
+  group: representatives-pay-${{ github.ref_name }}
+  cancel-in-progress: false
+jobs:
+  refresh:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: {python-version: '3.12'}
+      - run: pip install requests
+      - run: python -m unittest tests.test_representatives_pay -v
+      - run: python -u scripts/import_representatives_pay.py
+      - name: Publish
+        if: always()
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          [ -d data/representatives ] && git add data/representatives
+          if git diff --cached --quiet; then echo "No changes"; exit 0; fi
+          git commit -q -m "data: refresh MPs' pay and business costs (IPSA)"
+          for i in 1 2 3 4; do git pull -q --rebase origin "$GITHUB_REF_NAME" && git push -q origin "HEAD:$GITHUB_REF_NAME" && exit 0; sleep $((i*10)); done
+          exit 1
