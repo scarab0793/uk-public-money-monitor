@@ -65,7 +65,8 @@
    "name": "Birmingham City Council",
    "type": "city",
    "landing": "https://www.birmingham.gov.uk/downloads/download/910/members_allowances",
-   "link": "20\\d\\d"
+   "link": "allowances.*20\\d\\d|20\\d\\d.*allowances",
+   "follow_link": "/download/downloads/id/"
   },
   {
    "id": "bristol",

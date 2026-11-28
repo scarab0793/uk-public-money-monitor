@@ -163,7 +163,7 @@ def grid_from_words(pages):
     """pages: lists of (x0, y0, x1, y1, text).  Returns one grid.  Some statements lay out each page at a different
     width; every page's x positions are rescaled so its first and last amount columns line up with the first page's."""
     def span(words):
-        ends = [x1 for x0, y0, x1, y1, t in words if is_amount(t) and re.search(r"\d", t)]
+        ends = [x1 for x0, y0, x1, y1, t in words if is_amount(t) and re.search(r"£|\d\.\d\d\)?$", t)]  # not page numbers
         return (min(ends), max(ends)) if len(ends) >= 4 else None
     ref = next((span(w) for w in pages if span(w)), None)
     if ref:
@@ -363,7 +363,14 @@ def read_grid(grid, name_col_hint=None):
         (j for j, h in enumerate(head) if re.search(r"name", h, re.I) and not re.search(r"allowance|basic|total", h, re.I)), None)
     if name_col is None:
         name_col = next((j for j, h in enumerate(head) if re.search(r"councillor|member", h, re.I) and not re.search(r"allowance|basic|total|type", h, re.I)), 0)
-    # files in the LGA open-data layout hold several years: keep the latest one
+    # files in the LGA open-data layout hold several years and publications: keep the latest year's latest
+    # publication, and councillors only (co-opted members are not councillors)
+    lc = next((j for j, h in enumerate(head) if re.fullmatch(r"latest ?data", h, re.I)), None)
+    if lc is not None:
+        grid = grid[:hdr + 1] + [r for r in grid[hdr + 1:] if len(r) > lc and str(r[lc]).strip().upper() in ("TRUE", "YES", "1")]
+    mt = next((j for j, h in enumerate(head) if re.fullmatch(r"member ?type", h, re.I)), None)
+    if mt is not None:
+        grid = grid[:hdr + 1] + [r for r in grid[hdr + 1:] if len(r) > mt and not re.search(r"co-?opt", str(r[mt]), re.I)]
     yc = next((j for j, h in enumerate(head) if re.fullmatch(r"financial ?year", h, re.I)), None)
     file_year = None
     if yc is not None:
@@ -568,7 +575,9 @@ def main(argv):
         print(src["id"], report[src["id"]]["status"], report[src["id"]].get("year", ""), report[src["id"]].get("councillors", ""), report[src["id"]].get("error", ""), flush=True)
     order = {s["id"]: i for i, s in enumerate(reg["councils"])}
     councils = sorted((c for c in prev.values() if c["id"] in order), key=lambda c: order[c["id"]])
-    payload = dict(retrieved_at=now, councils=councils, frameworks=reg.get("frameworks", []), not_covered=reg.get("not_covered", []),
+    missing = [dict(name=s["name"], reason="its latest statement could not be read automatically yet (" + report.get(s["id"], {}).get("error", "unknown error")[:120] + ").",
+                    source=s.get("landing") or s.get("url")) for s in reg["councils"] if s["id"] not in prev]
+    payload = dict(retrieved_at=now, councils=councils, frameworks=reg.get("frameworks", []), not_covered=reg.get("not_covered", []) + missing,
                    legal_basis=reg.get("legal_basis"))
     OUT.write_text(json.dumps(payload, ensure_ascii=False, separators=(",", ":")), encoding="utf-8")
     REPORT.write_text(json.dumps(report, indent=1, sort_keys=True) + "\n")
