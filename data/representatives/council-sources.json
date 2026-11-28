@@ -30,6 +30,14 @@
    "link": "^Members allowances 20\\d\\d-20\\d\\d"
   },
   {
+   "id": "lincolnshire",
+   "name": "Lincolnshire County Council",
+   "type": "county",
+   "landing": "https://lincolnshire.ckan.io/dataset/members-allowances",
+   "link": "\\.csv",
+   "undated": true
+  },
+  {
    "id": "suffolk",
    "name": "Suffolk County Council",
    "type": "county",

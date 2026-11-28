@@ -51,7 +51,11 @@ NOT_A_NAME = re.compile(r"^(total|grand total|sub.?total|totals|overall|sum|coun
 
 
 def get(url, **kw):
-    r = requests.get(url, headers=UA, timeout=180, **kw)
+    for attempt in range(3):
+        r = requests.get(url, headers=UA, timeout=180, **kw)
+        if r.status_code < 500 and r.status_code != 403 or attempt == 2:
+            break
+        __import__("time").sleep(5 * (attempt + 1))
     r.raise_for_status()
     return r
 
@@ -328,7 +332,7 @@ def read_grid(grid, name_col_hint=None):
     long = read_long(grid, hdr)
     if long:
         return long
-    head = [re.sub(r"\s+", " ", c).strip() for c in grid[hdr]]
+    head = [re.sub(r"(?<=[a-z])(?=[A-Z])", " ", re.sub(r"\s+", " ", c)).strip() for c in grid[hdr]]
     # a header split over two rows (e.g. 'Special' / 'Responsibility Allowance') is joined
     if hdr + 1 < len(grid) and not any(is_amount(c) for c in grid[hdr + 1] if c) and sum(1 for c in grid[hdr + 1] if c) >= 2:
         head = [(a + " " + b).strip() for a, b in zip(head, grid[hdr + 1] + [""] * len(head))]
@@ -339,9 +343,19 @@ def read_grid(grid, name_col_hint=None):
             seen[h] = seen.get(h, 0) + 1
             if seen[h] > 1:
                 head[j] = f"{h} ({seen[h]})"
-    amount_cols = [j for j, h in enumerate(head) if h and not re.search(r"name|councillor$|^member$|ward|division|party|group|role|position|post|\bref\b|reference|\bid\b|number|\bno\.?$|code|unit|date|period", h, re.I)]
+    amount_cols = [j for j, h in enumerate(head) if h and not re.search(r"name|councillor$|^member|ward|division|party|group|role|position|post|\bref\b|reference|\bid\b|\buri\b|uri$|label$|number|\bno\.?$|code|unit|date|period|year|latest", h, re.I)]
     name_col = name_col_hint if name_col_hint is not None else next(
-        (j for j, h in enumerate(head) if re.search(r"name|councillor|member", h, re.I) and not re.search(r"allowance|basic|total", h, re.I)), 0)
+        (j for j, h in enumerate(head) if re.search(r"name", h, re.I) and not re.search(r"allowance|basic|total", h, re.I)), None)
+    if name_col is None:
+        name_col = next((j for j, h in enumerate(head) if re.search(r"councillor|member", h, re.I) and not re.search(r"allowance|basic|total|type", h, re.I)), 0)
+    # files in the LGA open-data layout hold several years: keep the latest one
+    yc = next((j for j, h in enumerate(head) if re.fullmatch(r"financial ?year", h, re.I)), None)
+    file_year = None
+    if yc is not None:
+        years = {year_of(str(r[yc])) for r in grid[hdr + 1:] if len(r) > yc and year_of(str(r[yc]))}
+        if years:
+            file_year = max(years)
+            grid = grid[:hdr + 1] + [r for r in grid[hdr + 1:] if len(r) > yc and year_of(str(r[yc])) == file_year]
     extra = {j: h for j, h in enumerate(head) if j != name_col and re.search(r"ward|division|party|group|role|position|post", h, re.I)}
     rows = []
     for r in grid[hdr + 1:]:
@@ -360,7 +374,7 @@ def read_grid(grid, name_col_hint=None):
                 rec[h.lower()] = str(r[j]).strip()
         rows.append(rec)
     headings = [head[j] for j in amount_cols if j != name_col and head[j]]
-    return dict(headings=headings, councillors=rows) if rows else None
+    return dict(headings=headings, councillors=rows, year=file_year) if rows else None
 
 
 def read_long(grid, hdr):
@@ -424,7 +438,7 @@ def summarise(parsed):
     for c in parsed["councillors"]:
         for h in parts:
             by_cat[cats[h]] = round(by_cat.get(cats[h], 0) + c["amounts"].get(h, 0), 2)
-    return dict(headings=[dict(label=h, category=cats[h]) for h in heads], councillors=parsed["councillors"],
+    return dict(headings=[dict(label=h, category=cats[h]) for h in heads], councillors=parsed["councillors"], year=parsed.get("year"),
                 totals_by_category=by_cat, total=round(sum(c["total"] for c in parsed["councillors"]), 2),
                 total_check=dict(column=overall, mismatches=bad[:20], rows_checked=len(parsed["councillors"]) if overall else 0))
 
@@ -475,8 +489,8 @@ def discover(src):
         hay = label + " " + url
         if pat.search(hay) and not re.search(src.get("exclude", r"$^"), hay, re.I):
             y = year_of(label) or year_of(url)
-            if y:
-                cands.append((y, url))
+            if y or src.get("undated"):
+                cands.append((y or "", url))
     if not cands:
         raise RuntimeError("no annual statement link found on " + src["landing"])
     y, url = max(cands)
@@ -501,6 +515,9 @@ def import_council(src):
     s = summarise(parsed)
     if s["total_check"]["mismatches"]:
         raise RuntimeError(f"{len(s['total_check']['mismatches'])} rows do not add up to their total, e.g. {s['total_check']['mismatches'][0]}")
+    year = parsed.get("year") or year
+    if not year:
+        raise RuntimeError("could not tell which year the statement covers: " + url)
     return dict(id=src["id"], name=src["name"], type=src["type"], nation=src.get("nation", "England"), year=year,
                 source=url, landing=src.get("landing", url), **s)
 
