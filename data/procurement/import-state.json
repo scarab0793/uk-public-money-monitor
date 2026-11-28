@@ -1,27 +1,27 @@
 {
  "coverage": {
   "contracts-finder": {
-   "complete_days": 1320,
-   "earliest_complete": "2023-04-18",
+   "complete_days": 1325,
+   "earliest_complete": "2023-04-13",
    "endpoint": "https://www.contractsfinder.service.gov.uk/Published/Notices/OCDS/Search",
    "failed_days": [],
    "floor": "2019-01-01",
    "label": "Contracts Finder",
    "latest_complete": "2026-11-27",
    "partial_days": [],
-   "releases_listed": 259542,
+   "releases_listed": 261236,
    "window_basis": "publication date"
   },
   "find-a-tender": {
-   "complete_days": 1307,
-   "earliest_complete": "2023-05-01",
+   "complete_days": 1312,
+   "earliest_complete": "2023-04-26",
    "endpoint": "https://www.find-tender.service.gov.uk/api/1.0/ocdsReleasePackages",
    "failed_days": [],
    "floor": "2021-01-01",
    "label": "Find a Tender",
    "latest_complete": "2026-11-27",
    "partial_days": [],
-   "releases_listed": 272590,
+   "releases_listed": 273271,
    "window_basis": "last-updated date"
   }
  },
@@ -29,6 +29,41 @@
  "sources": {
   "contracts-finder": {
    "days": {
+    "2023-04-13": {
+     "fetched_at": "2026-11-28T10:57:43Z",
+     "pages": 6,
+     "releases": 548,
+     "status": "complete",
+     "window_end": "2023-04-14T00:00:00Z"
+    },
+    "2023-04-14": {
+     "fetched_at": "2026-11-28T10:57:22Z",
+     "pages": 8,
+     "releases": 727,
+     "status": "complete",
+     "window_end": "2023-04-15T00:00:00Z"
+    },
+    "2023-04-15": {
+     "fetched_at": "2026-11-28T10:57:16Z",
+     "pages": 1,
+     "releases": 8,
+     "status": "complete",
+     "window_end": "2023-04-16T00:00:00Z"
+    },
+    "2023-04-16": {
+     "fetched_at": "2026-11-28T10:57:16Z",
+     "pages": 1,
+     "releases": 9,
+     "status": "complete",
+     "window_end": "2023-04-17T00:00:00Z"
+    },
+    "2023-04-17": {
+     "fetched_at": "2026-11-28T10:55:04Z",
+     "pages": 5,
+     "releases": 402,
+     "status": "complete",
+     "window_end": "2023-04-18T00:00:00Z"
+    },
     "2023-04-18": {
      "fetched_at": "2026-11-28T10:54:34Z",
      "pages": 6,
@@ -9273,6 +9308,41 @@
   },
   "find-a-tender": {
    "days": {
+    "2023-04-26": {
+     "fetched_at": "2026-11-28T10:59:57Z",
+     "pages": 2,
+     "releases": 195,
+     "status": "complete",
+     "window_end": "2023-04-27T00:00:00Z"
+    },
+    "2023-04-27": {
+     "fetched_at": "2026-11-28T10:57:41Z",
+     "pages": 2,
+     "releases": 183,
+     "status": "complete",
+     "window_end": "2023-04-28T00:00:00Z"
+    },
+    "2023-04-28": {
+     "fetched_at": "2026-11-28T10:57:17Z",
+     "pages": 3,
+     "releases": 296,
+     "status": "complete",
+     "window_end": "2023-04-29T00:00:00Z"
+    },
+    "2023-04-29": {
+     "fetched_at": "2026-11-28T10:57:16Z",
+     "pages": 1,
+     "releases": 2,
+     "status": "complete",
+     "window_end": "2023-04-30T00:00:00Z"
+    },
+    "2023-04-30": {
+     "fetched_at": "2026-11-28T10:57:15Z",
+     "pages": 1,
+     "releases": 5,
+     "status": "complete",
+     "window_end": "2023-05-01T00:00:00Z"
+    },
     "2023-05-01": {
      "fetched_at": "2026-11-28T10:54:48Z",
      "pages": 1,
@@ -18425,5 +18495,5 @@
    }
   }
  },
- "updated_at": "2026-11-28T10:55:01Z"
+ "updated_at": "2026-11-28T11:00:06Z"
 }
