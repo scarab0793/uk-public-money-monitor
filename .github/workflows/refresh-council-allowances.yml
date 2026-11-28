@@ -1,0 +1,47 @@
+name: Refresh councillors' allowances (council statements)
+on:
+  schedule:
+    - cron: '10 7 1,15 * *'
+  push:
+    paths:
+      - 'scripts/import_council_allowances.py'
+      - 'data/representatives/council-sources.json'
+      - 'data/representatives/probe.txt'
+      - '.github/workflows/refresh-council-allowances.yml'
+  workflow_dispatch:
+permissions:
+  contents: write
+concurrency:
+  group: council-allowances-${{ github.ref_name }}
+  cancel-in-progress: false
+jobs:
+  refresh:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: {python-version: '3.12'}
+      - run: pip install requests pandas openpyxl xlrd reportlab && (command -v pdftotext || sudo apt-get install -y -q poppler-utils)
+      - run: python -m unittest tests.test_council_allowances -v
+      - name: Probe (diagnostic, prints the grid read from each listed file)
+        if: hashFiles('data/representatives/probe.txt') != ''
+        run: while read -r u; do [ -n "$u" ] && { echo "######## $u"; python scripts/import_council_allowances.py --grid "$u" 2>&1 | head -120; }; done < data/representatives/probe.txt
+      - run: python -u scripts/import_council_allowances.py
+      - name: Publish
+        if: always()
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          # Re-apply this run's output files on top of the latest branch tip, so a newer commit is never rebased over.
+          mkdir -p /tmp/out && cp data/representatives/councillors.json data/representatives/councils-report.json /tmp/out/ 2>/dev/null || true
+          for i in 1 2 3 4; do
+            git fetch -q origin "$GITHUB_REF_NAME" && git reset -q --hard FETCH_HEAD
+            cp /tmp/out/* data/representatives/ 2>/dev/null || true
+            git add data/representatives
+            if git diff --cached --quiet; then echo "No changes"; exit 0; fi
+            git commit -q -m "data: refresh councillors' allowances"
+            git push -q origin "HEAD:$GITHUB_REF_NAME" && exit 0
+            sleep $((i*10))
+          done
+          exit 1
