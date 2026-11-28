@@ -399,6 +399,8 @@ def read_grid(grid, name_col_hint=None):
         for j, h in extra.items():
             if str(r[j]).strip():
                 rec[h.lower()] = str(r[j]).strip()
+        if any(x["name"] == rec["name"] and x["amounts"] == rec["amounts"] for x in rows):
+            continue  # the same row published twice
         rows.append(rec)
     headings = [head[j] for j in amount_cols if j != name_col and head[j]]
     return dict(headings=headings, councillors=rows, year=file_year) if rows else None
