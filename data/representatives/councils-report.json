@@ -1,85 +1,85 @@
 {
  "birmingham": {
-  "checked_at": "2026-11-28T11:14:27Z",
+  "checked_at": "2026-11-28T11:16:23Z",
   "error": "could not read councillors from https://www.birmingham.gov.uk/downloads/file/30357/payment_of_allowances_annual_schedule_2024_to_2025 (0 rows)",
   "status": "failed_kept_previous"
  },
  "bristol": {
-  "checked_at": "2026-11-28T11:14:27Z",
+  "checked_at": "2026-11-28T11:16:23Z",
   "councillors": 70,
-  "error": "dict() got multiple values for keyword argument 'year'",
   "source": "https://www.bristol.gov.uk/files/documents/10849-councillors-statement-of-allowances-paid-2025-2026",
-  "status": "failed_kept_previous",
+  "status": "updated",
   "year": "2025-26"
  },
  "cambridgeshire": {
-  "checked_at": "2026-11-28T11:14:27Z",
+  "checked_at": "2026-11-28T11:16:23Z",
   "councillors": 99,
-  "error": "dict() got multiple values for keyword argument 'year'",
   "source": "https://www.cambridgeshire.gov.uk/asset-library/council-members-allowances-2025-2026.xlsx",
-  "status": "failed_kept_previous",
+  "status": "updated",
   "year": "2025-26"
  },
  "gloucestershire": {
-  "checked_at": "2026-11-28T11:14:27Z",
+  "checked_at": "2026-11-28T11:16:23Z",
   "councillors": 86,
-  "error": "dict() got multiple values for keyword argument 'year'",
   "source": "https://gloucestershire.gov.uk/media/cwkb3vy3/councillor-allowances-and-expenses-payments-for-2025-26.pdf",
-  "status": "failed_kept_previous",
+  "status": "updated",
   "year": "2025-26"
  },
  "lincolnshire": {
-  "checked_at": "2026-11-28T11:14:27Z",
-  "error": "dict() got multiple values for keyword argument 'year'",
-  "status": "failed_kept_previous"
+  "checked_at": "2026-11-28T11:16:23Z",
+  "councillors": 234,
+  "source": "https://blob.datopian.com/resources/da190149-9ca0-4f1e-809c-e89e234f0637/membersallowances-lWQ0O7-20260930-kF30m1.csv",
+  "status": "updated",
+  "year": "2025-26"
  },
  "newcastle": {
-  "checked_at": "2026-11-28T11:14:27Z",
-  "error": "dict() got multiple values for keyword argument 'year'",
-  "status": "failed_kept_previous"
+  "checked_at": "2026-11-28T11:16:23Z",
+  "councillors": 98,
+  "source": "https://newcastle.gov.uk/sites/default/files/Members%20Allowances%20Paid%202024-25%20final.xlsx",
+  "status": "updated",
+  "year": "2024-25"
  },
  "nottingham": {
-  "checked_at": "2026-11-28T11:14:27Z",
-  "error": "dict() got multiple values for keyword argument 'year'",
+  "checked_at": "2026-11-28T11:16:23Z",
+  "error": "could not read councillors from https://www.nottinghamcity.gov.uk/media/wqylr1ee/members-allowances-2023-24-for-publication.pdf (0 rows)",
   "status": "failed_kept_previous"
  },
  "nottinghamshire": {
-  "checked_at": "2026-11-28T11:14:27Z",
-  "error": "20 rows do not add up to their total, e.g. ADAIR R*: parts 0 vs total 2986.06",
+  "checked_at": "2026-11-28T11:16:23Z",
+  "error": "20 rows do not add up to their total, e.g. ADAIR R*: parts 1683.4 vs total 2986.06",
   "status": "failed_kept_previous"
  },
  "sheffield": {
-  "checked_at": "2026-11-28T11:14:27Z",
-  "error": "dict() got multiple values for keyword argument 'year'",
+  "checked_at": "2026-11-28T11:16:23Z",
+  "error": "403 Client Error: Forbidden for url: https://www.sheffield.gov.uk:443/home/your-city-council/councillors-expenses",
   "status": "failed_kept_previous"
  },
  "staffordshire": {
-  "checked_at": "2026-11-28T11:14:27Z",
+  "checked_at": "2026-11-28T11:16:23Z",
   "councillors": 115,
-  "error": "20 rows do not add up to their total, e.g. Adam Griffiths: parts 162.0 vs total 13095.76",
   "source": "https://www.staffordshire.gov.uk/council-and-democracy/councillors-and-committees/members-allowances/members-allowances-2025-2026",
-  "status": "failed_kept_previous",
+  "status": "updated",
   "year": "2025-26"
  },
  "suffolk": {
-  "checked_at": "2026-11-28T11:14:27Z",
+  "checked_at": "2026-11-28T11:16:23Z",
   "councillors": 87,
-  "error": "dict() got multiple values for keyword argument 'year'",
   "source": "https://www.suffolk.gov.uk/asset-library/councillor-assets/Statement-of-Accounts-2025-2026.pdf",
-  "status": "failed_kept_previous",
+  "status": "updated",
   "year": "2025-26"
  },
  "surrey": {
-  "checked_at": "2026-11-28T11:14:27Z",
-  "error": "dict() got multiple values for keyword argument 'year'",
-  "status": "failed_kept_previous"
+  "checked_at": "2026-11-28T11:16:23Z",
+  "councillors": 87,
+  "source": "https://www.surreycc.gov.uk/council-and-democracy/councillors-and-committees/members-allowances/allowances-2021-2022",
+  "status": "updated",
+  "year": "2025-26"
  },
  "warwickshire": {
-  "checked_at": "2026-11-28T11:14:27Z",
+  "checked_at": "2026-11-28T11:16:23Z",
   "councillors": 97,
-  "error": "dict() got multiple values for keyword argument 'year'",
   "source": "https://api.warwickshire.gov.uk/documents/WCCC-428063900-2219",
-  "status": "failed_kept_previous",
+  "status": "updated",
   "year": "2025-26"
  }
 }
