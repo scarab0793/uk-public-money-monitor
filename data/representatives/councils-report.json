@@ -1,64 +1,85 @@
 {
  "birmingham": {
-  "checked_at": "2026-11-28T11:09:23Z",
+  "checked_at": "2026-11-28T11:14:27Z",
   "error": "could not read councillors from https://www.birmingham.gov.uk/downloads/file/30357/payment_of_allowances_annual_schedule_2024_to_2025 (0 rows)",
   "status": "failed_kept_previous"
  },
  "bristol": {
-  "checked_at": "2026-11-28T11:09:23Z",
+  "checked_at": "2026-11-28T11:14:27Z",
   "councillors": 70,
+  "error": "dict() got multiple values for keyword argument 'year'",
   "source": "https://www.bristol.gov.uk/files/documents/10849-councillors-statement-of-allowances-paid-2025-2026",
-  "status": "updated",
+  "status": "failed_kept_previous",
   "year": "2025-26"
  },
  "cambridgeshire": {
-  "checked_at": "2026-11-28T11:09:23Z",
+  "checked_at": "2026-11-28T11:14:27Z",
   "councillors": 99,
+  "error": "dict() got multiple values for keyword argument 'year'",
   "source": "https://www.cambridgeshire.gov.uk/asset-library/council-members-allowances-2025-2026.xlsx",
-  "status": "updated",
+  "status": "failed_kept_previous",
   "year": "2025-26"
  },
  "gloucestershire": {
-  "checked_at": "2026-11-28T11:09:23Z",
+  "checked_at": "2026-11-28T11:14:27Z",
   "councillors": 86,
+  "error": "dict() got multiple values for keyword argument 'year'",
   "source": "https://gloucestershire.gov.uk/media/cwkb3vy3/councillor-allowances-and-expenses-payments-for-2025-26.pdf",
-  "status": "updated",
+  "status": "failed_kept_previous",
   "year": "2025-26"
  },
+ "lincolnshire": {
+  "checked_at": "2026-11-28T11:14:27Z",
+  "error": "dict() got multiple values for keyword argument 'year'",
+  "status": "failed_kept_previous"
+ },
+ "newcastle": {
+  "checked_at": "2026-11-28T11:14:27Z",
+  "error": "dict() got multiple values for keyword argument 'year'",
+  "status": "failed_kept_previous"
+ },
+ "nottingham": {
+  "checked_at": "2026-11-28T11:14:27Z",
+  "error": "dict() got multiple values for keyword argument 'year'",
+  "status": "failed_kept_previous"
+ },
  "nottinghamshire": {
-  "checked_at": "2026-11-28T11:09:23Z",
+  "checked_at": "2026-11-28T11:14:27Z",
   "error": "20 rows do not add up to their total, e.g. ADAIR R*: parts 0 vs total 2986.06",
   "status": "failed_kept_previous"
  },
  "sheffield": {
-  "checked_at": "2026-11-28T11:09:23Z",
-  "error": "403 Client Error: Forbidden for url: https://www.sheffield.gov.uk:443/home/your-city-council/councillors-expenses",
+  "checked_at": "2026-11-28T11:14:27Z",
+  "error": "dict() got multiple values for keyword argument 'year'",
   "status": "failed_kept_previous"
  },
  "staffordshire": {
-  "checked_at": "2026-11-28T11:09:23Z",
+  "checked_at": "2026-11-28T11:14:27Z",
   "councillors": 115,
+  "error": "20 rows do not add up to their total, e.g. Adam Griffiths: parts 162.0 vs total 13095.76",
   "source": "https://www.staffordshire.gov.uk/council-and-democracy/councillors-and-committees/members-allowances/members-allowances-2025-2026",
-  "status": "updated",
+  "status": "failed_kept_previous",
   "year": "2025-26"
  },
  "suffolk": {
-  "checked_at": "2026-11-28T11:09:23Z",
+  "checked_at": "2026-11-28T11:14:27Z",
   "councillors": 87,
+  "error": "dict() got multiple values for keyword argument 'year'",
   "source": "https://www.suffolk.gov.uk/asset-library/councillor-assets/Statement-of-Accounts-2025-2026.pdf",
-  "status": "updated",
+  "status": "failed_kept_previous",
   "year": "2025-26"
  },
  "surrey": {
-  "checked_at": "2026-11-28T11:09:23Z",
-  "error": "no annual statement link found on https://www.surreycc.gov.uk/council-and-democracy/councillors-and-committees/members-allowances",
+  "checked_at": "2026-11-28T11:14:27Z",
+  "error": "dict() got multiple values for keyword argument 'year'",
   "status": "failed_kept_previous"
  },
  "warwickshire": {
-  "checked_at": "2026-11-28T11:09:23Z",
+  "checked_at": "2026-11-28T11:14:27Z",
   "councillors": 97,
+  "error": "dict() got multiple values for keyword argument 'year'",
   "source": "https://api.warwickshire.gov.uk/documents/WCCC-428063900-2219",
-  "status": "updated",
+  "status": "failed_kept_previous",
   "year": "2025-26"
  }
 }
