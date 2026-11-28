@@ -96,5 +96,41 @@
    "landing": "https://www.nottinghamcity.gov.uk/your-council/about-the-council/councillors-and-leadership/nottingham-city-councillors/",
    "link": "Councillors Register of Payments"
   }
+ ],
+ "frameworks": [
+  {
+   "title": "Wales: every councillor's basic salary, 2026-27",
+   "basic": 21044,
+   "publisher": "Democracy and Boundary Commission Cymru, Annual Remuneration Report 2026-27",
+   "source": "https://www.dbcc.gov.wales/remuneration/02-26/annual-remuneration-report-2026-27",
+   "note": "Set nationally for all 22 Welsh councils, from 1 April 2026. Senior salaries (leader, cabinet members, committee chairs) are set in bands; the leader of the largest councils gets £78,917.",
+   "checked": "2026-11-28"
+  },
+  {
+   "title": "Scotland: every councillor's salary, 2025-26",
+   "basic": 25982,
+   "publisher": "Scottish Government: councillors' roles, conduct and pay",
+   "source": "https://www.gov.scot/policies/local-government/councillors-roles-conduct-pay/",
+   "note": "Set nationally for all 32 Scottish councils from 1 April 2025 (the latest rate on gov.scot). Leaders of Glasgow City and the City of Edinburgh get £71,519; Aberdeen City £60,791; Dundee City £50,063.",
+   "checked": "2026-11-28"
+  }
+ ],
+ "not_covered": [
+  {
+   "name": "Kent, Hampshire, Lancashire, Norfolk, Essex, Leicestershire, Derbyshire and East Sussex county councils; Manchester City Council",
+   "reason": "each publishes its statement, but its website refuses automated downloads from the servers that refresh this site, so the figures cannot be kept up to date automatically."
+  },
+  {
+   "name": "Devon, West Sussex and Hertfordshire county councils; Liverpool City Council",
+   "reason": "no downloadable statement of the amounts paid to each councillor was found on the council's website; the statement may only be available on request."
+  },
+  {
+   "name": "Oxfordshire County Council",
+   "reason": "publishes monthly pay reports rather than an annual statement; adding them up is planned."
+  },
+  {
+   "name": "Worcestershire County Council",
+   "reason": "publishes the rates in its scheme, not the amounts paid to each councillor."
+  }
  ]
 }

@@ -179,6 +179,38 @@
    "limitations": "Civil servants only (not armed forces, NHS, teachers, police or local government). Salaries exclude overtime, bonuses and pensions. Headcounts are rounded to five and small cells are suppressed. Checked: grades never exceed their total, and departments add up to the Civil Service total."
   },
   {
+   "id": "mps-pay",
+   "module": "MPs' pay, additional salaries and business costs",
+   "anchor": "representatives-pay",
+   "publisher": "Independent Parliamentary Standards Authority (IPSA); Cabinet Office (ministerial salaries)",
+   "source": "https://www.theipsa.org.uk/mp-costs/annual-publication/",
+   "file": "data/representatives/mps-index.json",
+   "stamp": "retrieved_at",
+   "refresh": "Checked weekly; IPSA publishes claims every two months and annual totals once a year",
+   "workflow": "refresh-representatives-pay.yml",
+   "unit": "GBP (nominal), per financial year",
+   "basis": "Salary actually paid in the year; budgets and spend by budget heading; every claim summed by IPSA category and cost type, net of repayments",
+   "verification": "verified",
+   "licence": "Open Government Licence v3.0",
+   "limitations": "Last five financial years. Business costs pay for an MP's office, staff, accommodation and travel and are not the MP's income. Claims grouped by IPSA category come within 0.1% of IPSA's budget totals overall (some costs are charged to a different budget than their claim category); the budget figures are shown as published. Ministerial salaries are rates, not amounts paid to named ministers."
+  },
+  {
+   "id": "councillors-allowances",
+   "module": "County and city councillors' allowances",
+   "anchor": "representatives-pay",
+   "publisher": "Each council's statement of allowances paid (Local Authorities (Members' Allowances) (England) Regulations 2003)",
+   "source": "https://www.legislation.gov.uk/uksi/2003/1021/regulation/15",
+   "file": "data/representatives/councillors.json",
+   "stamp": "retrieved_at",
+   "refresh": "Checked twice a month; councils publish once a year, after the financial year ends",
+   "workflow": "refresh-council-allowances.yml",
+   "unit": "GBP (nominal), per financial year",
+   "basis": "Amounts paid to each councillor under each heading of the council's own scheme",
+   "verification": "partially_verified",
+   "licence": "Open Government Licence v3.0",
+   "limitations": "Only councils whose statements can be downloaded automatically are shown; the rest are listed under 'Councils not covered yet'. Headings are the council's own; they are grouped into common categories (basic, special responsibility, travel, ...) only for the summary. Where a council publishes a total column every row is checked against it. Councillors who served part of the year are included with part-year amounts. Welsh and Scottish rates are set nationally and shown as rates."
+  },
+  {
    "id": "council-tax",
    "module": "Council Tax bills in England",
    "anchor": "council-tax",

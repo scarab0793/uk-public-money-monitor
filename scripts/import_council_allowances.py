@@ -37,7 +37,7 @@ REPORT = Path("data/representatives/councils-report.json")
 
 NUM_RE = re.compile(r"^\(?-?£?\s?-?\d[\d,]*(?:\.\d+)?\)?$|^-$|^–$|^£?\s?-$|^nil$", re.I)
 CATEGORIES = [  # (category, pattern on the council's own heading), first match wins
-    ("basic", r"basic|^members?'? allowances?\b(?! scheme)|^allowance$"),
+    ("basic", r"basic|^members?'? allowances?\b(?! scheme)"),
     ("special_responsibility", r"special|\bsra\b|responsib"),
     ("civic", r"chair(man)?'?s? allowance|civic|mayor|vice.?chair"),
     ("carers", r"carer|dependant|dependent|childcare|care allowance"),

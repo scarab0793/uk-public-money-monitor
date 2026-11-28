@@ -68,7 +68,7 @@
         el('p', { class: 'small' }, 'Source: ', ext(idx.page, 'IPSA annual publication of MPs’ budgets, costs and claims'), ' and ', ext(rates.page || idx.page, 'IPSA: MPs’ pay and pensions'), '. Business costs pay for running an MP’s office and staff; they are not income to the MP. Accommodation and travel are paid to let MPs work in two places.'));
       let data = null;
       function showDetail(m) {
-        const b = BUDGETS.map(([k, label]) => { const x = m.budgets[k] || {}; return [label, x.budget == null ? 'No cap' : pounds(x.budget), pounds(x.spend), x.reason || '']; });
+        const b = BUDGETS.map(([k, label]) => { const x = m.budgets[k] || {}; return [label, x.budget == null ? (x.spend == null ? '—' : 'No cap') : pounds(x.budget), x.spend == null ? '—' : pounds(x.spend), x.reason || '']; });
         const parts = [
           table('Pay received by ' + m.name + ' · ' + data.year, ['Heading', 'Amount'], [
             ['MP salary (basic salary actually paid in the year)', pence(m.pay.basic_salary)],
@@ -97,7 +97,7 @@
       }
       function render() {
         const f = q.value.trim().toLowerCase(), key = SORTS[sortSel.value][1];
-        let rows = data.mps.filter(m => !f || (m.name + ' ' + (m.constituency || '')).toLowerCase().includes(f));
+        let rows = data.mps.filter(m => (personal(m) || businessTotal(m)) && (!f || (m.name + ' ' + (m.constituency || '')).toLowerCase().includes(f)));
         rows = key ? rows.sort((a, b) => key(b) - key(a)) : rows.sort((a, b) => a.name.localeCompare(b.name));
         const t = data.totals;
         head.replaceChildren(el('p', { class: 'small', role: 'status', text: data.mps.length + ' MPs in ' + data.year + ' (including those who left or arrived during the year). Salaries paid: ' + pounds(t.basic_salary) + '; additional salaries: ' + pounds(t.additional_salary) + '; business costs: ' + pounds(BUDGETS.reduce((s, [k]) => s + (t['spend_' + k] || 0), 0)) + ', of which staffing ' + pounds(t.spend_staffing) + '.' }));
@@ -145,10 +145,10 @@
           const basic = c.councillors.map(x => Object.entries(x.amounts).find(([h]) => (c.headings.find(y => y.label === h) || {}).category === 'basic')).filter(Boolean).map(([, v]) => v);
           const top = basic.length ? Math.max(...basic) : null;
           const sra = c.totals_by_category.special_responsibility || 0;
-          return el('tr', null, el('td', null, b), el('td', { text: c.year || '' }), el('td', { text: String(c.councillors.length) }), el('td', { text: top == null ? '—' : pounds(top) }),
+          return el('tr', null, el('td', null, b), el('td', { text: c.year || '', style: 'white-space:nowrap' }), el('td', { text: String(c.councillors.length) }), el('td', { text: top == null ? '—' : pounds(top) }),
             el('td', { text: pounds(sra) }), el('td', { text: pounds((c.totals_by_category.travel || 0) + (c.totals_by_category.subsistence || 0)) }), el('td', { text: pounds(c.total) }));
         });
-        out.replaceChildren(table('Councils · select one to see every councillor', ['Council', 'Year', 'Councillors', 'Basic allowance (full year)', 'Special responsibility allowances', 'Travel and subsistence', 'Total paid'], trs));
+        out.replaceChildren(table('Councils · select one to see every councillor', ['Council', 'Year', 'Councillors', 'Basic allowance for a full year', 'Special responsibility allowances', 'Travel and subsistence', 'Total paid'], trs));
       }
       typeSel.onchange = render;
       const fw = (d.frameworks || []).map(f => el('div', null, el('h4', { text: f.title }), el('p', { class: 'result', text: pounds(f.basic) }), el('p', { class: 'small', text: f.note + ' ' }, ext(f.source, f.publisher))));
