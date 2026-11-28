@@ -51,11 +51,11 @@ NOT_A_NAME = re.compile(r"^(total|grand total|sub.?total|totals|overall|sum|coun
 
 
 def get(url, **kw):
-    for attempt in range(3):
-        r = requests.get(url, headers=UA, timeout=180, **kw)
-        if r.status_code < 500 and r.status_code != 403 or attempt == 2:
+    for attempt in range(2):
+        r = requests.get(url, headers=UA, timeout=(15, 60), **kw)
+        if r.status_code < 500 and r.status_code != 403 or attempt == 1:
             break
-        __import__("time").sleep(5 * (attempt + 1))
+        __import__("time").sleep(5)
     r.raise_for_status()
     return r
 
