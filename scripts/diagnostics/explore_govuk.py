@@ -11,6 +11,17 @@ if path.startswith("search:"):
     path = next((r["link"] for r in q.get("results", []) if r.get("link", "").startswith(("/government/statistics/", "/government/publications/"))), None)
     if not path:
         sys.exit(0)
+if path.startswith("pdf:"):
+    # pdf:<url>[|<url>...] prints the text of each PDF (pdftotext -layout), for documents published only as PDF
+    import subprocess, tempfile
+    for url in path[4:].split("|"):
+        r = requests.get(url.strip(), timeout=120, headers={"User-Agent": "uk-public-money-monitor (+https://github.com/scarab0793/uk-public-money-monitor)"})
+        print("=== PDF", url, "STATUS", r.status_code, r.headers.get("content-type"), len(r.content))
+        if r.ok and r.content[:4] == b"%PDF":
+            with tempfile.NamedTemporaryFile(suffix=".pdf") as f:
+                f.write(r.content); f.flush()
+                print(subprocess.run(["pdftotext", "-layout", f.name, "-"], capture_output=True, text=True).stdout[:150000])
+    sys.exit(0)
 if path.startswith(("page:", "get:")):
     # page:<url> lists the links on any HTML page; get:<url> prints the start of any response (JSON APIs, CSV)
     import re, html
